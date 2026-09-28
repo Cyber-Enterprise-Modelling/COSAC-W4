@@ -183,11 +183,10 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Paragon"/>
         <property key="refCode" value="QuantPA.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2860000&quot;,&quot;success&quot;:&quot;0.7140000&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2820000&quot;,&quot;success&quot;:&quot;0.7180000&quot;}"/>
         <property key="threshold" value="150"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.2860000&quot;,&quot;success&quot;:&quot;0.7140000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:286,&quot;Threat C does not Materialise&quot;:&quot;0.50000&quot;,&quot;Threat B does not Materialise&quot;:&quot;0.81469&quot;,&quot;Threat A does not Materialise&quot;:&quot;0.43007&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Threat A does not Materialise&quot;:{&quot;fail&quot;:0.61,&quot;success&quot;:0.77}},{&quot;Threat B does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.94}},{&quot;Threat C does not Materialise&quot;:{&quot;fail&quot;:0.668,&quot;success&quot;:0.818}}]"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.2820000&quot;,&quot;success&quot;:&quot;0.7180000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:282,&quot;Threat C does not Materialise&quot;:&quot;0.59220&quot;,&quot;Threat B does not Materialise&quot;:&quot;0.70213&quot;,&quot;Threat A does not Materialise&quot;:&quot;0.48936&quot;}"/>
       </element>
     </folder>
     <folder name="Dependencies" id="id-1e6bf72eb4c344e89aa8ebdf76d57906">
@@ -233,33 +232,30 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3190000&quot;,&quot;success&quot;:&quot;0.6810000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:80, &quot;mode&quot;:100, &quot;high&quot;:120}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.3190000&quot;,&quot;success&quot;:&quot;0.6810000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:319,&quot;Threat A does not Materialise&quot;:&quot;1.00000&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Threat A does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:1}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2810000&quot;,&quot;success&quot;:&quot;0.7190000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:80, &quot;mode&quot;:100, &quot;high&quot;:120}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.2810000&quot;,&quot;success&quot;:&quot;0.7190000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:281,&quot;Threat A does not Materialise&quot;:&quot;1.00000&quot;}"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk B does not Materialise" id="id-efd263c918274505be0d2f7e90f67c6c">
         <documentation>Risk B has a 20% probability of a 200k loss</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.02"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2330000&quot;,&quot;success&quot;:&quot;0.7670000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:160, &quot;mode&quot;:200, &quot;high&quot;:240}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.2330000&quot;,&quot;success&quot;:&quot;0.7670000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:233,&quot;Threat B does not Materialise&quot;:&quot;1.00000&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Threat B does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:1}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1980000&quot;,&quot;success&quot;:&quot;0.8020000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:160, &quot;mode&quot;:200, &quot;high&quot;:240}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1980000&quot;,&quot;success&quot;:&quot;0.8020000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:198,&quot;Threat B does not Materialise&quot;:&quot;1.00000&quot;}"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk C does not Materialise" id="id-106efeab256845b6997c44951e8d97a1">
         <documentation>Risk C has a 40% probability of a 50k loss</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.03"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3880000&quot;,&quot;success&quot;:&quot;0.6120000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:40, &quot;mode&quot;:50, &quot;high&quot;:60}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.3880000&quot;,&quot;success&quot;:&quot;0.6120000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:388,&quot;Threat C does not Materialise&quot;:&quot;1.00000&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Threat C does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:1}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.4020000&quot;,&quot;success&quot;:&quot;0.5980000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:40, &quot;mode&quot;:50, &quot;high&quot;:60}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.4020000&quot;,&quot;success&quot;:&quot;0.5980000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:402,&quot;Threat C does not Materialise&quot;:&quot;1.00000&quot;}"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Roads OK" id="id-e13dac8a422d441ca022a6782c595b8d">
         <property key="namespace" value="SABSA"/>
@@ -945,14 +941,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-30e73fabf3ac44ad808ad1065ac1ab4b" source="id-99740ddaa26245daa82ca01be8fc96e5" target="id-133a5a9e2aac46aebe2db4abbccd6c80"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="70.3%"/>
+          <property key="percent" value="71.4%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-a655052340004ae5adaf3b921a9fd657" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="29" height="10"/>
+          <bounds width="28" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-84f37a0993bd4daf9132955ffc8191c8" source="id-a655052340004ae5adaf3b921a9fd657" target="id-133a5a9e2aac46aebe2db4abbccd6c80"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="29.8%"/>
+          <property key="percent" value="28.6%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-96b68f9f5f5c4012a5a0df17a70a0849" targetConnections="id-75c78c5e377e436b9634b6f35e088a9c id-8763f04e8a094f69b81150ad0f0fa812 id-a1a21ad07f0d4f87bf7ed825f1d855f5" fillColor="#ccccff" textPosition="1" archimateElement="id-699aa9e0924d4b47bf9cf1c6608517db">
@@ -966,7 +962,7 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-8763f04e8a094f69b81150ad0f0fa812" source="id-45c9fe52bdef4fdc8a9955b1ff06eca8" target="id-96b68f9f5f5c4012a5a0df17a70a0849"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="68.2%"/>
+          <property key="percent" value="68.1%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-908920c59b6f44338b353d1062216bd1" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
           <bounds width="31" height="10"/>
@@ -985,14 +981,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-c16f5cca8f284d5fb7e9d62434ed085d" source="id-8911207fb7a04e26851cb50d84833419" target="id-3d1219bce6ae429c89921f78e34d98ac"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="80.2%"/>
+          <property key="percent" value="76.7%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-c5aa9e146bd94a4b97028ac3979d2193" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="19" height="10"/>
+          <bounds width="23" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-0b534be9317041e998bea3aa64afc268" source="id-c5aa9e146bd94a4b97028ac3979d2193" target="id-3d1219bce6ae429c89921f78e34d98ac"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="19.8%"/>
+          <property key="percent" value="23.3%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-854ae953a4eb47e19692e8ffdb5017f9" targetConnections="id-8e6445333906423b8a7adaa8089f0a7f id-cc835edcfa8e4d89a86305ceac0f9603 id-d6df3ed860744907894b60cb2585e950" fillColor="#ccccff" textPosition="1" archimateElement="id-106efeab256845b6997c44951e8d97a1">
@@ -1006,14 +1002,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-cc835edcfa8e4d89a86305ceac0f9603" source="id-17bc0cdc92b945baa5fc3cef3a6d812f" target="id-854ae953a4eb47e19692e8ffdb5017f9"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="61.0%"/>
+          <property key="percent" value="61.2%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-b65c46a1c33e44d497d23b90d37d97e1" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="39" height="10"/>
+          <bounds width="38" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-d6df3ed860744907894b60cb2585e950" source="id-b65c46a1c33e44d497d23b90d37d97e1" target="id-854ae953a4eb47e19692e8ffdb5017f9"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="39.0%"/>
+          <property key="percent" value="38.8%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-5390784a314c44db8ebc80e55a30f876" targetConnections="id-550e74f769724e8d865c7506a64bc909 id-1a712ad981a942ac8e348294b73884d3" textPosition="1" archimateElement="id-3bb36008655a45c981cb2a1ce0a13a42" type="1">
