@@ -1,0 +1,174 @@
+ /*
+ * A Helper class for a Relationship Junction that can be extended for use in Dependency Modelling
+ * Cyber Enterprise Modelling 2025
+ */
+// ***************************************************************************
+
+class Junction {
+	static FAIL = false;
+	static SUCCEED = true;
+	static AND = 'and';
+	static OR = 'or';
+	static junctionCatalogue = new Map(); // Avoids creating same Junction more than once!
+
+	#element = null;
+	#id = null;
+	#name = null;
+	#junctionType = "";
+	#documentation = "";
+	// #namespace = SABSA;
+	#inSignals = null; // a Map of  incoming Signals from Sources
+	#outSignals = null; // a Map of outgoing Signals to Targets
+
+	#currentVizElement = null; // currently selected visual object.
+
+	constructor( v ) {
+		let e = v.concept;
+		e.removeProp( 'forcedState' );
+		if( e.type === ARCHI_JUNCTION ) {
+			if( Junction.junctionCatalogue.has( e.id ) ) { return Junction.junctionCatalogue.get( e.id ); }
+			else {
+				// console.log( "Creating Junction:", e.junctionType );
+				Junction.junctionCatalogue.set( e.id, this );
+				this.#currentVizElement = v;
+				this.#element = e;
+				this.#id = e.id;
+				this.#name = e.name;
+				this.#junctionType = e.junctionType;
+				this.#documentation = e.documentation;
+
+				this.#inSignals = this.getinSignals();
+				this.#outSignals = this.getOutSignals();
+			}
+		}
+	}
+
+	getName() { return this.#name; }
+	getJunctionType() { return this.#junctionType; }
+	getID() { return this.#id; }
+	getDocumentation() { return this.#documentation; }
+
+	// Restores forced Status back to pTable values.
+	clearStatus() {
+		this.#element.removeProp( 'forcedState' );
+		this.#outSignals.forEach( (target, s) => {
+			s.removeProp( 'forcedState' );
+			s.lineColor = null;  // Restore Default
+			s.lineWidth = 1; // Normal
+			target.clearStatus();
+		});
+	}
+
+	// Debug Assistant for logging current logical state.
+	logStatus( trigger ) {
+		console.log( '\nRe-evaluating', this.#element.junctionType, 'Status on trigger from', trigger.source.name, '(' + trigger.prop( 'forcedState' ) + ')' );
+		let tempStatus = ( trigger.prop( 'forcedState' ) == 'SUCCEED' ) ? Junction.SUCCEED : Junction.FAIL;
+
+		this.#inSignals.forEach( (source, inSig ) => {
+			let inputState = ( inSig.prop( 'forcedState' ) == 'SUCCEED' ) ? Junction.SUCCEED : Junction.FAIL;
+			if( this.#element.junctionType === Junction.AND ) {
+				tempStatus = tempStatus && inputState;
+			} else {
+				tempStatus = tempStatus || inputState;
+			}
+			console.log( 'Incoming', inSig.prop( 'forcedState' ), 'from', source.getName(), '(' + tempStatus + ')' );
+		});
+		console.log( 'Status Re-evaluated to', tempStatus );
+	}
+
+	// Find all the incoming signals (as Elements) and return a [signal, source] Map
+	getinSignals( ) {
+		let result = new Map();
+		$( this.#currentVizElement ).inRels( ARCHI_INFLUENCE ).each( function( r ) {
+			let source = r.source;
+			switch( source.type ) {
+				case ARCHI_OUTCOME:
+					if ( ( source.prop( PROP_NAMESPACE ) == SABSA) && ( source.prop( PROP_STEREOTYPE ) === ST_DEPENDENCY ) ) {
+						result.set( r, new Dependency ( source ) );
+					}
+					break;
+				case ARCHI_BIZ_EVENT:
+				case ARCHI_APP_EVENT:
+				case ARCHI_TECH_EVENT:
+				case ARCHI_IMPL_EVENT:
+					if ( ( source.prop( PROP_NAMESPACE ) == SABSA) && ( source.prop( PROP_STEREOTYPE ) === ST_UNCONTROLLABLE ) ) {
+						result.set( r, new Uncontrollable( source ) );
+					}
+					break;
+				case ARCHI_JUNCTION:
+					result.set( r, new Junction( source ) );
+					break;
+				default:
+					console.error( "Encountered unexpected event input signal:" + source.name );
+				break;
+			}
+		});
+		return result;
+	}
+
+	// Find all the outgoing signals (as Elements) and return a [signal, target] Map
+	getOutSignals( ) {
+		let result = new Map();
+		$( this.#currentVizElement ).outRels( ARCHI_INFLUENCE ).each( function( r ) {
+			let target = r.target;
+			switch( target.type ) {
+				case ARCHI_OUTCOME:
+					if ( ( target.prop( PROP_NAMESPACE ) == SABSA) && ( target.prop( PROP_STEREOTYPE ) == ST_DEPENDENCY ) ) {
+						result.set( r, new Dependency (target) );
+					}
+					break;
+				case ARCHI_GOAL:
+					if ( ( target.prop( PROP_NAMESPACE ) == SABSA) && ( target.prop( PROP_STEREOTYPE ) == ST_PARAGON ) ) {
+						result.set( r, new Paragon(target) );
+					}
+					break;
+				case ARCHI_JUNCTION:
+					result.set( r, new Junction(target) );
+					break;
+				default:
+					console.error( "Encountered unexpected event output signal:" + target.type );
+				break;
+			}
+		});
+		return result;
+	}
+
+	// As a Junctions usually have multiple incoming signals.
+	evaluateStatus( trigger ) {
+		// Debugger if( this.#element.name == 'Roads OK' ) this.logStatus( trigger );
+
+		// this.clearStatus();
+		let statusLabel = 'Undefined';
+		let tempStatus = ( trigger.prop( 'forcedState' ) == 'SUCCEED' ) ? Junction.SUCCEED : Junction.FAIL;
+
+		this.#inSignals.forEach( (source, inSig ) => {
+			// if any incoming signal is not in a defined state, the result is Undefined
+			if( !inSig.prop( 'forcedState' ) ) { // Abort & clean up
+				this.clearStatus();
+				console.error( "Detected Undefined Trigger Signal from " + source.getName() + " to Junction " + this.#element.name );
+				return;
+			} else {
+				let inputState = ( inSig.prop( 'forcedState' ) == 'SUCCEED' ) ? Junction.SUCCEED : Junction.FAIL;
+				if( this.#element.junctionType === Junction.AND ) {
+					tempStatus = tempStatus && inputState;
+				} else if( this.#element.junctionType === Junction.OR ) {
+					tempStatus = tempStatus || inputState;
+				} else {
+					// process custom logic
+				}
+			}
+		});
+
+		statusLabel = tempStatus ? 'SUCCEED' : 'FAIL';
+		this.#element.prop( 'forcedState', statusLabel );
+
+		let lineColour = tempStatus ? DK_GREEN : RED;
+		this.#outSignals.forEach( (target, outSig) => {
+			outSig.prop( 'forcedState', statusLabel );
+			outSig.lineColor = lineColour;
+			outSig.lineWidth = 2; // MEDIUM
+
+			target.evaluateStatus( outSig );
+		});
+	}
+}

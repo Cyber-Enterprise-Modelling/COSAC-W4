@@ -1,0 +1,271 @@
+ /*
+ * A Helper class for a Paragon element used in Dependency Modelling
+ * Cyber Enterprise Modelling 2025
+ */
+
+class Paragon extends DependencyModel {
+
+	static resultCount = 0; // Collates reults
+	static trialResults = new Map( ); // Collates reults
+	static paragonCatalogue = new TypedMap( String, Paragon ); // Avoids creating same Paragon more than once!
+
+	// Test whether a (visual) element is a valid SABSA Paragon.
+	// i.e. modelled as an Event with a 'stereotype' property value from SABSA namespace set to 'Paragon' or 'Dependency'.
+	static isParagon( e ) {
+		let result = false;
+		if ( ( e.type === ARCHI_GOAL ) && e.prop( PROP_NAMESPACE ) && ( e.prop( PROP_NAMESPACE ) === SABSA ) ) {
+			if ( e.prop( PROP_STEREOTYPE ) && ( e.prop( PROP_STEREOTYPE ) === ST_PARAGON ) ) {
+				// console.log( e.getName(), "is a Paragon." );
+				return e.prop( PROP_STEREOTYPE ); // true
+			}
+		} else if( e.type === ARCHI_OUTCOME ) { // Skip Dependencies - no alarm :-)
+		} else if( e.type ) {
+			console.error( e.name + ' [' + e.type + "] cannot be interpreted as a Paragon." );
+		} else {
+			console.error("Trying to process " + e.getName() + " [" + e.constructor.name + "] as a Paragon." );
+		}
+		return result;
+	};
+
+	#sTally = null;           // used to count events while creating the sensitivity table
+	#sMap = new Map();        // used to create a sensitivity table in raw format
+	#sensitivity = new Map(); // used to create a sensitivity table in summary format
+
+	#cTally = null;           // used to count fail outcomes while creating the causality table
+	#cMap = new Map();        // used to create a causality table in raw format
+	#causality = new Map();   // used to create a causality table in summary format
+	#threshold = null;        // used to indicate a quantitative result
+
+	#dependencies = null;    // used to record Dependencies on which the paragon depends
+
+	constructor( v, stereotype ) {
+		if( stereotype == undefined) { stereotype = ST_PARAGON; }
+		let e = v.concept;
+		if( e.type === ARCHI_GOAL || e.type === ARCHI_OUTCOME ) {
+			if( Paragon.paragonCatalogue.has( e.id ) ) { return Paragon.paragonCatalogue.get( e.id ); }
+			else {
+				super( v, stereotype );
+				Paragon.paragonCatalogue.set( e.id, this );
+				if( e.prop('sensitivity') ) { this.readSensitivityTable( e ); }
+				if( e.prop('causality') ) { this.readCausalityTable( e ); }
+				if( e.prop('threshold') ) { this.#threshold =  parseFloat( e.prop('threshold') ); }
+				this.resetTally();
+				this.setInSignals();
+			}
+		}
+	}
+
+	// Reset the tally at the start of a fresh calibration
+	resetTally() {
+		this.#sTally = {'trials':0, 'success':0, 'fail':0};
+		if( !this.#dependencies ) { this.#dependencies = this.getDependencies( ST_DEPENDENCY ); }
+		this.#dependencies.forEach( d => d.#sTally = {'trials':0, 'success':0, 'fail':0} );
+	}
+
+	// Read the current tally
+	getTally() { return " Successes: " + this.#sTally.success + " / Fails: " + this.#sTally.fail; }
+
+	// Load any existing sensitivity table
+	readSensitivityTable( e ) {
+		console.setTextColor(255, 0, 0);
+		let arrayText = e.prop('sensitivity');
+		let start = arrayText.indexOf( '[' );
+		let end = arrayText.lastIndexOf( ']' );
+		arrayText = arrayText.substring( start+1, end );
+		let pattern = /\},\{/g;
+		arrayText = arrayText.replace( pattern, '}||{' );
+		let array = arrayText.split( '||' );
+		if( array.length > 0 ) {
+			array.forEach( a => {
+				//console.log("Loaded Array item:", a );
+				let obj = JSON.parse( a );
+				//console.log("Loaded Array object:", JSON.stringify( obj ) );
+				let keys = Object.keys( obj );
+				// console.log("Loaded Object keys:", [...keys].join() );
+				keys.forEach( k => {
+					let value = obj[`${k}`];
+					let entry = JSON.parse( '{"' + k + '":' + JSON.stringify(value )+ '}' );
+					// console.log("Adding table entry:", k, value );
+					this.#sensitivity.set( k, JSON.stringify( entry ) );
+				});
+			});
+		}
+		//console.log("Loaded sTable:", JSON.stringify( [...this.#sensitivity.entries()] ) );
+		console.setDefaultTextColor();
+	}
+
+	// Load any existing causality table
+	readCausalityTable( e ) {
+		console.setTextColor(255, 0, 0);
+		let objText = e.prop('cTable');
+		if( objText && objText.length > 0 ) {
+			// console.log("Loaded Object text:", objText );
+			let obj = JSON.parse( objText );
+			//console.log("Loaded Causality text:", JSON.stringify( obj ) );
+			let keys = Object.keys( obj );
+			// console.log("Loaded Object keys:", [...keys].join() );
+			keys.forEach( k => {
+				let value = obj[`${k}`];
+				this.#causality.set( k, value );
+				this.#cMap.set( k, 0 );  // Initialise cMap in same sort order
+			});
+		}
+		// console.log("Loaded Causality Table:", JSON.stringify( [...this.#causality.entries()] ) );
+		console.setDefaultTextColor();
+	}
+
+	// Collate data for calculating the probability table (pTable) of a Paragon.
+	setQStatus( state, sig ) {
+		if( !state ) { // Losses
+			let actualLoss = parseFloat( sig.name );
+			state = parseFloat( sig.name ) < this.#threshold;
+			console.log("Quantitative Comparison:", actualLoss, this.#threshold, state );
+		}
+		return state;
+	}
+
+// Keeps a tally of the Succeed / Fail ratio
+	setStatus( state, sig ) {
+		this.#sTally.trials++;
+		// look for quantitive value in signal
+		if( this.#threshold ) { state = this.setQStatus( state, sig ); }
+		state ? this.#sTally.success++ : this.#sTally.fail++ ;
+
+		if ( Context.mode === Context.SENSITIVITY ) {
+			this.runCalibrationMode( state, sig )
+		} else {
+			this.runSimulationMode( state, sig );
+		}
+		super.setStatus( state );
+	}
+
+	// Collate data for calculating the probability & criticality profile of a Paragon.
+	runSimulationMode( state, sig ) {
+		if ( !Paragon.isParagon( Context.currentFocus ) ) {
+			// If the Paragon fails, identify failing Uncontrollables
+			if ( !state ) {
+				for( let u of this.getUncontrollables() ) {
+					let state = Uncontrollable.currentState.get( u );
+					if( this.#cMap.has(u) ) {
+						let failCount = this.#cMap.get(u);
+						if( !state ) this.#cMap.set( u, ++failCount );
+					} else  this.#cMap.set( u, state ? 0 : 1 );
+				}
+			}
+		} else {
+			console.error( "Sanity Check: Profile generation requires a Paragon in focus & all Uncontrollables to be in a free state." );
+		}
+		console.log( "Listing Criticality:", [...this.#cMap].join() );
+	}
+
+	// Collate data for calibrating the sensitivity of a Paragon to an Uncontrollable.
+	runCalibrationMode( state, sig ) {
+		if ( Context.currentFocus ) {
+			let forcedEvent = Context.currentFocus.getName();
+			let forcedState = Context.currentForceStatus ? 'succeed' : 'fail'; // bFAIL => false, bSUCCESS => true
+
+			// Ensure initiatialisation or retain memory of previous round
+			let failObj, successObj = null;
+			if( this.#sMap.has( forcedEvent ) ) {
+				failObj    = this.#sMap.get( forcedEvent ).fail;
+				successObj = this.#sMap.get( forcedEvent ).success;
+			} else {
+				failObj = {'trials':0, 'success':0, 'fail':0};
+				successObj = {'trials':0, 'success':0, 'fail':0};
+			}
+
+			// Determine which tally to update: bFAIL => false, bSUCCESS => true
+			Context.currentForceStatus ? successObj = this.#sTally : failObj = this.#sTally;
+			let sensitivityObj = { "fail" : failObj, "success" : successObj };
+
+			this.#sMap.set( forcedEvent, sensitivityObj );
+		} else {
+			console.error( "Sanity Check: Sensitivity Calibration requires an Uncontrollable to be held in a fixed state." );
+		}
+	}
+
+	// Convert sTable from internal state to short format
+	formatSensitivity( sMap ) {
+		let probSgivenS, probSgivenF;
+		let nameSet = this.getUncontrollables();
+
+		sMap.forEach( (value, key) => {
+			// console.log( "Uncontrollables of", this.getName(), 'are', [...nameSet].join(), "contains", key );
+			if( nameSet.has( key ) ) {  // Only add if dependent on the Uncontrollable
+				let s = value.success, f = value.fail;
+				probSgivenS = s.trials ? parseFloat( s.success / s.trials ) : 0.0; // Avoid divide by zero
+				console.log( 'sTable Success conversion', s.success, s.trials, '=>', probSgivenS );
+				probSgivenF = f.trials ? parseFloat( f.success / f.trials ) : 0.0; // Avoid divide by zero
+				console.log( 'sTable Fail conversion', f.success, f.trials, '=>', probSgivenF );
+				let obj = JSON.parse( '{"' + key + '":' + JSON.stringify( {fail:probSgivenF, success:probSgivenS} ) + '}' );
+				this.#sensitivity.set( key, JSON.stringify( obj ) );
+			}
+		});
+		return '[' + [...this.#sensitivity.values()].join() +']';
+	}
+
+	// Convert probability data from internal state to short format, to 7 decimal places as in Paper
+	formatProbability( tally ) {
+		let result = { "fail":0.0, "success":0.0 };
+		if( tally.trials ) { // Avoid divide by zero
+			let pSuccess = ( tally.success / tally.trials ).toFixed(7);
+			let pFail = ( tally.fail / tally.trials ).toFixed(7);
+			result = {fail:pFail, success:pSuccess};
+			console.log( '  Success conversion', this.getName(), ':', tally.success, '/', tally.trials, '=>', result.success );
+		}
+		return JSON.stringify( result );
+	}
+
+	// Convert cTable from internal state to short format
+	formatCausality( tally, cMap ) {
+		let causality = {};
+		causality.failTally = tally.fail;
+		if( tally.fail ) { // Avoid divide by zero
+			cMap.forEach( (value, key) => { causality[key] = ( value / tally.fail ).toFixed(5); });
+		}
+		console.log( "  Causality Profile:",JSON.stringify( causality )  );
+		return JSON.stringify( causality );
+	}
+
+	// Evaluate status by evaluating pTable logic against incoming signals
+	evaluate( ) {
+		trace( "Evaluating: [" + this.getStereotype() + '] ' + this.getName() );
+		// if( super.evaluate() !== UNDEFINED ) { return super.evaluate(); }
+
+		let inSigs = this.getInSignals();
+		if( inSigs.size == 1 ) {
+			inSigs.forEach( ( source, s ) => {
+				source.evaluate( s );
+				let sigState = s.prop( PROP_FORCED_STATE );
+				if( sigState ) {
+					this.setStatus( sigState == "SUCCEED", s );
+
+					console.setTextColor(0, 0, 255);
+					if ( Context.mode === Context.SENSITIVITY ) {
+						let txt = this.formatSensitivity( this.#sMap );
+						if( txt.length>2 ) { this.getElement().prop( "sensitivity", txt ); }
+					} else {
+						let txt = this.formatProbability( this.#sTally );
+						if( txt.length>2 ) { this.getElement().prop( "probability", txt ); }
+						txt = this.formatCausality( this.#sTally, this.#cMap, );
+						if( txt.length>2 ) { this.getElement().prop( "causality", txt ); }
+					};
+					console.setDefaultTextColor();
+
+					// console.log( 'sMap evaluates to', JSON.stringify( [...this.#sMap.entries()] ) );
+					(this.getCurrentState() == "SUCCEED" ) ? console.setTextColor(0, 128, 0) : console.setTextColor(255, 0, 0);
+					console.log( this.getName(), 'evaluates to', this.getCurrentState() + '.\n' );
+					console.setDefaultTextColor();
+
+					if( source.isQuantitative() ) {
+						if( sigState == "SUCCEED" ) Paragon.trialResults.set( Paragon.resultCount++, 0 ) ;
+						else Paragon.trialResults.set( Paragon.resultCount++, s.name );
+					}
+				}
+				else { console.error( 'Incoming Signal cannot be resolved' ); exit();   }
+			});
+		}
+		else if( inSigs.size > 1 ) { /* evaluate pTable */ }
+		else { console.error( 'Element has no incoming events' ); exit(); }
+	}
+}

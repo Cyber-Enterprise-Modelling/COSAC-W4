@@ -1,0 +1,44 @@
+﻿ /*
+ * A sub-class of Map that checks the key & value type.
+ * (c) 2025 SJB
+ */
+// ***************************************************************************
+class TypedMap extends Map {
+	// private attributes
+	#keyType;   // the type used for keys  
+	#valueType; // the type used for values 
+
+	constructor( keyType, valueType, entries ){
+
+		// First check that any entries conform to type.
+		if( entries ) {
+			for( let [k,v] of entries) {
+				//if( this.compareType( k, keyType ) && this.compareType( v, valueType) ) {
+				if( !( k instanceof keyType && v instanceof valueType ) ) {
+					throw new TypeError( 'Incorrect data types for entry [${k}, ${v}]' );
+				}
+			}
+		}
+
+		// Initialise superclass with typed-checked, initial entries
+		super( entries );
+		// Initialise this sub-class by retaining the types;
+		this.#keyType   = keyType;
+		this.#valueType = valueType;
+	}
+
+	// Redefinition of the superclass set() method to ensure type-checking on entry
+	set( key, value ) {
+		let xType = ( typeof key !== 'object' ) ? typeof key : key.constructor.name;
+		// Throw an error is there is a type policy violation
+		if( xType !== typeof this.#keyType.constructor.name ) {
+			throw new TypeError( key + ' is a ' + xType + ': not of the required type: ' + typeof this.#keyType.constructor.name );
+		}
+		xType = ( typeof value !== 'object' ) ? typeof value : value.constructor.name;
+		if( !( this.#valueType && value instanceof this.#valueType ) ) {
+			throw new TypeError( value + ' is a ' + xType + ': not of the required type: ' + typeof this.#valueType.constructor.name  );
+		}
+		// If all types are correct, invoke the superclass set() method and return whatever the superclass returns
+		return super.set( key, value );
+	}
+}

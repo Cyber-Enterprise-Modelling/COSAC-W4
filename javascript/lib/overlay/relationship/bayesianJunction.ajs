@@ -1,0 +1,154 @@
+ /*
+ * A Helper class for a Bayesian (Conditional Probability) Junction that can be extended for use in Dependency Modelling
+ * Cyber Enterprise Modelling 2025
+ */
+// ***************************************************************************
+
+class ConditionalProbabilityTable {
+	#rows = 0;
+	#cpt = new Map();
+	#sigWeights = new Map();
+
+	constructor( parent, txt ) {
+		let inSigs = parent.getInSignals();
+		let sigNames = [...inSigs.values()].map( x => x.getName() ).sort();
+		let weight = this.#rows = parseInt( 2**sigNames.length );
+		sigNames.forEach( x => this.#sigWeights.set( x, weight = weight >> 1 ) );  // Shift Left == div 2.
+
+		trace( "  Signals:" + [...this.#sigWeights.entries()].join()  );
+		let cpTable = JSON.parse( '{"' + PROP_CPT + '": ' + txt + '}' );
+		for( let row=0; row<cpTable.cpt.length; row++ ) {
+			// verify that probabilities add up to 1
+			let success = cpTable.cpt[row].success,  fail = cpTable.cpt[row].fail, sum = success + fail;
+			if( sum != 1.0 ) {
+				console.error( "Probablity Table of " + parent.getName() + ' [' + row + "] does not equal 1.0: " + sum );
+			}
+			else {
+				// Build Conditional Probability Table
+				let index = this.calcIndex( cpTable.cpt[row] );
+				this.#cpt.set( index, fail );
+				trace( "  Adding CPT Entry: " + row + ":" + cpTable.cpt[row] + " - Index: " + index + ' = ' + fail );
+			}
+		}
+		// Sanity Check - a valid table should have 2^n rows (where n is the number of inbound signals : n>=1)
+		if( this.#cpt.size != (2**inSigs.size ) ) { console.error( "CPT has " + this.#cpt.size + " Entries." ); exit(); }
+	}
+
+	// Calculate the CPT Row that corresponds to a set of input signals
+	calcIndex( obj ) {
+		let index = 0, keys = Object.keys( obj );
+		keys.forEach( k => {
+			if( !( k == 'success' || k == 'fail' ) ) { if( Boolean( obj[`${k}`] ) ) index += this.#sigWeights.get( k ); }
+		});
+		return index;
+	}
+
+	// Return the Success Threshold that corresponds to the set of input signals
+	getPassThreshold( inputs ) {
+		// console.log( 'Evaluating: CPT Input:', JSON.stringify( inputs ) );
+		return this.#cpt.get( this.calcIndex( inputs ) );
+	}
+}
+
+class BayesianJunction extends DependencyModel {
+	static AND = 'and';
+	static OR = 'or';
+	static junctionCatalogue = new Map(); // Avoids creating same Junction more than once!
+
+	#junctionType = BayesianJunction.AND; // Default
+	#cpt = null; // Conditional Probability Table
+	#isQuantitative = false; // Quantitative if dependant on a QDependency node
+
+	constructor( v ) {
+		let e = v.concept;
+		if( e.type === ARCHI_JUNCTION ) {
+			if( BayesianJunction.junctionCatalogue.has( e.id ) ) { return BayesianJunction.junctionCatalogue.get( e.id ); }
+			else {
+				super( v, ST_BAYESIAN_JUNCTION );
+				BayesianJunction.junctionCatalogue.set( e.id, this );
+				this.setInSignals();
+				this.setOutSignals();
+
+				// console.log( 'Creating Junction:', e.name, isSABSAElement(e), e.prop( PROP_STEREOTYPE ) );
+				if( isSABSAElement(e) && e.prop( PROP_STEREOTYPE ) === ST_BAYESIAN_JUNCTION ) {
+					e.junctionType = BayesianJunction.AND; // To be able to set a fill colour.
+					this.#junctionType = ST_BAYESIAN;
+					v.fillColor = GREY;
+					this.#cpt = new ConditionalProbabilityTable( this, e.prop( PROP_CPT ) );
+
+				} else this.#junctionType = e.junctionType;
+
+				// verify that all direct dependencies are not Quantitative
+				let inSigs = this.getInSignals();
+				inSigs.forEach( (source, s) => {
+					this.#isQuantitative = this.#isQuantitative || ( source.getStereotype() === ST_QUANT_DEPENDENCY );
+				});
+
+			}
+			trace( 'Created ' + this.#junctionType + ' Junction: ' + e.name +  ' - Quantitative: ' + this.#isQuantitative );
+		}
+	}
+
+	getJunctionType() { return this.#junctionType; }
+
+
+	/*/ Debug Assistant for logging current logical state.
+	logStatus( trigger ) {
+		console.log( '\nRe-evaluating', this.#junctionType, 'Status on trigger from', trigger.source.name, '(' + trigger.prop( 'forcedState' ) + ')' );
+		let tempStatus = ( trigger.prop( PROP_FORCED_STATE ) == 'SUCCEED' ) ? DependencyModel.bSUCCEED : DependencyModel.bFAIL;
+
+		this.getinSignals().forEach( (source, inSig ) => {
+			let inputState = ( inSig.prop( PROP_FORCED_STATE ) == 'SUCCEED' ) ? DependencyModel.bSUCCEED : DependencyModel.bFAIL;
+			if( this.#junctionType === BayesianJunction.AND ) {
+				tempStatus = tempStatus && inputState;
+			} else {
+				tempStatus = tempStatus || inputState;
+			}
+			console.log( 'Incoming', inSig.prop( PROP_FORCED_STATE ), 'from', source.getName(), '(' + tempStatus + ')' );
+		});
+		console.log( 'Status Re-evaluated to', tempStatus );
+	}
+*/
+	// As Junctions usually have multiple incoming signals.
+	evaluate( outSig ) {
+		//let type = this.getStereotype() ? this.getStereotype() : this.#junctionType;
+		trace( "  Evaluating: [" + this.#junctionType + '] ' + this.getName() );
+		let inputs = {}, qValue = 0;
+		let tempStatus = ( this.#junctionType === BayesianJunction.AND ) ? DependencyModel.bSUCCEED : DependencyModel.bFAIL;
+
+		this.getInSignals().forEach( (source, inSig ) => {
+			// Evaluate any incoming signal that is not in a defined state - work backwards
+			if( !inSig.prop( PROP_FORCED_STATE ) ) { // Not Resolved
+				trace( '  => Conditional Probability Gate: ' + this.getName() + ': evaluating input from: ' + source.getName() );
+				this.resetStatus();
+				source.evaluate( outSig );
+				if( !inSig.prop( PROP_FORCED_STATE ) ) { console.error( 'Incoming Signal cannot be resolved' ); exit(); }
+			}
+
+			let inputState = ( inSig.prop( PROP_FORCED_STATE ) == 'SUCCEED' ) ? DependencyModel.bSUCCEED : DependencyModel.bFAIL;
+			if( this.#junctionType === BayesianJunction.AND ) {
+				// console.log( 'Evaluated',  this.getName(), 'as AND Gate' );
+				tempStatus = tempStatus && inputState;
+			} else if( this.#junctionType === BayesianJunction.OR ) {
+				// console.log( 'Evaluated',  this.getName(), 'as OR Gate' );
+				tempStatus = tempStatus || inputState;
+
+			} else if( this.#junctionType === ST_BAYESIAN ) {
+				console.log( '  Evaluating Conditional Probability Gate:',  this.getName(), 'when triggerd by:', `${source.getName()}`, '=>', inSig.prop( PROP_FORCED_STATE ) );
+				inputs[ `${source.getName()}` ] = inputState ? 1 : 0;
+			} else {
+				// process custom logic
+			}
+
+		});
+
+//		if( this.#junctionType === ST_BAYESIAN && this.evaluate() === UNDEFINED) {
+		if( this.#junctionType === ST_BAYESIAN ) {
+			let passThreshold = this.#cpt.getPassThreshold( inputs );
+			let randomScore = Context.getFreshRandom(); // returns a random value 0<= r <=1
+			tempStatus = randomScore > passThreshold;
+			console.log( '  Evaluating:', randomScore.toFixed(3), 'against CPT Pass Threshold:', passThreshold, '=>', tempStatus ? ': SUCCEED' : ': FAIL' );
+		}
+		super.setStatus( tempStatus, outSig );
+	}
+}

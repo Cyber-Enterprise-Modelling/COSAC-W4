@@ -1,0 +1,77 @@
+ /*
+ * A Helper class for a Quantitative Junction that can be extended for use in Dependency Modelling
+ * Cyber Enterprise Modelling 2025
+ */
+// ***************************************************************************
+
+class QJunction extends DependencyModel {
+	static AND = 'and';
+	static OR = 'or';
+	static junctionCatalogue = new Map(); // Avoids creating same QJunction more than once!
+
+	#junctionType = QJunction.OR; // Default - OR for Addition, AND for Multiplication
+	#isQuantitative = true; // Can only be a valid Quantitative Junction if dependant on QDependency node
+	#qValue = 0.0; // Quantitative Score associated with outSignal
+
+	constructor( v ) {
+		let e = v.concept;
+		if( e.type === ARCHI_JUNCTION ) {
+			if( QJunction.junctionCatalogue.has( e.id ) ) { return QJunction.junctionCatalogue.get( e.id ); }
+			else {
+				super( v, ST_QJUNCTION );
+				this.setQuantitative(true);
+				QJunction.junctionCatalogue.set( e.id, this );
+				this.setInSignals();
+				this.setOutSignals();
+
+				// console.log( 'Creating Junction:', e.name, isSABSAElement(e), e.prop( PROP_STEREOTYPE ) );
+				if( isSABSAElement(e) && e.prop( PROP_STEREOTYPE ) === ST_QJUNCTION ) { this.#qValue = 0.0; }
+				this.#junctionType = e.junctionType;
+
+				// verify that all direct dependencies are QDependencies
+				let inSigs = this.getInSignals();
+				inSigs.forEach( (source, s) => {
+					this.#isQuantitative = this.#isQuantitative && ( source.getStereotype() === ST_QUANT_DEPENDENCY );
+				});
+
+			}
+			trace( 'Created ' + this.#junctionType + ' Junction: ' + e.name +  ' - Quantitative: ' + this.#isQuantitative );
+		}
+	}
+
+	// As Junctions usually have multiple incoming signals.
+	evaluate( outSig ) {
+		//let type = this.getStereotype() ? this.getStereotype() : this.#junctionType;
+		trace( "  Evaluating: [" + this.#junctionType + '] ' + this.getName() );
+		let inputs = {}, tempStatus = DependencyModel.bSUCCEED;
+		let qValue = ( this.#junctionType === QJunction.AND ) ? 1.0 : 0.0;
+
+		this.getInSignals().forEach( (source, inSig ) => {
+			// Evaluate any incoming signal that is not in a defined state - work backwards
+			if( !inSig.prop( PROP_FORCED_STATE ) ) { // Not Resolved
+				trace( '  => Conditional Probability Gate: ' + this.getName() + ': evaluating input from: ' + source.getName() );
+				this.resetStatus();
+				source.evaluate( outSig );
+				if( !inSig.prop( PROP_FORCED_STATE ) ) { console.error( 'Incoming Signal cannot be resolved' ); exit(); }
+			}
+
+			let inputState = ( inSig.prop( PROP_FORCED_STATE ) == 'SUCCEED' ) ? DependencyModel.bSUCCEED : DependencyModel.bFAIL;
+			tempStatus = tempStatus && inputState;  // Any impact causes juntion into fail
+
+			if( this.#junctionType === QJunction.AND ) {
+				if( !inputState ) qValue *= parseFloat( inSig.name );
+				console.log( 'Evaluated',  this.getName(), 'as Quantitative AND Gate', qValue );
+			} else if( this.#junctionType === QJunction.OR ) {
+				if( !inputState ) qValue += parseFloat( inSig.name );
+				console.log( 'Evaluated',  this.getName(), 'as Quantitative OR Gate', qValue );
+			} else {
+				console.error( "Failure to evaluate QJunction output state.");
+			}
+			console.log( '  Evaluating Quantitative Gate:',  this.getName(), 'to', qValue.toFixed(3), 'when triggerd by:', `${source.getName()}`, '=>', inSig.prop( PROP_FORCED_STATE ) );
+
+		});
+
+		super.setStatus( tempStatus, outSig );
+		outSig.name = ( qValue > 0.0 ) ? qValue.toFixed(3) : '';
+	}
+}

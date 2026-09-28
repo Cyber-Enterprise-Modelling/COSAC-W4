@@ -1,0 +1,149 @@
+﻿/*
+ * Creates a set of Event Handling Agents in a Monte Carlo Simulation
+ * (c) 2024 Cyber Enterprise Modelling
+ */
+
+ class AgentScheduler {
+	static FAR_IN_THE_FUTURE = new Date( "2999-12-31T23:59:59Z+1" );  // Dec 31st 2999 - end of 30th century
+
+	#agentPopulation = 1; // default to a single resource
+	#nextIndex;           // index into array of Agents
+	#nextAgent = null;    // next Agent available
+	#handlingAgents = null;
+
+	// Construct a Scheduler for Agents assigned to a given process
+	constructor( process ) {
+		this.#nextIndex = 0;
+		let roles = findInSources(process, "assignment-relationship", HandlingAgent.HANDLING_AGENTS);
+		let role = [... roles][0];
+		if ( role ) {
+			this.#agentPopulation = parseInt( role.prop("populationSize") );
+			console.log( "\Handling Agent:", role.name, " - population size:", this.#agentPopulation );
+		} else { console.log("\No Handling Agent Specified: Default to a Dummy one"); }
+		
+		let agents = new Set();
+		for (let i=0; i<this.#agentPopulation; i++) { agents.add( new HandlingAgent(i+1) ); }
+
+		this.#handlingAgents = [... agents];
+		this.#nextAgent = this.#handlingAgents[0];
+		//this.#agentPopulation = this.#handlingAgents.length;
+		console.log( "\Handling Scheduler: starting with", this.#nextAgent.getName(), "of", this.#agentPopulation, "Agents" );
+	}
+
+	// Resets all Agents to start a new Trial
+	reset() { 
+		for (let i=0; i<this.#agentPopulation; i++) this.#handlingAgents[i].reset(); 
+		this.#nextIndex = 0;
+		this.#nextAgent = this.#handlingAgents[0];
+	}
+
+	// index the pointer to the next free Agent
+	roundRobin() {
+		// Loop around the HandlerAgent Array until either a Handler is free or, if all are busy, select the first one due to come free
+		let found = false, reserveIndex = 0;
+		this.#nextIndex++; 
+		let currentBest = AgentScheduler.FAR_IN_THE_FUTURE;
+		for( let i=0; (!found && i<this.#agentPopulation); i++ ) {
+			let index = (this.#nextIndex + i) % this.#agentPopulation;
+			let agent = this.#handlingAgents[index];
+
+			let allocationString = "ALLOCATED until " + agent.getNextAvailability().toLocaleString();
+			//console.log( "\  Round Robin: Status:", agent.getName(), agent.getStatus() ? allocationString : "FREE", );
+
+			if ( agent.getStatus() == HandlingAgent.FREE ) {
+				this.#nextIndex = index;
+				found = true;
+			} else {
+				let available = agent.getNextAvailability();
+				if ( earlierThan( available, currentBest ) ) {
+					currentBest = available;
+					reserveIndex = index;
+				}
+			} 
+			// console.log(agent.getName(), agent.getStatus() ? "ALLOCATED" : "FREE" );
+		}
+		this.#nextAgent = found ? this.#handlingAgents[this.#nextIndex] : this.#handlingAgents[reserveIndex];
+		//console.log( "\  Round Robin: selected:", this.#nextAgent.getName() );
+	}
+
+	// returns the next Agent that either is free now or will become free at the scheduled start
+	getNextAgent( event ) {
+		// refresh status based on current event time
+		for (let i=0; i<this.#agentPopulation; i++) { this.#handlingAgents[i].refreshStatus( event ); }
+
+		let result = this.#nextAgent;
+		result.assignTask( event );
+		// console.log("\n  Allocating:", result.getName(), "from a Pool of", this.#agentPopulation, " - Status:", (result.getStatus() ) ? "Allocated" : "Free");
+
+		this.roundRobin();
+		return result;
+	}
+}
+
+class HandlingAgent {
+	static FREE  = 0;
+	static ALLOCATED  = 1;
+	static HANDLING_AGENTS  = new Set(["business-actor", "business-role"]);
+
+	#name;
+	#status;
+	#assignedEvents;
+	#nextAvailability;
+	#utilisation  = 0;
+
+	constructor( index ) {
+		this.#name = "Agent_".concat(index);
+		this.#assignedEvents = new Set();
+		this.#nextAvailability = new Date(BASEDATE);
+		this.#status = HandlingAgent.FREE;
+	}
+
+	reset() {
+		this.#assignedEvents = new Set();
+		this.#nextAvailability = new Date(BASEDATE);
+		this.#status = HandlingAgent.FREE;
+	}
+
+	getName() { return this.#name; }
+	getStatus() { return this.#status; }
+	getNextAvailability() { return this.#nextAvailability; }
+
+	// Updates status at current time
+	refreshStatus( event ) {
+		if ((this.#status == HandlingAgent.ALLOCATED) && earlierThan( this.#nextAvailability, event.getStart() ) ) {
+			this.#status = HandlingAgent.FREE;
+			this.removeCompletedTasks( event );
+			this.#nextAvailability = new Date(BASEDATE);
+		}
+	}
+
+	assignTask( event ) {
+		event.assignAgent( this );
+
+		if ( this.#status == HandlingAgent.ALLOCATED ) { 
+			//console.log("\n  Assigning to:", this.#name, " - Status:", (this.#status) ? "Allocated" : "Free" ) ;
+			event.delayStart( this.#nextAvailability ); 
+		} 
+
+		this.#assignedEvents.add( event );
+		this.#status = HandlingAgent.ALLOCATED;
+		this.#nextAvailability = event.getFinish();
+		this.#utilisation += event.getElapsed();
+		console.log("  Assigning to:", this.#name, " - Status:", (this.#status) ? "Allocated" : "Free", "until", this.#nextAvailability.toLocaleString() ) ;
+	}
+
+	removeCompletedTasks( event ) {
+		if ( this.#status == HandlingAgent.ALLOCATED ) {
+			let events = [... this.#assignedEvents ];
+			for( let i=0; i<events.length; i++ ) {
+				if( earlierThan( events[i].getFinish(), event.getCreationDate() ) ) {
+					this.#assignedEvents.delete( events[i] );
+				} 
+			} 
+			if ( this.#assignedEvents.size() == 0 ) {
+				this.#status == HandlingAgent.FREE
+				this.#nextAvailability = new Date(BASEDATE);
+			} 
+		} 
+	}
+}

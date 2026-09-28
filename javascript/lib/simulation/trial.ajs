@@ -1,0 +1,94 @@
+﻿/*
+ * Creates a new Trial in a Monte Carlo Simulation
+ * (c) 2024 Cyber Enterprise Modelling
+ */
+load( __DIR__ + "eventSet.ajs");
+
+const BASEDATE = "2000-01-01T00:00:00Z+1";  // Jan 1st 2000 - midnight CET
+
+class Trial {
+	static trialCount = 1;
+	static sourceCount = 1;
+	static duration = null;
+	static timeBasis = null;
+
+	// Generate a Random float in a given range
+	static generateRandom = (min, max) => min + (Math.random() * (max-min));
+
+	// Generate a Random Integer in a given range
+	static generateRandomInt = (min, max) => Math.floor( min + (Math.random() * (++max-min)) );
+
+	// Generate a set of Random Floats in a given range
+	static generateRandoms = (quantity, low, high) => {
+		if (low  === undefined) { low = 0; }
+		if (high === undefined) { high = 1; }
+		let rands = new Set();
+			for(let i=0; i<quantity; i++) { rands.add( Trial.generateRandom(low, high) ); }
+			return [...rands];
+	 };
+
+	// ****************************************************************************/
+	// Alternative constructor for a trial with predefined test Events
+	static fromTestData( event, testdata )  {
+		let eventSet = new Set();
+		for(let i=0; i<testdata.length; i++) {
+			let event = testdata[i];
+			let t = event.time;
+			let d = parseTime(event.duration);
+			// console.log("Test Event:", i, t, d);
+
+			let e = new Event(t);
+			e.setDuration(d);
+			eventSet.add( e );
+		}
+        return eventSet;
+	}
+
+	// ****************************************************************************/
+	// Determine how many events will be generated in this Trial
+
+	static getTrialSize( e ) {
+		let eventCount = 0, eventFrequency = e.prop("frequency");
+		let low = parseQLow(eventFrequency), mode = parseQMode(eventFrequency), high = parseQHigh(eventFrequency);
+
+		let eventPeriod = e.prop("period");
+		Trial.duration = parseDuration(eventPeriod);
+		Trial.timeBasis = suggestTimeBasis(Trial.duration);
+
+		if (/^true$/i.test(e.prop("perSource"))) {
+			// adjust the distribution for the range of sources
+			if(e.type.endsWith("-event")) {
+				$(e).inRels('triggering-relationship').each(function(r) {
+					if(r.source.prop("populationSize"))  {
+						let sourceRange = r.source.prop("populationSize");
+						Trial.sourceCount = Trial.generateRandomInt( parseQLow(sourceRange), parseQHigh(sourceRange) );
+						for(let i=0; i<Trial.sourceCount; i++){
+							eventCount += Trial.generateRandomInt(low, high);
+						}
+					}
+				});
+			}
+		} else { eventCount = Trial.generateRandomInt(low, high); }
+		//console.log( "Preparing to generate", eventCount, "events from", Trial.sourceCount, "Source(s) in", Trial.timeBasis["period"], Trial.timeBasis["units"]);
+		return eventCount;
+	}
+
+	#trialSize = 1;
+	#eventSet = null;
+
+	// ****************************************************************************/
+	// Create a new Trial for an Archi Element: a Business, Application, Technology or Implementation Event
+	constructor( event ) {
+		this.#trialSize = Trial.getTrialSize( event );
+		console.log("\nTrial [" + Trial.trialCount++ + "] of", this.#trialSize, event.name, "Events from", Trial.sourceCount, "Source(s) in", Trial.timeBasis["period"], Trial.timeBasis["units"]);
+		// console.log( "QRange:", parseQRange(event.prop("frequency")) );
+		this.#eventSet = new EventSet( this.#trialSize );
+	}
+
+	getEventSet() { return this.#eventSet; }
+
+	generateProcessRuns( dRange, timeBasis ){
+		console.log( "Check Process Runs:", this.#trialSize, "EventSet:", this.#eventSet.size );
+		this.eventSet.generateProcessRuns( dRange, timeBasis );
+	}
+}

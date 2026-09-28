@@ -1,0 +1,174 @@
+﻿/*
+ * Creates a new set of Events for a Monte Carlo Simulation
+ * (c) 2024 Cyber Enterprise Modelling
+ */
+
+class Event {
+
+	#creation = null;
+	#service = null;
+	#serviceOpen = null;
+	#pStart = null;
+	#pFinish = null;
+	#duration = null;
+	#elapsed = null;
+	#agent = null;
+	#slaBreach = false;
+
+	constructor( timestamp, baseline ) {
+		if (baseline !== undefined) {  
+			this.#creation = new Date( baseline );
+			this.#creation.setTime( this.#creation.getTime() + timestamp );
+		} else { this.#creation = new Date(timestamp); }
+	}
+
+	getCreationDate () { return this.#creation; }
+
+	setDuration ( d ) { this.#duration = d; }
+	getDuration () { return this.#duration; }
+
+	setService ( s )  {
+		this.#service = s; 
+		let currentTime = this.#creation;
+		//console.log('Set Service:' + this.#creation.toLocaleString() );
+		
+		let isClosed = s.isServiceOpen( currentTime );
+		if( isClosed ) {
+			let nextOpening = s.getNextServiceOpens( isClosed, currentTime );
+			this.#serviceOpen = nextOpening;
+		} else {
+			this.#serviceOpen = currentTime;
+		}
+		// console.log("  Earliest Scheduled Start:", this.#serviceOpen.toLocaleString() );
+		this.setProcessWindow( this.#serviceOpen );
+	}
+
+	setServiceOpen ( time )  { this.#serviceOpen = time; }
+	getServiceOpen ()  { return (this.#serviceOpen) ?  this.#serviceOpen : '-'; }
+
+	getStart() { return this.#pStart; }
+
+	delayStart ( newStart) { 
+		this.setProcessWindow( newStart ); 
+		console.log("\n  Process rescheduled to:", this.#pStart.toLocaleString(), "until", this.#pFinish.toLocaleString() );		
+	}
+
+	// Calculates the time elapsed between the earliest scheduled start & actual completion (with allowance for weekends)
+	calculateElapsedTime( ) {
+		this.#elapsed = (this.#pFinish.getTime() - this.#serviceOpen.getTime() ) / MILLISECS["hh"] ;
+
+		// Correction for 2 day (48h) weekends
+		let d1 = getWeekday( this.#serviceOpen.toLocaleString() );
+		let i1 = WEEKDAYS.indexOf( d1 );
+		let d2 = getWeekday( this.#pFinish.toLocaleString() );
+		let i2 = WEEKDAYS.indexOf( d2 );
+		// console.log("  Elapsed time:", d1, '[', i1, '] -', d2, '[', i2, ']' );
+		if ( i1 > i2 ) { this.#elapsed -= 48; }
+	}
+
+	// Calculates when processing completes, pausing activity outside the service window
+	setProcessWindow( start ) {
+		this.#pStart = start; 
+		let endTime = new Date( this.#pStart.getTime() );  // Copies start date
+		if( this.#duration ) {
+			let endHour = endTime.getHours()   + parseInt( this.#duration["hh"] );
+			let endMins = endTime.getMinutes() + parseInt( this.#duration["mm"] );
+			let endSecs = endTime.getSeconds() + parseInt( this.#duration["ss"] );
+			// console.log("Duration:", this.#duration, "Scheduled End:", endHour, endMins, endSecs);
+			endTime.setHours(endHour, endMins, endSecs);
+		}
+		// Now determine whether there is suffficient processing time left in current service window
+		let todaysClosing = this.#service.getServiceCloses( this.#pStart );
+		console.log("\n  Scheduled Start:", this.#pStart.toLocaleString(), "Duration:", formatTimeString(this.#duration), "\n  Scheduled End:",  endTime.toLocaleString(), "\n  Today's Closing:", todaysClosing.toLocaleString() );
+
+		// if endTime overruns service window, bump it over to the next working day
+		if ( earlierThan( todaysClosing, endTime ) ) {
+			let hoursRemaining = timeDifference( todaysClosing, this.#pStart );
+			let hoursCarried    = timeDifference(endTime, todaysClosing );
+			let diffDays = Math.floor( hoursRemaining / MILLISECS["DD"] );
+			console.log("  Time remaining today:",  diffDays, "days", formatTime( hoursRemaining / MILLISECS["hh"]) );
+			console.log("  Time carried over:",     diffDays, "days", formatTime( hoursCarried  / MILLISECS["hh"]) );
+
+			let nextServiceWindow = this.#service.getNextServiceOpens( HandlingService.TOO_LATE, todaysClosing );
+			endTime.setTime( nextServiceWindow.getTime() + hoursCarried );
+		}
+		this.#pFinish = endTime;
+		this.calculateElapsedTime();
+		this.#slaBreach = ( this.#elapsed > 24 ) ;
+	} 
+
+	assignAgent( a ) { this.#agent = a; }
+	getAgentID() { return this.#agent.getName(); }
+
+	getFinish() { return this.#pFinish; }
+
+	getElapsed() { return formatTime(this.#elapsed); }// evaluate in hours
+
+	isBreach() { return this.#slaBreach; }
+}
+// ***************************************************************************
+// Creates a new Trial in a Monte Carlo Simulation
+class EventSet {
+	static startMonth = -1;
+	#events = null;
+	#rands = null;
+
+	constructor( trialSize ) {
+		this.#events = new Set();
+		this.#rands = Trial.generateRandoms( trialSize ).sort();
+
+		switch(Trial.timeBasis["units"]) {
+			case "YY" :
+				for(let i=0; i<trialSize; i++) {
+					let event = new Event( this.#rands[i] * Trial.timeBasis["period"] * MILLISECS["YY"], BASEDATE);
+					// console.log("Event", i, "occurred on", event.getCreationDate().toISOString());
+					this.#events.add(event);
+				}
+				break;
+			case "MM" :
+				if ( EventSet.startMonth < 0)  { EventSet.startMonth = chooseStartMonth(); }
+				let days = daysInMonths(EventSet.startMonth, Trial.timeBasis["period"]);
+
+				for(let i=0; i<trialSize; i++) {
+					let date = new Date(BASEDATE);
+					let baseTimestamp = date.getTime();
+					date.setMonth(date.getMonth() + EventSet.startMonth );
+
+					let event = new Event( date.getTime() - baseTimestamp + (this.#rands[i] * days * MILLISECS["DD"]), BASEDATE );
+					//console.log("Event", i, "occurred on", event.getCreationDate().toISOString() );
+					this.#events.add(event);
+				}
+				break;
+			case "DD" :
+				let offset = getDayOfWeekOffset();
+				for(let i=0; i<trialSize; i++) {
+					// console.log("Event Factors: offset:", offset, "random:", this.#rands[i], "basedate:", BASEDATE);
+					let event = new Event( offset + (this.#rands[i] * Trial.timeBasis["period"] * MILLISECS["DD"]), BASEDATE );
+					//console.log("Event", i, "occurred on", event.getCreationDate().toLocaleString());
+					this.#events.add(event);
+				}
+				break;
+			case "hh" :
+				let response = "hh:mm:ss";
+				while( !parseTime(response) ) {
+					response = (window.prompt("Event start time? (hh:mm:ss):", response));
+				}
+				let startTime = parseTime(response);
+				for(let i=0; i<trialSize; i++) {
+					let event = new Event( formatOffsetAsHour( startTime, this.#rands[i] * Trial.timeBasis["period"]), BASEDATE );
+					//console.log("Event", i, "occurred at", event.getCreationDate().toISOString());
+					this.#events.add(event);
+				}
+				break;
+			default :
+				console.log("No handler defined for", Trial.timeBasis["units"], ". Edit manually if ncessary ");
+				break;
+		}
+	}
+
+	// returns the number of Events in the set
+	size() { return this.#events.size(); }
+
+	// returns the set of Events
+	getEvents() { return this.#events; }
+}

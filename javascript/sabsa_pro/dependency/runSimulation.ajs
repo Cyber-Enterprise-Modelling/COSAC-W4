@@ -1,0 +1,163 @@
+/*
+ * Full, random, Monte-Carlo simulation of Dependency Modelling
+ * Can be used to calibrate Criticality & Probability - but not Sensitivity analysis!
+ * (c) 2025 Cyber Enterprise Modelling
+ */
+function detectOS() {
+	winCount = __SCRIPTS_DIR__.split("\\").length - 1;
+	macCount = __SCRIPTS_DIR__.split("\/").length - 1;
+	console.log("Directory separator", __SCRIPTS_DIR__, winCount, macCount);
+	return (winCount > macCount) ? "\\" : "\/";
+}
+const SEP = detectOS();
+
+// Load MyExcel Helper library
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "archimate.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "sabsa.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "typedMap.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "lib" + SEP + "dependencyModel.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "paragon.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "dependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "qDependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "uncontrollable.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "junction.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "qJunction.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "bayesianJunction.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "simulation" + SEP + "excel.ajs");
+
+// Parse a quantitative range
+const parseQLow  = q => parseInt(JSON.parse(q).low);
+const parseQMode = q => parseInt(JSON.parse(q).mode);
+const parseQHigh = q => parseInt(JSON.parse(q).high);
+const parseQRange = q => { return {low:JSON.parse(q).low, mode:JSON.parse(q).mode, high:JSON.parse(q).high} };
+
+// ***************************************************************************
+// User Input: the number of trials
+function promptTrials() {
+	let trials=0;
+	while(trials<1 || trials > 1000) {
+		trials = Number(window.prompt("How many trials? (1-1000):", "100"));
+	}
+	return trials;
+}
+
+// User Input: Step mode or continuous running
+function promptStepMode() {
+	return window.confirm( "Run trials in Step Mode?" );
+}
+
+// ***************************************************************************/
+// Finds targets of relationship
+function findInSources(target, relationshipType, sourceTypes) {
+	let resultSet = new Set();
+	$(target).inRels(relationshipType).each(function(r) {
+		if( sourceTypes.has( r.source.type ) ) {
+			// console.log("Adding: ", r.source.name);
+			resultSet.add(r.source);
+		}
+	});
+	return resultSet;
+}
+// ***************************************************************************
+// Finds targets of relationship
+function findOutTargets(source, relationshipType, targetTypes) {
+	let resultSet = new Set();
+	$(source).outRels(relationshipType).each(function(r) {
+		if(  targetTypes.has( r.target.type ) ) {
+			// console.log("Adding: ", r.target.name);
+			resultSet.add(r.target);
+		}
+	});
+	return resultSet;
+}
+
+function selectParagon( ) {
+	let set= new Set(), target = null;
+	$(selection).filter( ARCHI_GOAL ).forEach( function( v ) {
+		if( Paragon.isParagon( v ) ) {
+			target = new Paragon( v );
+			set.add( target );
+		}
+		Context.CurrentView = v.view;
+	});
+	if( set.size == 1 ) { return Context.currentFocus = target; }
+	else {
+		window.alert( set.size < 1 ? "No Goal selected." : "Multiple Goals selected." );
+		exit();
+	}
+}
+
+function getUncontrollables( paragon ) {
+	let set = new Set();
+	let nameSet = paragon.getUncontrollables();
+	console.log( "\nJCPT of", paragon.getName(), 'contains', nameSet.size, 'Uncontrollables:\n', [...nameSet].join(', ') );
+
+	nameSet.forEach( n => {
+		// Find the Uncontrollable elements matchin the names
+		$(Context.CurrentView).find().filter( '.' + n ).forEach( function( v ) {
+			if( Uncontrollable.isUncontrollable( v ) ) { set.add( new Uncontrollable( v ) ); }
+		});
+	});
+	return set;
+}
+
+
+function runTrial( paragon, trialCount ) {
+	let paragons = paragon.getDependencies( ST_DEPENDENCY );
+	console.log( "Generating trials for:\n", [ ...paragons ].map( x => x.getName() ).join() );
+
+	let uncontrollables = paragon.getDependencies( ST_UNCONTROLLABLE );
+	console.log( "Randomising Uncontrollables:\n", [ ...uncontrollables ].map( x => x.getName() ).join(), '\n' );
+
+	for(let t=0; t<trialCount; t++) {
+		uncontrollables.forEach( u => { u.setRandom(); });
+		console.log( "\nStart Evaluation of Paragons:\n" );
+		paragon.evaluate();
+
+		if( Context.stepMode ) {
+			let tally = '\n[' + paragon.getTally() + ']';
+			if( !window.confirm( paragon.getName() + " set to: " + paragon.getCurrentState() + " - Trial: " + `${t+1}` + tally + ".\nOK to Continue:" ) ) {
+				Uncontrollable.currentState = new Map();
+				uncontrollables.forEach( u => { u.resetStatus(); });
+				exit();
+			}
+		}
+		Uncontrollable.currentState = new Map();
+		uncontrollables.forEach( u => { u.resetStatus(); });
+		console.clear();
+	}
+}
+
+// ***************************************************************************
+console.show();
+console.clear();
+console.log( '\nRun a number of Monte Carlo trials against the selected Paradigm:\n');
+
+let trialCount=promptTrials();
+let trials = new Set();
+//let spreadsheet = new Spreadsheet();
+
+Context.mode = Context.PROBABILITY;
+Context.stepMode = promptStepMode();
+Context.trace = false;
+
+// Select the Paragon and then generate probability of success according to profile:
+let paragon = selectParagon( );
+console.log( "\nGenerating Probability Table for", paragon.getName(), ':' );
+
+runTrial( paragon, trialCount );
+
+trace( [...Paragon.trialResults.values()].join() );
+
+/*/ Generate the random number distribution for inspection
+let randoms =  [...Context.usedRandoms].sort();
+randoms = randoms.map( r => Math.floor( r*100 ) );
+
+let randArray = new Array(100).fill(0);
+for( let r of randoms ){
+	randArray[r] = randArray[r] > 0 ? randArray[r]+1 :1;
+}
+console.log( '[' + [...randArray].join() + ']');
+//*/
+
+console.log("\nDone");

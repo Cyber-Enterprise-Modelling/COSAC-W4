@@ -1,0 +1,75 @@
+ /*
+ * Sets the Success / Fail bars in Dependency Modelling
+ * (c) 2025 SJB
+ */
+// ***************************************************************************
+
+const percent = (count, total) => { return Math.round( parseInt(count)*100 / parseInt(total) ) };
+
+const SEP = detectOS();
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "archimate.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "sabsa.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "typedMap.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "lib" + SEP + "dependencyModel.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "paragon.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "dependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "qDependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "uncontrollable.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "qJunction.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "bayesianJunction.ajs");
+
+// Identifies whether the underlying OS is Windows or Mac
+function detectOS() {
+	winCount = __SCRIPTS_DIR__.split("\\").length - 1;
+	macCount = __SCRIPTS_DIR__.split("\/").length - 1;
+	console.log( "Directory separator", __SCRIPTS_DIR__, winCount, macCount);
+	return (winCount > macCount) ? "\\" : "\/";
+}
+
+function trace( txt ) {
+	if (Context.trace ) {
+		console.setTextColor(0, 0, 255);
+		console.log( txt );
+		console.setDefaultTextColor();
+	}
+}
+
+// ***************************************************************************/
+// Navigates from Visual Element to Notes
+function getNotes (v) {
+	let note = null, notes = [];
+		$(v).inRels( ARCHI_DIAG_CONNECTION ).each(function(c) {
+			if( c.source.type === ARCHI_DIAG_NOTE ) {
+				note = c.source;
+				notes.push( note );
+			}
+		});
+	return notes;
+}
+
+// ***************************************************************************/
+console.show();
+console.clear();
+
+selection.each( function( v ) {
+	let x = null;
+	if( DependencyModel.isDependencyModelElement( v ) ) {
+		if( Paragon.isParagon( v ) ) {
+			x = new Paragon( v );
+		} else if( Dependency.isDependency( v ) ) {
+			x = new Dependency( v );
+		} else if( QDependency.isQDependency( v ) ) {
+			x = new QDependency( v );
+		} else if( Uncontrollable.isUncontrollable( v ) ) {
+			x = new Uncontrollable( v );
+		} else {
+			console.error( "Please select a valid Dependency Modelling Element: " + v.type );
+			exit();
+		}
+		console.log( "Resetting Bars:", v.name );
+		x.setSuccessBars( v );
+		// refreshNotes( n.text );
+	}
+});
+
+console.log("Done");

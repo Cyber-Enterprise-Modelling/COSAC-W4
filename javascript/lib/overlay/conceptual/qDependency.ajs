@@ -1,0 +1,59 @@
+ /*
+ * A Helper class for an Quantitative Dependency element used in Dependency Modelling: effectively a Dependency with Quantitative values assigned to its Out-Signals.
+ * Cyber Enterprise Modelling 2025
+ */
+
+class QDependency extends Dependency {
+	// Test whether a (visual) element is a valid SABSA Uncontrollable.
+	// i.e. modelled as an Event with a 'stereotype' property value from SABSA namespace set to 'Uncontrollable'.
+	static isQDependency( e ) {
+		let result = false;
+		if ( ( e.type === ARCHI_OUTCOME ) && e.prop( PROP_NAMESPACE ) && ( e.prop( PROP_NAMESPACE ) === SABSA ) ) {
+			if ( e.prop( PROP_STEREOTYPE ) && ( e.prop( PROP_STEREOTYPE ) === ST_QUANT_DEPENDENCY ) ) { result = e.prop( PROP_STEREOTYPE ); } // true
+		}
+		else if( e.type ) {
+			console.log( e.name, '(', e.type, ") cannot be interpreted as a QDependency." );
+		}
+		else console.error( "Trying to process " + e.name + " as an QDependency." );
+		return result;
+	};
+
+	spot = null;
+	impactProfile = null;
+	constructor( v ) {
+		super( v, ST_QUANT_DEPENDENCY );
+		this.setQuantitative(true);
+		if( v.prop('spot') ) this.spot = v.prop('spot');
+		this.impactProfile = JSON.parse( v.prop( PROP_IMPACT ) );
+	}
+
+	// Use randomisation in the impact calculation - to a given number of decimal places (dp)
+	calculateImpact( dp ) {
+		let impact = 0, profile = this.impactProfile;
+		//if( this.spot ) { impact = parseFloat(this.spot); }
+		//else {
+			switch( profile.distribution ) {
+				case 'spot':
+					impact = parseFloat( profile.mode );
+					break;
+				case 'flat':
+					impact = Context.generateRandom( profile.low, profile.high );
+					break;
+				default:
+					console.error( "Encountered unexpected Impact Profile:" +  profile.distribution );
+					break;
+			}
+		// }
+		return impact.toFixed( dp );
+	}
+
+	evaluate( ) {
+		super.evaluate();
+		let outSigs = this.getOutSignals();
+		outSigs.forEach( (target, s) => {
+			s.name = ( s.prop( PROP_FORCED_STATE ) == 'FAIL' ) ? this.calculateImpact( 3 ) : '';
+		});
+	}
+}
+
+console.error( "This libary class is not launchable.");

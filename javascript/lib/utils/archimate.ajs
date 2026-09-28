@@ -1,0 +1,85 @@
+﻿/*
+* Library of general ArchiMate utilities.
+* Cyber Enterprise Modelling 2025
+*/
+
+// Default Archi Colours:
+const ARCHI_MOTIVATION = '#CCCCFF';
+
+const ARCHI_MODEL = 'archimate-diagram-model';
+const ARCHI_DIAG_CONNECTION = 'diagram-model-connection';
+const ARCHI_DIAG_NOTE = 'diagram-model-note';
+
+const ARCHI_COMPOSITION = 'composition-relationship';
+const ARCHI_AGGREGATION = 'aggregation-relationship';
+const ARCHI_ASSIGNMENT  = 'assignment-relationship';
+const ARCHI_REALISATION = 'realization-relationship';
+const ARCHI_ACCESS      = 'access-relationship';
+const ARCHI_SERVING     = 'serving-relationship';
+const ARCHI_TRIGGERING  = 'triggering-relationship';
+const ARCHI_FLOW        = 'flow-relationship';
+const ARCHI_INFLUENCE   = 'influence-relationship';
+const ARCHI_ASSOCIATION = 'association-relationship';
+const ARCHI_SPECIALISATION = 'specialization-relationship';
+
+const ARCHI_CAPABILITY = 'capability';
+const ARCHI_COURSE_OF_ACTION = 'course-of-action';
+const ARCHI_RESOURCE = 'resource';
+const ARCHI_VALUE_STREAM = 'value-stream';
+
+const ARCHI_ASSESSMENT = 'assessment';
+const ARCHI_CONSTRAINT = 'constraint';
+const ARCHI_GOAL = 'goal';
+const ARCHI_DRIVER = 'driver';
+const ARCHI_MEANING = 'meaning';
+const ARCHI_OUTCOME = 'outcome';
+const ARCHI_PRINCIPLE = 'principle';
+const ARCHI_REQUIREMENT = 'requirement';
+const ARCHI_REPRESENTATION = 'representation';
+const ARCHI_STAKEHOLDER = 'stakeholder';
+
+const ARCHI_ACTOR = 'business-actor';
+const ARCHI_BIZ_EVENT = 'business-event';
+const ARCHI_BIZ_SERVICE = 'business-service';
+const ARCHI_ROLE = 'business-role';
+const ARCHI_COLLABORATION = 'business-collaboration';
+const ARCHI_BIZ_OBJECT = 'business-object';
+
+const ARCHI_APP_COMPONENT = 'application-component';
+const ARCHI_APP_FUNCTION = 'application-function';
+const ARCHI_APP_EVENT = 'application-event';
+const ARCHI_APP_SERVICE = 'application-service';
+const ARCHI_DATA_OBJECT = 'data-object';
+
+
+const ARCHI_ARTEFACT = 'artifact';
+const ARCHI_DEVICE   = 'device';
+const ARCHI_NODE     = 'node';
+const ARCHI_SYSTEM_SOFTWARE = 'system-software';
+const ARCHI_TECH_EVENT = 'technology-event';
+const ARCHI_TECH_SERVICE = 'technology-service';
+
+const ARCHI_IMPL_EVENT = 'implementation-event';
+
+const ARCHI_GROUPING = 'grouping';
+const ARCHI_LOCATION = 'location';
+const ARCHI_JUNCTION = 'junction';
+const ARCHI_JUNCTION_AND = 'and';
+const ARCHI_JUNCTION_OR = 'or';
+
+const ARCHI_DIAGRAM = 'archimate-diagram-model';
+
+// A quick look up to test for ArchiMate Event types
+const EVENT_TYPES = new Set( [ARCHI_BIZ_EVENT, ARCHI_APP_EVENT, ARCHI_TECH_EVENT, ARCHI_IMPL_EVENT] );
+
+// A Stakeholder must be a Stakeholder or an active Business Structure element
+const RACI_STAKEHOLDERS = new Set( [ARCHI_STAKEHOLDER, ARCHI_ACTOR, ARCHI_ROLE, ARCHI_COLLABORATION] );
+
+function isStakeholder( e ) {
+	return RACI_STAKEHOLDERS.has( e.type );
+}
+
+// to be completed
+function isCoreElement( e ) {
+	return true;
+}

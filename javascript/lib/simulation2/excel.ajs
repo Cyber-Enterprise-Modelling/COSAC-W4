@@ -1,0 +1,143 @@
+/*
+ * Supports the Excel output format for Quantitative Analysis of Events
+ * Relies on MyExcel https://github.com/jsegarra1971/MyExcel from examples/lib
+ * (c) 2024 Cyber Enterprise Modelling
+ */
+
+/* Include if not already defined in main()
+const SEP = detectOS();
+function detectOS() {
+	winCount = __SCRIPTS_DIR__.split("\\").length - 1;
+	macCount = __SCRIPTS_DIR__.split("\/").length - 1;
+	return (winCount > macCount) ? "\\" : "\/";
+}
+ */
+
+// Load MyExcel and JSZip JS file
+console.log("Home Directory", __DIR__, "\nSCRIPTS:", __SCRIPTS_DIR__);
+load( __SCRIPTS_DIR__ + "lib" + SEP + "excel" + SEP + "jszip-101.js");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "excel" + SEP + "myexcel-101.js");
+
+// ***************************************************************************
+
+const HEADER_STYLE = {fill: "#dddddd", border: "thin, thin, thin, thin #555555", font: "Calibri 12 #000000 B", align:"CT"};
+const DATE_STYLE   = {format: "d.mm h:mm:ss"};
+
+// Creates a new Excel Wrapper Object
+class Spreadsheet {
+	#name;
+	#sheetCount;
+	#current_row;
+	#excel;
+	#headerFormat = null;
+	#dateFormat = null;
+
+	constructor( name ) {
+		this.#name = (name === undefined) ? "MonteCarlo" : name;
+		this.#sheetCount = 0;
+		this.#current_row = 1;
+		this.#excel = $JExcel.new("Calibri 12 #333333");
+		this.#headerFormat = this.#excel.addStyle (HEADER_STYLE);
+		this.#dateFormat = this.#excel.addStyle (DATE_STYLE);
+	}
+	// ***************************************************************************
+	// Add a sheet for each subsequent Trial, setting the trial count & column headers
+	 createSheet(trial) {
+		this.#sheetCount++;
+		// Write to initial sheet or add another one
+		if (trial) {
+			// console.log("Creating Sheet:", this.#sheetCount);
+			this.#excel.addSheet("Trial #:n" + this.#sheetCount);
+			this.#excel.set( { sheet:trial, value:"Trial #" + this.#sheetCount} );	// test whether necessary?
+		} else {
+			// console.log("Label first Sheet:", this.#sheetCount);
+			this.#excel.set( { sheet:0, value:"Trial #1"} );
+		}
+		// Write the Format the index column and add the Headers
+		//this.#excel.set(trial, 0, 10, "auto" ); // column width is auto
+		this.#excel.set(trial, 0, 0, "Event #:", this.#headerFormat);
+		this.#excel.set(trial, 1, 0, "Triggered @:", this.#headerFormat);
+		this.#excel.set(trial, 1, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 2, 0, "Service Avail @:", this.#headerFormat);
+		this.#excel.set(trial, 2, undefined, "auto"); // column width is auto
+
+		this.#excel.set(trial, 3, 0, "Assigned to:", this.#headerFormat);
+		this.#excel.set(trial, 3, undefined, "auto"); // column width is auto
+
+		this.#excel.set(trial, 4, 0, "Process started @:", this.#headerFormat);
+		this.#excel.set(trial, 4, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 5, 0, "Process Completed @:", this.#headerFormat);
+		this.#excel.set(trial, 5, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 6, 0, "Process Duration:", this.#headerFormat);
+		this.#excel.set(trial, 6, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 7, 0, "Total Elapsed:", this.#headerFormat);
+		this.#excel.set(trial, 7, undefined, "auto"); // column width is auto
+
+		//reset to top row of next sheet
+		this.current_row = 1;
+		return;
+	}
+	// ***************************************************************************
+	// Write event creations to a column 1 of each Trial sheet
+	 writeEvents(trial, eventSet) {
+		// console.log("Trial Sheet #:", trial);
+		let n=1;
+		let events = (eventSet instanceof EventSet) ? [...eventSet.getEvents() ] : [...eventSet ];  // Accommodates Test data
+		for(let i in events) {
+			this.#excel.set( trial, 0, this.current_row, n++, this.#headerFormat); // writes to highest common index
+			this.#excel.set( trial, 1, this.current_row++, events[i].getCreationDate().toLocaleString(this.dateFormat)  );
+		}
+		this.#excel.set(trial, 1, undefined, "auto"); // column width is auto
+		// this.#excel.set(trial, 2, undefined, "auto"); // column width is auto
+		this.current_row = 1; //reset to top row of next column
+		return;
+	}
+	// ****************************************************************************/
+	// Write Process durations & finish times to columns 2 & 3 respectively
+	writeProcesses(trial, eventSet) {
+		//console.log("Adding Processes to Sheet #:", trial);
+		let events = (eventSet instanceof EventSet) ? [...eventSet.getEvents() ] : [...eventSet ];  // Accommodates Test data
+		for(let i in events) {
+			//console.log("Adding Processes to Sheet #:", trial, events[i].getDuration() );
+			this.#excel.set( trial, 2, this.current_row, events[i].getServiceOpen().toLocaleString()  );
+			this.#excel.set( trial, 3, this.current_row, events[i].getAgentID() );
+			//this.#excel.set( trial, 3, this.current_row, "1" );
+			this.#excel.set( trial, 4, this.current_row, events[i].getStart().toLocaleString() );
+			this.#excel.set( trial, 5, this.current_row, events[i].getFinish().toLocaleString() );
+			this.#excel.set( trial, 6, this.current_row, formatTimeString(events[i].getDuration()) );
+			this.#excel.set( trial, 7, this.current_row++, formatTimeString( events[i].getElapsed() ) );
+		}
+		// Calculate Stats
+		let breachCount = 0;
+		for (let i=0; i<events.length; i++ ) {
+			if (events[i].isBreach() ) {
+				breachCount++;
+			}
+		}
+		let breachPerCent = Math.floor( (breachCount / events.length) * 10000) / 100;
+		let breachMsg = "SLA Breach: " + breachCount + " of " + events.length + ' ( ' + breachPerCent + '% )';
+		this.#excel.set( trial, 6, this.current_row, breachMsg );
+
+		this.#excel.set(trial, 2, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 3, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 4, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 5, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 6, undefined, "auto"); // column width is auto
+		this.#excel.set(trial, 7, undefined, "auto"); // column width is auto
+		this.current_row = 1; //reset to top row of next column
+		return;
+	}
+	// ****************************************************************************/
+	// Writes the spreadsheet to the file system
+	writeToFile() {
+		// Open a dialog to let the user choose where the generated file is saved
+		let defaultFileName = this.#name + ".xlsx" // Default file name
+		let exportFile = window.promptSaveFile({ title: "Export to Excel", filterExtensions: [ "*.xlsx" ], fileName: defaultFileName } );
+		if(exportFile != null) {
+			this.#excel.generate(exportFile);
+			console.log("> Export done");
+		}
+		else { console.log("> Export cancelled"); }
+		return;
+	}
+}

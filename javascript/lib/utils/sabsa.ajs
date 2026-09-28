@@ -1,0 +1,175 @@
+﻿/*
+* Library of general utilities for use with SABSA Security Overlay
+* Cyber Enterprise Modelling 2025
+*/
+
+const SABSA = 'SABSA';
+const UNDEFINED = "UNDEFINED";
+
+const ST_STANDARD = 'Standard';
+const ST_REGULATION = 'Regulation';
+const REPRESENTATION_STEREOTYPES = new Set([ST_REGULATION, ST_STANDARD]);
+
+const ST_CONTROL_OBJECTIVE = 'ControlObjective';
+const ST_COMPLIANCE_OBJECTIVE = 'ComplianceObjective';
+const GOAL_STEREOTYPES = new Set([ST_COMPLIANCE_OBJECTIVE, ST_CONTROL_OBJECTIVE]);
+
+const ST_SABSA_ATTRIBUTE = 'SABSA_Attribute';
+const ST_ARTICLE = 'Article';
+const ST_ALGORITHM = 'Algorithm';
+const ST_CERTIFICATE = 'Certificate';
+const ST_CONTROL = 'Control';
+const ST_CRYPTO = 'CryptoComponent';
+const ST_CRYPTO_ASSET = 'CryptoAsset';
+const ST_CRYPTO_SERVICE = 'Crypto-Service';
+const ST_FIRMWARE = 'Firmware';
+const ST_SBOM = 'S-BOM';
+const ST_DOMAIN = 'SecurityDomain';
+const ST_POLICY_AUTHORITY = 'PolicyAuthority';
+const ST_PRIVATE_KEY = 'Private Key';
+const ST_PROTOCOL = 'Protocol';
+const ST_PUBLIC_KEY = 'Public Key';
+const DOMAIN_STEREOTYPES = new Set([ARCHI_GROUPING, ARCHI_LOCATION, ARCHI_CAPABILITY]);
+const PRINCIPLE_STEREOTYPES = new Set([ST_SABSA_ATTRIBUTE, ST_ARTICLE]);
+
+// Dependency Modelling
+const ST_PARAGON = 'Paragon';
+const ST_DEPENDENCY = 'Dependency';
+const ST_QUANT_DEPENDENCY = 'QDependency'; // // A Dependency node that produces a Quantitative output
+const ST_BAYESIAN_JUNCTION = 'BayesianJunction'; // Conditional Probability Junction
+const ST_QJUNCTION = 'QJunction'; // Quantitative Junction
+
+const ST_BAYESIAN = 'bayesian'; // Bayesian Conditional Probability
+const ST_UNCONTROLLABLE = 'Uncontrollable'; // For Uncontrollable Events
+const PROP_PERCENT = 'percent';
+const PROP_CPT = 'cpt';
+const PROP_FORCED_STATE = 'forcedState';
+const PROP_PTABLE = 'pTable'; // Probability Table
+const PROP_IMPACT = 'impact'; // Impact Probability Distribution
+const PROP_STABLE = 'sTable'; // Sensitivity Table
+
+const SUCCEED = 'Succeed'; //
+const FAIL = 'Fail'; //
+
+const PROP_FULFILMENT = 'fulfilment';
+const PROP_NAMESPACE = 'namespace';
+const PROP_PUBLISHER = 'publisher';
+const PROP_REFCODE = 'refCode';
+const PROP_STATUS = 'status';
+const PROP_STEREOTYPE = 'stereotype';
+const PROP_SOFTMETRIC = 'softMetric';
+const PROP_HARDMETRIC = 'hardMetric';
+
+const DYNAMIC_NOTE = 'dynamicNote';
+const PROP_SEC_DOMAIN = 'isSecurityDomain';
+
+// RACI constants
+const RACI_A = "raciAccountable", RACI_R = "raciResponsible", RACI_C = "raciConsulted", RACI_I = "raciInformed";
+
+//const GREY="#c0c0c0", DK_GREEN="#00ae00", GREEN="#7ef49f", YELLOW="#faf396", AMBER="#fab747", BLUE="#48b1df", RED="#e57575", PURPLE="#918bea", WHITE="#ffffff";
+//const RGB = {"":WHITE, "GOVERN":YELLOW, "IDENTIFY":BLUE, "Preventive":PURPLE, "Detective":AMBER, "RESPOND":RED, "RECOVER":GREEN, "N/A":WHITE};
+const GREY="#c0c0c0", DK_GREEN="#00ae00", GREEN="#80ff80", YELLOW="#ffff00", AMBER="#ff8040", ORANGE="#fab747", RED="#ff0000", LIGHTRED="#ff8f8f", WHITE="#ffffff", BLUE="#48b1df", LIGHTBLUE="#3ca3eb";
+const RGB = {"":DK_GREEN, "AU":GREY, "AV":GREEN, "PA":YELLOW, "PI":WHITE, "PO":RED, "N/A":AMBER};
+
+const GROUP_SIZE = 'groupSize';
+const STATUS_LABEL_EXPRESSION = "$connection:target{property:status}";
+const FULFILMENT_LABEL_EXPRESSION = "$connection:target{property:fulfilment}%";
+const GROUPSIZE_LABEL_EXPRESSION = "${name} (${property:groupSize})";
+
+function isSABSAElement( e ) {
+	return ( e.prop( PROP_NAMESPACE ) && e.prop( PROP_NAMESPACE ) === SABSA );
+}
+
+// Navigates from Element to Notes
+function getNotes (v) {
+	let notes = [];
+		$(v).inRels( ARCHI_DIAG_CONNECTION ).each( function( c ) {
+			if( c.source.type === ARCHI_DIAG_NOTE ) { notes.push( c.source ); }
+		});
+	return notes;
+}
+
+// ***************************************************************************
+// Check whether a Dynamic Note exists
+function hasNote( v ) {
+	let result = false;
+	for (let n of getNotes( v )){
+		if(n.prop( PROP_STEREOTYPE ) === DYNAMIC_NOTE ) { result=true; }
+	}
+	return result;
+}
+
+// ***************************************************************************/
+// Get first Dynamic Note
+function getDynamicNote( v, type ) {
+	if( type == undefined) { type = DYNAMIC_NOTE; }
+	let result = null;
+	for ( let n of getNotes( v ) ) {
+		if( n.prop( PROP_STEREOTYPE ) == type ) { result=n; }
+	}
+	return result;
+}
+
+// ***************************************************************************
+// Refresh a single Note
+function refreshNote( v, text ) {
+	if ( text === undefined) { text = ""; }
+	let notes = getNotes( v );
+	for (let n of notes)	{
+		// console.log('\nNote: ', n.type, " : ", n.id, " : ", n.description, " : ", n.labelExpression, " : ", n.fillColor);
+		if( n.prop( PROP_STEREOTYPE ) === DYNAMIC_NOTE ) {
+			switch( n.labelExpression ) {
+			case FULFILMENT_LABEL_EXPRESSION :
+				n.text = text;
+				n.fillColor = v.concept.prop( PROP_FULFILMENT ) ? RGB[v.concept.prop( STATUS )] : GREY;;
+				break;
+			default :
+				console.error( "No Label Expression defined for " + n.name + "." );
+				break;
+			}
+		}
+	}
+}
+
+// ***************************************************************************
+// Refresh all Notes in the diagram
+function refreshNotes( text ) {
+	if ( text === undefined) { text = ""; }
+	let notes = $( ARCHI_MODEL ).find( ARCHI_DIAG_NOTE );
+	for (let n of notes) {
+		// Only target the Dynamic Labels - identified by a stereotype & fixed label script.
+		if( n.prop( PROP_STEREOTYPE ) === DYNAMIC_NOTE ) {
+			// switch( n.labelExpression.trim() ) {
+			switch( n.labelExpression ) {
+			case FULFILMENT_LABEL_EXPRESSION :
+				$(n).outRels( ARCHI_DIAG_CONNECTION ).each(function(c) {
+					let v = c.target;
+					// console.log('\nNote: ', n.type, " : ", n.labelExpression, " : ", n.fillColor, v.concept.name);
+					let percent = v.concept.prop( PROP_FULFILMENT );
+					n.text = text;
+					n.fillColor = set5Colour( percent );
+				});
+				break;
+			case STATUS_LABEL_EXPRESSION :
+				$(n).outRels( ARCHI_DIAG_CONNECTION ).each(function(c) {
+					let v = c.target;
+					//console.log('\nNote: ', n.type, " : ", n.labelExpression, " : ", n.fillColor);
+					let colour = RGB[v.concept.prop( PROP_STATUS ) ];
+					n.fillColor = colour;
+				});
+				break;
+			// Known Exceptions
+			case "$connection:target{property:vooStatus}" :
+			case "$connection:target{property:cyber}" :
+				break;
+			default :
+				$(n).ends().each( function(e) {
+					console.log('\nNote: ', n.type, " : ", n.labelExpression, " : ", n.documentation, e.name);
+				});
+				let view = n.view;
+				console.error( "No Label Expression defined for: " + n.id + " : "  + n.labelExpression + " : "+ n.documentation + " : "+ view.name + ".");
+				break;
+			}
+		}
+	}
+}

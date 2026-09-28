@@ -1,0 +1,193 @@
+﻿/*
+ * Creates a new Event Handling Service in a Monte Carlo Simulation
+ * (c) 2024 Cyber Enterprise Modelling
+ */
+
+load( __DIR__ + "handlingAgent.ajs");
+
+class HandlingService {
+	static CLOSED_ALLDAY = -2;
+	static TOO_EARLY = -1;
+	static OPEN = 0;
+	static TOO_LATE = 1;
+
+	static EVENT_HANDLERS  = new Set(["business-process", "business-function", "application-process", "application-function", "technology-process", "technology-function"]);
+
+	#name = null;
+	#sla = null;
+	#serviceHours = null;
+	#serviceDays = null;
+	#handlingProcesses = null;
+	#dRange = null;
+	#timeBasis = null;
+	#agentScheduler = null;
+
+	constructor( service ) {
+		this.#name = service.name;
+		//console.log("Handling Service:", this.#name, service.prop("sla") );
+		this.#sla = parseDuration( service.prop("sla").trim() );
+		this.#serviceHours = JSON.parse( service.prop("serviceHours").trim() );
+
+		let weekDays = /\w{3}/g;
+		this.#serviceDays = service.prop("serviceDays").trim().match( weekDays );
+		console.log("Handling Service:", this.#name, " SLA:", this.#sla,  "\nServiceHours:", this.#serviceHours.open, '-', this.#serviceHours.close,  " on:", this.#serviceDays.toString() );
+
+		this.#handlingProcesses = findInSources(service, "realization-relationship", HandlingService.EVENT_HANDLERS);
+		let eHandler = [... this.#handlingProcesses][0];
+		console.log("\Event Handler:", eHandler ? eHandler.name : "Not Found");
+		this.#dRange = eHandler.prop("durationRange");
+		this.#timeBasis = suggestTimeBasis( parseDuration( eHandler.prop("timeUnits") ) );
+		console.log("Parsed Timebasis:", this.#timeBasis["period"] + this.#timeBasis["units"], this.#dRange);
+
+		this.#agentScheduler = new AgentScheduler(eHandler);
+	}
+
+	// Checks whether a date falls within the service window
+	isServiceOpen( date ) {
+		let status = HandlingService.CLOSED_ALLDAY;
+		let isOpenToday, isOpenNow = false;
+		isOpenToday = (this.#serviceDays.indexOf( getWeekday(date) ) ) +1;   // not found returns -1
+		console.log('\nEvent at:', date.toLocaleString(), "\n  Handling Service:", this.#name, "is", (isOpenToday ? "open" : "closed" ), 'today'  );
+
+		if(isOpenToday) {
+			let now = date.toLocaleTimeString();
+			//console.log("Time Check:", this.#serviceHours.open, '-', now, '-',  this.#serviceHours.close );
+			if ( occursBefore(now, this.#serviceHours.open) ) 	{ status = HandlingService.TOO_EARLY; }
+			else if ( occursBefore( this.#serviceHours.close, now) ) { status = HandlingService.TOO_LATE; }
+			else { status = HandlingService.OPEN; }
+		}
+		console.log("  Handling Service:", this.#name, "is", ( (status == HandlingService.OPEN ) ? "open" : "closed" ), 'now'  );
+		return status;
+	}
+
+	// Bumps a date forward to the start of the next service window
+	getNextServiceOpens( status, date ) {
+		let weekday = getWeekday(date); // 3 character day of week name
+		let index = WEEKDAYS.indexOf(weekday);
+		let nextOpening = new Date( date.getTime() ); // Copies current date in case the service isn't open yet
+		let t = this.#serviceHours.open;
+
+		if (status == HandlingService.TOO_EARLY) {
+			// move time forward to opening hours
+			nextOpening.setHours( parseTime(t)["hh"], parseTime(t)["mm"], parseTime(t)["ss"] );
+			console.log("   - next Opening is ", nextOpening.toLocaleString() );
+		}
+		else if (status == HandlingService.CLOSED_ALLDAY || status == HandlingService.TOO_LATE) {
+			let nextDay = "";
+			//let nextDay = WEEKDAYS[ (++index) % 7 ];
+			//let isOpen = (this.#serviceDays.indexOf( nextDay ) ) +1;   // not found returns -1
+			let isOpen = false;
+			while( !isOpen )  {
+				nextDay = WEEKDAYS[ (++index) % 7];
+				isOpen = (this.#serviceDays.indexOf( nextDay ) ) +1;
+			}
+			let offset = (7 + WEEKDAYS.indexOf(nextDay) - WEEKDAYS.indexOf(weekday) ) % 7;
+			//console.log("   - 7 + WEEKDAYS.indexOf(", nextDay, ") =", WEEKDAYS.indexOf(nextDay), "- WEEKDAYS.indexOf(", weekday, ") =", WEEKDAYS.indexOf(weekday), "%7 -> offset:", offset );
+
+			nextOpening.setDate( nextOpening.getDate() + offset );
+			nextOpening.setHours( parseTime(t)["hh"], parseTime(t)["mm"], parseTime(t)["ss"] );
+			//console.log("   - next Service Day is", weekday, '->', nextDay, '[' + nextOpening.toLocaleString() + ']', offset );
+		} else { console.log("Service is Open Now!"); }  
+		return nextOpening;
+	}
+
+	// Returns the next closing time
+	getServiceCloses( now ) {
+		let t = this.#serviceHours.close;
+		let nextClosing = new Date( now.getTime() ); // Copies current timestamp
+		nextClosing.setHours( parseTime(t)["hh"], parseTime(t)["mm"], parseTime(t)["ss"] );
+		return nextClosing;
+	}
+
+	// Calculates when processing completes, pausing activity outside the service window
+	getCompletionTime( now, duration ) {
+		let endTime = new Date( now );
+		let endHour = endTime.getHours()   + parseInt(duration["hh"]);
+		let endMins = endTime.getMinutes() + parseInt(duration["mm"]);
+		let endSecs = endTime.getSeconds() + parseInt(duration["ss"]);
+		endTime.setHours(endHour, endMins, endSecs);
+
+		// First determine whether there is suffficient time left in current service window
+		let todaysClosing = this.getServiceCloses( now );
+		if (endTime > todaysClosing) {
+			// Bump endTime over to next working day(s)
+			let timeRemaining = Math.abs( (todaysClosing - now)     / (1000 * 60 * 60 ) );
+			let timeCarried   = Math.abs( (endTime - todaysClosing) );
+			let diffDays = Math.floor( timeRemaining / 24 );
+			console.log("  Time remaining today:",  diffDays, "days", formatTime( timeRemaining ) );
+			console.log("  Time carried over:",     diffDays, "days", formatTime( timeCarried / (1000 * 60 * 60 ) ) );
+
+			endTime = this.getNextServiceOpens( HandlingService.TOO_LATE, now );
+			endTime.setTime( endTime.getTime() + timeCarried );
+		}
+		return endTime;
+	}
+
+	/*// Check whether previous event is still being handled
+	isHandlerBusy( eventArray, index ) {
+		let busy = false;
+		if( index>0 && eventArray[index].getStart()	< eventArray[index-1].getFinish() ) {
+			busy = true;
+			console.log("  Handler Busy, Queued until:", eventArray[index-1].getFinish().toLocaleString());
+		}
+		return busy;
+	}*/
+
+	// Generate Process Runs: Process elapsed times exhibiting randomness
+	generateProcessRuns( eventSet ) {
+		this.#agentScheduler.reset();
+		let eventArray = (eventSet instanceof EventSet) ? [...eventSet.getEvents() ] : [...eventSet ];  // Accommodates Test data
+		let durationArray = Trial.generateRandoms( eventArray.length, parseQLow(this.#dRange), parseQHigh(this.#dRange) );
+
+		let run = null, runs = new Set(), timeBasis = this.#timeBasis;
+		switch(timeBasis["units"]) {
+			case "YY" :
+				for(let i=0; i<rands.size; i++) {
+					run = setDate( eventArray[i] * timeBasis["period"] * MILLISECS["YY"]);
+					console.log("Process duration:", i, eventArray[i], "+", formatAsHour(duration[i]), timeBasis["units"]);
+					runs.add(run);
+				}
+				break;
+			case "MM" :
+				let days = daysInMonths(timeBasis["period"]);
+				for(let i=0; i<rands.size; i++) {
+					let currentTime = eventArray[i].getCreationDate();
+					run = formatAsMonth( eventArray[i] * days);
+					console.log("Service Status:",   i, this.isServiceOpen( currentTime ) );
+					console.log("Process duration:", i, eventArray[i], "+", formatAsHour(duration[i]), timeBasis["units"]);
+					runs.add(run);
+				}
+				break;
+			case "DD" :
+				for(let i=0; i<rands.size; i++) {
+					run = formatAsDay( eventArray[i] * timeBasis["period"]);
+					console.log("Process duration:", i, eventArray[i], "+", formatAsHour(duration[i]), timeBasis["units"]);
+					runs.add(run);
+				}
+				break;
+			case "hh" :
+			case "mm" :
+			case "ss" :
+				for (let i=0; i<eventArray.length; i++)	{
+					let event = eventArray[i], duration = null;
+					
+					// add durations if not already set in test data
+					if( !event.getDuration() ) {
+						duration = formatTime(durationArray[i], timeBasis["units"] );
+						event.setDuration(duration);
+					}
+
+					// Set Scheduled Start to current or next Service Window
+					event.setService( this );
+
+					// Find the next free Handler at scheduled start time
+					let agent = this.#agentScheduler.getNextAgent( event );
+				}
+				break;
+			default :
+				console.log("No handler defined for", timeBasis["units"], ". Edit manually if ncessary ");
+				break;
+		}
+		return;
+	}
+}

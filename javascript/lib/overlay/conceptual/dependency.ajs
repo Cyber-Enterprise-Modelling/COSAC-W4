@@ -1,0 +1,32 @@
+ /*
+ * A Helper class for an Dependency element used in Dependency Modelling: effectively a Paragon with Out-Signals.
+ * Cyber Enterprise Modelling 2025
+ */
+
+class Dependency extends Paragon {
+
+	// Test whether a (visual) element is a valid SABSA Uncontrollable.
+	// i.e. modelled as an Event with a 'stereotype' property value from SABSA namespace set to 'Uncontrollable'.
+	static isDependency( e ) {
+		let result = false;
+		if ( ( e.type === ARCHI_OUTCOME ) && e.prop( PROP_NAMESPACE ) && ( e.prop( PROP_NAMESPACE ) === SABSA ) ) {
+			if ( e.prop( PROP_STEREOTYPE ) && ( e.prop( PROP_STEREOTYPE ) === ST_DEPENDENCY ) ) { result = e.prop( PROP_STEREOTYPE ); } // true
+		}
+		else if( e.type ) {
+			console.log( e.name, '(', e.type, ") cannot be interpreted as a Dependency." );
+		}
+		else console.error( "Trying to process " + e.name + " as an Dependency." );
+		return result;
+	};
+
+	constructor( v, stereotype ) {
+		if( stereotype == undefined) { stereotype = ST_DEPENDENCY; }
+		let e = v.concept;
+		if( e.type === ARCHI_OUTCOME ) {
+			super( v, stereotype );
+			this.setOutSignals();
+		}
+	}
+}
+
+console.error( "This libary class is not launchable.");

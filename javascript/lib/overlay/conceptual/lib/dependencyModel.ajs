@@ -1,0 +1,520 @@
+﻿/*
+ * A Helper class for a Prototype Event used in Dependency Modelling
+ * Cyber Enterprise Modelling 2026
+ */
+
+// Restore Default
+const setSignal = (s, state) => {
+	s.prop( PROP_FORCED_STATE, state ? "SUCCEED" : "FAIL" );
+	s.fontColor = s.lineColor = state ? DK_GREEN : RED;
+	s.lineWidth = 2; // MEDIUM
+}
+
+const resetSignal = s => {
+	s.removeProp( PROP_FORCED_STATE );
+	s.name = '';
+	s.fontColor = s.lineColor = null;
+	s.lineWidth = 1;
+}
+
+let SecureRandom = Java.type("java.security.SecureRandom");
+class Context {
+	static mode = null;			 // Can be switched between run modes
+	static stepMode = false;	 // Setting Step mode to TRUE enables stepwise progress through each
+	static trace = false;		 // Setting Tace mode to TRUE enables detailed logging
+	static currentView = null;  // The currently selected View
+	static currentFocus = null; // The currently selected Focus Element
+	static currentForceStatus = null;  // The forced state of the currently selected Uncontrollable (in sensitivity calibration).
+
+	static SENSITIVITY = 'SENSITIVITY'; // The run mode recalibrating the sensitivity of Paragons to a specific Uncontrollable
+	static PROBABILITY = 'PROBABILITY'; // The run mode regenerating Paragon pTables by randomising all Uncontrollables
+
+	static usedRandoms = new Set();
+	static rng = new SecureRandom();
+	static getFreshRandom() {
+		let r = this.rng.nextDouble();
+		while( Context.usedRandoms.has(r) ) {
+			console.error( "Randomiser hit duplicate: " + ++Context.clashCount );
+			r = this.rng.nextDouble();
+		}
+		Context.usedRandoms.add( r );
+		return r;
+	}
+
+	// Generate a Random float in a given range
+	static generateRandom = (min, max) => min + (this.rng.nextDouble() * (max-min));
+
+	// Generate a Random Integer in a given range
+	static generateRandomInt = (min, max) => Math.floor( min + (this.rng.nextDouble() * (++max-min)) );
+}
+
+function trace( txt ) {
+	if (Context.trace ) {
+		console.setTextColor(0, 0, 255);
+		console.log( txt );
+		console.setDefaultTextColor();
+	}
+}
+
+// Helper class to model a binary truth table of arbitrary size
+class TruthTable {
+	#index = 0;
+	#rows = 0;
+	#combinations = null;
+
+	constructor( n ) {
+		if( n<1 ) { console.error( "There must be at least one variable: " + n ); exit(); }
+		this.#rows = parseInt( 2**n );
+		this.#index = this.#rows -1;
+		this.#combinations = new Array(n);
+	}
+
+	getRows() { return this.#rows; }
+
+	getNextCombination() {
+		let n = this.#combinations.length;
+		// Sort into Big-Endian format
+		for( let i=0; i<n; i++ ) { this.#combinations[n-(i+1)] = (this.#index & 2**i) ? true : false; }
+		this.#index--;
+		return this.#combinations;
+	}
+}
+
+class DependencyModel {
+	static bFAIL = false;
+	static bSUCCEED = true;
+	static STATIC_MODE = true;  // Used to display pTable Status Bars
+	static DYNAMIC_MODE = false;// Used to display dynamic status of combinations
+
+	static setMode( mode ) { DependencyModel.STATIC_MODE = mode; DependencyModel.DYNAMIC_MODE = !mode; }
+
+// Test whether a (visual)  element is part of a valid Dependency Tree - i.e. modelled from a Paragon (stereotype of Goal),
+// a Dependency (Outcome), an Uncontrollable ( any Event) or a Bayesian Junction (stereotype of Junction).
+	static isDependencyModelElement( e ) {
+		let result = false;
+		let archiType = EVENT_TYPES.has( e.type ) ? 'EVENT' : e.type;
+		// console.log( archiType );
+
+		if ( e.prop( PROP_STEREOTYPE ) && e.prop( PROP_NAMESPACE ) && e.prop( PROP_NAMESPACE ).match( SABSA ) ){
+			switch( archiType ) {
+				case ARCHI_OUTCOME:
+					result = e.prop( PROP_STEREOTYPE ).endsWith( ST_DEPENDENCY ); // Can match either Dependency or QDependency
+					break;
+				case ARCHI_GOAL:
+					result = e.prop( PROP_STEREOTYPE ).match( ST_PARAGON );
+					break;
+				case 'EVENT':
+					result = e.prop( PROP_STEREOTYPE ).match( ST_UNCONTROLLABLE );
+					break;
+				case ARCHI_JUNCTION:
+					result = e.prop( PROP_STEREOTYPE ).endsWith( 'Junction' );
+					break;
+				// Skip over any visual elements
+				case ARCHI_DIAG_NOTE:
+				case ARCHI_DIAG_CONNECTION:
+					result = true;
+					break;
+				default:
+					console.error( e.name + '(' + archiType + ") cannot be interpreted as a Dependency Model Element." );
+					break;
+			}
+		}
+		return result;
+	};
+
+	#element = null;
+	#currentVizElement = null; // currently selected visual object.
+	#vizElements = null;       // a collection of all related visual objects.
+	#namespace = SABSA;
+	#stereotype = "";
+	#inSignals = null;         // a Map of Signals from Sources
+	#outSignals = null;        // a Map of Signals to Targets
+	#uncontrollables = null;   // used to record the dependency on Uncontrollables
+
+	#currentState = null;
+	#isQuantitative = false; // Can only be a valid Quantitative Junction if dependant on QDependency node
+	#pTable = null;
+	#baseNote = null;
+	#topNote = null;
+
+	constructor( v, stereotype ) {
+		trace( "Creating "+ this.constructor.name + ':'+ v.name );
+		let e = v.concept;
+		this.#element = e;
+		this.#stereotype = stereotype;
+		this.#currentVizElement = v;
+
+		this.#vizElements = $(e).objectRefs();
+		this.#pTable = JSON.parse( e.prop( PROP_PTABLE ) );
+		this.setSuccessBars( v );
+	}
+
+	getElement() { return this.#element; }
+	getID() { return this.#element.id; }
+	getName() { return this.#element.name; }
+	getDocumentation() { return this.#element.documentation; }
+	getStereotype() { return this.#stereotype; }
+	getVizElements() { return this.#vizElements; }
+	getCurrentState() { return this.#currentState; }
+
+	getJunctionType() { return (this.#stereotype === ST_QJUNCTION) ? ST_QJUNCTION : null; }
+
+	// *************************** 	Manage Status Notes *************************************
+
+	//Recursive trace of all inbound signals backwards to source to find names of Uncontrollables.
+	setUncontrollables( ) {
+		this.#uncontrollables = new Set();
+		let inSigs = this.getInSignals();
+		inSigs.forEach( ( source, s ) => {
+			if( source.getStereotype() === ST_UNCONTROLLABLE ) {
+				console.log(  this.getName(), "relies on Uncontrollable:", source.getName() );
+				this.#uncontrollables.add( source.getName() );
+			}
+			else {
+				trace( "Tracing Uncontrollables from:", this.getName(), this.#stereotype, 'to', source.getName(), source.#stereotype );
+				this.#uncontrollables = new Set([...this.#uncontrollables, ...source.getUncontrollables() ]);
+			}
+		});
+	}
+
+	// access the Set of Uncontrollables on which this Paragon depends
+	getUncontrollables() {
+		trace( "Getting Uncontrollables from:", this.getName(), this.#stereotype );
+		if( !this.#uncontrollables ) this.setUncontrollables();
+		return this.#uncontrollables;
+	}
+
+	// Recursive trace all outbound signals forward to find dependents of a given stereotype.
+	getDependents( stereotype ) {
+		let dependents = new Set();
+		let outSigs = 	this.getOutSignals();
+		outSigs.forEach( (target, s) => {
+			if( target.getStereotype() === stereotype ) { dependents.add( target ); }
+			dependents = new Set([...dependents, ...target.getDependents( stereotype ) ]);
+		});
+		return dependents;
+	}
+
+	// Recursive trace all inbound signals backwards to find dependencies of a given stereotype.
+	getDependencies( stereotype ) {
+		let dependencies = new Set();  // could be a #private, like #uncontrollables
+		if( this.getInSignals() ) {
+			this.getInSignals().forEach( (source, s) => {
+				if( source.getStereotype().endsWith( stereotype ) ) { dependencies.add( source ); }  // matches Dependency & QDependency
+				dependencies = new Set([...dependencies, ...source.getDependencies( stereotype ) ]);
+			});
+		}
+		return dependencies;
+	}
+
+// Removes Notes & line highlights from all outbound signals
+	clearOutSignals() {
+		if( this.#outSignals ) {
+			this.#outSignals.forEach( (target, s) => {
+				resetSignal( s );
+				target.resetStatus();
+			});
+		}
+	}
+
+	// Removes Notes & line highlights from all Visual Elements
+	resetStatus() {
+		this.#element.removeProp( PROP_FORCED_STATE );
+		this.#currentVizElement.lineWidth = 1
+		this.#currentVizElement.lineColor = null;
+		if ( this.#pTable ) {  // Simple AND / OR gates have no pTable or notes
+			let width = parseFloat( this.#pTable.fail ) * 100;
+			if( this.#topNote ) { this.#topNote.bounds = {width: (width > 5) ? width : 5 };
+		} else
+			console.error( this.getName() + " has no Failure Bar." );
+		}
+		this.clearOutSignals();
+	}
+
+	// Sets the Element into a known state in order to visualise the consequences
+	setStatus( state, traceSignal ) {
+		let status = state ? "SUCCEED" : "FAIL";
+		this.#currentState = status;
+		this.#element.prop( PROP_FORCED_STATE, status );
+
+		 // Highlight the Focus Event
+		if ( this.getID() == Context.currentFocus.getID() ) {
+			this.#currentVizElement.lineWidth = 2;
+			this.#currentVizElement.lineColor = Context.currentForceStatus ? RED : DK_GREEN; // bFAIL => false, bSUCCESS => true
+			trace( "Identified Focus Event" + this.getName() + '.\n' );
+		}
+
+		 // Simple AND / OR gates have no pTable or Notes
+		if ( this.#pTable ) { this.#topNote.bounds = {width: (state) ? 1 : 100}; }
+
+		// for Bayesian CPT Junctions, only set the outSignal being evaluated
+		if( (traceSignal != undefined) && (this.#stereotype == ST_BAYESIAN_JUNCTION) ) {
+			setSignal( traceSignal, state );
+		}
+		else { this.getOutSignals().forEach( (target, s) => { setSignal( s, state ); }); }
+	}
+
+	evaluate( ) {
+		trace( "Evaluating: " + this.getStereotype() + this.getName() );
+		return this.#element.prop( PROP_FORCED_STATE) ? this.#element.prop( PROP_FORCED_STATE) : UNDEFINED;
+	}
+
+	// Find all the incoming signals (as Elements) and return a [signal, source] Map
+	setInSignals() {
+		let sMap = new Map();
+		$( this.#currentVizElement ).inRels( ARCHI_INFLUENCE ).each( function( r ) {
+			let source = r.source;
+			switch( source.type ) {
+				case ARCHI_OUTCOME:
+					if ( isSABSAElement( source ) ) {
+						if ( source.prop( PROP_STEREOTYPE ) == ST_DEPENDENCY ) { sMap.set( r, new Dependency( source ) ); }
+						else if ( source.prop( PROP_STEREOTYPE ) == ST_QUANT_DEPENDENCY ) { sMap.set( r, new QDependency( source ) ); }
+					}
+					break;
+				case ARCHI_BIZ_EVENT:
+				case ARCHI_APP_EVENT:
+				case ARCHI_TECH_EVENT:
+				case ARCHI_IMPL_EVENT:
+					if (  isSABSAElement( source ) && source.prop( PROP_STEREOTYPE ) === ST_UNCONTROLLABLE ) {
+						sMap.set( r, new Uncontrollable( source ) );
+					}
+					break;
+				case ARCHI_JUNCTION:
+					if ( source.prop( PROP_STEREOTYPE ) == ST_QJUNCTION ) { sMap.set( r, new QJunction( source ) ); }
+					else { sMap.set( r, new BayesianJunction( source ) ); }
+					break;
+				default:
+					if(source.prop( PROP_STEREOTYPE ) != ST_CONTROL ) {
+						console.error( "Encountered unexpected event input signal:" + source.type );
+				}
+				break;
+			}
+		});
+		this.#inSignals = sMap;
+	}
+
+	// Returns true if not Boolean
+	isQuantitative() { return this.#isQuantitative;	}
+	// Returns true if not Boolean
+	setQuantitative( state ) { this.#isQuantitative = state;	}
+
+	// Return the set of incoming signals as a Map from sources
+	getInSignals() {
+		if( !this.#isQuantitative ) this.setInSignals();
+		// if( !this.#inSignals ) this.setInSignals();
+		return this.#inSignals;
+	}
+
+	// Find all the outgoing signals (as Visual Elements) and return a [signal, target] Map
+	setOutSignals() {
+		let sMap = new Map();
+		$( this.#currentVizElement ).outRels( ARCHI_INFLUENCE ).each( function( r ) {
+			resetSignal (r);
+			let target = r.target;
+			switch( target.type ) {
+				case ARCHI_OUTCOME:
+					if ( isSABSAElement( target ) ) {
+						if ( target.prop( PROP_STEREOTYPE ) == ST_DEPENDENCY ) { sMap.set( r, new Dependency( target ) ); }
+						else if ( target.prop( PROP_STEREOTYPE ) == ST_QUANT_DEPENDENCY ) { sMap.set( r, new QDependency( target ) ); }
+					}
+					break;
+				case ARCHI_GOAL:
+					if ( isSABSAElement( target ) && target.prop( PROP_STEREOTYPE ) == ST_PARAGON ) { sMap.set( r, new Paragon( target ) ); }
+					break;
+				case ARCHI_JUNCTION:
+					if ( target.prop( PROP_STEREOTYPE ) == ST_QJUNCTION ) { sMap.set( r, new QJunction( target ) ); }
+					else { sMap.set( r, new BayesianJunction( target ) ); }
+					break;
+				default:
+					console.log( "Encountered unexpected event output signal:" + target.type );
+				break;
+			}
+		});
+		this.#outSignals = sMap;
+	}
+
+	// Return the set of outgoing signals as a Map to targets
+	getOutSignals() {
+		if( !this.#outSignals ) this.setOutSignals();
+		return this.#outSignals;
+	}
+
+	// ***************************************************************************/
+
+	getSuccessThreshold() { return parseFloat( this.#pTable.fail ); };
+
+	addBaseNote( v, success ) {
+		let note = v.createObject( ARCHI_DIAG_NOTE, 0, 0, 100, 10);
+		note.fontSize = 8;
+		let connector = v.view.createConnection( note, v );
+
+		note.prop( PROP_STEREOTYPE, 'Success' );
+		note.prop( PROP_PERCENT, success.toFixed(1) + '%' );
+		note.textAlignment = TEXT_ALIGNMENT.RIGHT;
+		note.textPosition = TEXT_POSITION.CENTER;
+		note.fillColor = GREEN;
+		return note;
+	}
+
+	addTopNote( v, fail ) {
+		let width = 1 + Math.round( fail ) ; // width not allowed to be less than 1.
+		width = width > 100 ? 100 : width; // trim to not exceed 100
+		let note = v.createObject( ARCHI_DIAG_NOTE, 0, 0, width, 10);
+		note.fontSize = 8;
+		let connector = v.view.createConnection( note, v );
+
+		note.prop( PROP_STEREOTYPE, 'Fail' );
+		note.prop( PROP_PERCENT, fail.toFixed(1) + '%' );
+		note.textAlignment = TEXT_ALIGNMENT.LEFT;
+		note.textPosition = TEXT_POSITION.CENTER;
+		note.fillColor = RED;
+		return note;
+	}
+
+	setSuccessBars( v ) {
+		if ( this.#pTable ) {  // Simple AND / OR gates have no pTable or Notes
+			let success = parseFloat( this.#pTable.success ) * 100;
+			let fail = parseFloat( this.#pTable.fail ) * 100;
+
+			this.#baseNote = getDynamicNote( v, 'Success' );
+			if( !this.#baseNote ) { this.#baseNote = this.addBaseNote( v, success ); }
+			else { this.#baseNote.prop( PROP_PERCENT, success.toFixed(1) + '%' ); }
+			this.#topNote = getDynamicNote( v, 'Fail' );
+			if( !this.#topNote ) { this.#topNote = this.addTopNote( v, fail ); }
+			else { this.#topNote.prop( PROP_PERCENT, fail.toFixed(1) + '%' ); }
+
+			this.resetStatus();
+		}
+	}
+
+	// Essentially just strips quotes from float values.
+	stripQuotes( txt ) {
+	const QUOTED_FLOAT_PATTERN = /\"[\d\.]+\"/g;
+		let result = txt.replace( QUOTED_FLOAT_PATTERN, function (x) { return x.match( /[\d\.]+/ ) } );
+		return JSON.parse( result );
+	}
+
+	parseSensitivity( uncontrollables ) {
+		let inArray = JSON.parse( uncontrollables );
+		let outArray = new Array();
+		for (let obj of inArray) {
+			let keys = Object.keys( obj );
+			keys.forEach( k => {
+				let sensitivity = {};
+				let element = Validator.nameMap.get( k );
+				sensitivity.name = k;
+				sensitivity.stereotype = element.prop( PROP_STEREOTYPE );
+				if( Validator.nameMap.has( k ) ) {
+					sensitivity.refCode = element.prop( PROP_REFCODE );
+				} else { console.error( "Element name not found: " + k ); }
+				sensitivity.score = obj[`${k}`];
+				outArray.push( sensitivity );
+			});
+
+		}
+		return outArray;
+	}
+
+	parseCausality( txt ) {
+		let outArray = new Array();
+		let json = this.stripQuotes( txt );
+		let keys = Object.keys( json );
+		keys.forEach( k => {
+			if( k != 'failTally' ) {
+				let obj = {};
+				let element = Validator.nameMap.get( k );
+				obj.name = k;
+				obj.stereotype = element.prop( PROP_STEREOTYPE );
+				if( Validator.nameMap.has( k ) ) {
+					obj.refCode = element.prop( PROP_REFCODE );
+				} else { console.error( "Element name not found: " + k ); }
+
+				obj.score = {};
+				obj.score.fail = json[`${k}`] ;
+				obj.score.success = 0;
+				outArray.push( obj );
+			}
+		});
+		return outArray;
+	}
+
+	getJSON() {
+		let json = new Object();
+		json.name = this.#element.name;
+		json.refCode = this.#element.prop( PROP_REFCODE );
+		json.stereotype = this.#stereotype;
+
+		json.probability = this.stripQuotes( this.#element.prop("probability") );
+		json.sensitivity = this.parseSensitivity( this.#element.prop("sensitivity") );
+		json.causality = this.parseCausality( this.#element.prop("causality") );
+		return json;
+	}
+
+	getTree() {
+		let json = new Object();
+		json.name = this.#element.name;
+		json.stereotype = this.#stereotype;
+		json.refCode = this.#element.prop( PROP_REFCODE );
+
+		let inSigs = this.getInSignals();
+		inSigs.forEach( ( gate, s ) => {
+			if( gate.getJunctionType() ) {
+				json.gateType = gate.getJunctionType();  // should be at most one.
+				inSigs = gate.getInSignals();
+				// console.log( gate.getName(), gate.getInSignals().size  );
+			}
+			json.children = new Array();
+			inSigs.forEach( ( source, s ) => {
+				json.children.push( source.getTree() );
+			});
+		});
+		return json;
+	}
+}
+
+// Helper class that checks that all Model elements have a unique refCode
+class Validator {
+	static refCodeMap = new Map(); // Guarantees that DependencyModel Archi element refCodes are unique;
+	static nameMap = new Map(); // a Map of DependencyModel Archi elements by name;
+
+	static addToMap( e ) {
+		let key = e.prop( PROP_REFCODE );
+		while( Validator.refCodeMap.has( key ) ) {
+			if( key.match( /[\w]+\.[\d]/g ) ) {
+				let id = key.split( '.' );
+				let stem = id[0] + '.';
+				let index = 1+ id[1];
+				key = stem + index;
+				console.log( "Updating:", e.name, 'from', e.prop( PROP_REFCODE ), 'to', key );
+				e.prop( PROP_REFCODE, key )
+		}
+			else {
+				console.error( "Found refCode in unrecognised format: " + key );
+			}
+		}
+		console.log( "Cataloguing:", key, e.name );
+		Validator.refCodeMap.set( key, e );
+		Validator.nameMap.set( e.name, e );
+	}
+
+	constructor() {
+		$( selection ).filter( ARCHI_GOAL ).forEach( function( p ) {
+			console.log( "Processing Paragon:", p.name, 'in View', p.view.name );
+			if( Paragon.isParagon( p ) ) {
+				Validator.addToMap( p.concept );
+			}
+			$( p.view ).find().filter( ARCHI_OUTCOME ).forEach( function( d ) {
+				console.log( "Processing Dependency:", d.name );
+			if( Dependency.isDependency( d ) ) {
+					Validator.addToMap( d.concept );
+				}
+			});
+			$( p.view ).find().filter( ARCHI_BIZ_EVENT ).forEach( function( u ) {
+				console.log( "Processing Uncontrollable:", u.name );
+				if( Uncontrollable.isUncontrollable( u ) ) {
+					Validator.addToMap( u.concept );
+				}
+			});
+		});
+	}
+}

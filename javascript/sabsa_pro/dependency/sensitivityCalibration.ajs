@@ -1,0 +1,147 @@
+ /*
+ * Random, Monte-Carlo simulation of Dependency Modelling
+ * Fixes the selected Event (first to Success & then to Fail), then generate Random, Monte-Carlo simulation of remaining free Uncontrollables
+ * (c) 2025 Cyber Enterprise Modelling
+ */
+// ***************************************************************************
+
+const SEP = detectOS();
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "archimate.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "sabsa.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "utils" + SEP + "typedMap.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "simulation" + SEP + "trial.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "lib" + SEP + "dependencyModel.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "paragon.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "dependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "qDependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "uncontrollable.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "bayesianJunction.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "qJunction.ajs");
+
+// Identifies whether the underlying OS is Windows or Mac
+function detectOS() {
+	winCount = __SCRIPTS_DIR__.split("\\").length - 1;
+	macCount = __SCRIPTS_DIR__.split("\/").length - 1;
+	console.log("Directory separator", __SCRIPTS_DIR__, winCount, macCount);
+	return (winCount > macCount) ? "\\" : "\/";
+}
+
+// ***************************************************************************
+// User Input: the number of trials
+function promptTrials() {
+	let trials=0;
+	while(trials<1 || trials>1000) {
+		trials = Number(window.prompt("How many trials? (1-1000):", "50"));
+	}
+	return trials;
+}
+
+// User Input: Step mode or continuous running
+function promptStepMode() {
+	return window.confirm( "Run trials in Step Mode?" );
+}
+
+/* Helper class to model a binary truth table of arbitrary size
+class TruthTable {
+	#index = 0;
+	#rows = 0;
+	#combinations = null;
+
+	constructor( n ) {
+		if( n<1 ) { console.error( "There must be at least one variable: " + n ); exit(); }
+		this.#rows = parseInt( 2**n );
+		this.#index = this.#rows -1;
+		// Array size represents the number of independent bits
+		this.#combinations = new Array(n);
+	}
+
+	getRows() { return this.#rows; }
+
+	getNextCombination() {
+		let n = this.#combinations.length;
+		// Sort into Big-Endian format
+		for( let i=0; i<n; i++ ) { this.#combinations[n-(i+1)] = (this.#index & 2**i) ? true : false; }
+		this.#index--;
+		return this.#combinations;
+	}
+}*/
+
+// ***************************************************************************
+
+function setFocusEvent( ) {
+	let set= new Set(), focusEvent = null;
+	$(selection).filter( 'element' ).forEach( function( v ) {
+		if( EVENT_TYPES.has( v.type ) ) {
+			focusEvent = new Uncontrollable( v );
+			set.add( focusEvent );
+		}
+		Context.CurrentView = v.view;
+	});
+	if( set.size == 1 ) { return Context.currentFocus = focusEvent; }
+	else {
+		window.alert( set.size < 1 ? "No Event selected." : "Multiple Events selected." );
+		exit();
+	}
+}
+
+function getVariableEvents( fixedEvent ) {
+	let set = new Set();
+	// Find all the other events in the View
+	$(Context.CurrentView).find().filter( 'element' ).forEach( function( v ) {
+		if( EVENT_TYPES.has( v.type ) ) { set.add( new Uncontrollable( v ) ); }
+	});
+	return set;
+}
+
+function calibrateSensitivity( event, state, uncontrollables ) {
+	Context.currentForceStatus = state;
+
+	let stateDescriptor = state ? 'Succeed' : 'Fail';
+	( stateDescriptor ) ? console.setTextColor(255, 0, 0) : console.setTextColor(0, 128, 0);
+	console.log( "\nForcing", event.getName(), 'to', stateDescriptor );
+	console.setDefaultTextColor();
+
+	for( let i=0; i<trialCount; i++ ) {
+		event.forceStatus( state );
+		uncontrollables.forEach( u => { u.setRandom(); });
+		console.log( "\nStart Evaluation of Paragons:\n" );
+		paragons.forEach( p => { p.evaluate(); });
+
+		if( Context.stepMode ) {
+			if( !window.confirm( event.getName() + " set to: " + stateDescriptor + " - Trial: " + `${i+1}` + ".\nOK to Continue:" ) ) {
+				uncontrollables.forEach( u => { u.resetStatus(); });
+				exit();
+			}
+		}
+		uncontrollables.forEach( u => { u.resetStatus(); });
+		console.clear();
+	}
+}
+
+// ***************************************************************************
+console.show();
+console.clear();
+
+let trialCount=promptTrials();
+DependencyModel.setMode( DependencyModel.DYNAMIC_MODE );
+
+Context.stepMode = promptStepMode();
+
+// let target = selectParagon();
+let fixedEvent = setFocusEvent();
+let paragons = fixedEvent.getDependentParagons();
+
+console.clear();
+console.log( '\nRecalibrate the Sensitivity to', fixedEvent.getName(), ':\n - held fixed for', trialCount, 'trials in FAIL state and then in SUCCEED:');
+
+Context.mode = Context.SENSITIVITY;
+Context.trace = false;
+
+let uncontrollables = getVariableEvents( fixedEvent );
+console.log( "Analysing sensitivity of", [ ...paragons ].map( x => x.getName() ).join() );
+
+calibrateSensitivity( fixedEvent, DependencyModel.bFAIL, uncontrollables );
+paragons.forEach( p => { p.resetTally(); } );
+calibrateSensitivity( fixedEvent, DependencyModel.bSUCCEED, uncontrollables );
+
+console.log("\nDone");
