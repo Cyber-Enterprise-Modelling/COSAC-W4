@@ -35,8 +35,8 @@ const parseQRange = q => { return {low:JSON.parse(q).low, mode:JSON.parse(q).mod
 // User Input: the number of trials
 function promptTrials() {
 	let trials=0;
-	while(trials<1 || trials > 1000) {
-		trials = Number(window.prompt("How many trials? (1-1000):", "100"));
+	while(trials<1 || trials > 10000) {
+		trials = Number(window.prompt("How many trials? (1-10,000):", "100"));
 	}
 	return trials;
 }

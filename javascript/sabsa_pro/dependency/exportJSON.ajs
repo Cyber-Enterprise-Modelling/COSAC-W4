@@ -23,17 +23,6 @@ load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "qD
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "bayesianJunction.ajs");
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "qJunction.ajs");
 
-function selectDependencies( ) {
-	let set= new Set(), target = null;
-	$( Context.CurrentView ).find().filter( ARCHI_OUTCOME ).forEach( function( v ) {
-		if( Dependency.isDependency( v ) ) {
-			target = new Dependency( v );
-			set.add( target );
-		}
-	});
-	return set;
-}
-
 function selectParagon( ) {
 	let set= new Set(), target = null;
 	$(selection).filter( ARCHI_GOAL ).forEach( function( v ) {
@@ -49,6 +38,30 @@ function selectParagon( ) {
 		exit();
 	}
 }
+
+function selectDependencies( ) {
+	let set= new Set(), target = null;
+	$( Context.CurrentView ).find().filter( ARCHI_OUTCOME ).forEach( function( v ) {
+		if( Dependency.isDependency( v ) ) {
+			target = new Dependency( v );
+			set.add( target );
+		}
+	});
+	return set;
+}
+
+
+function selectUncontrollables( ) {
+	let set= new Set(), target = null;
+	$( Context.CurrentView ).find().filter( ARCHI_BIZ_EVENT ).forEach( function( v ) {
+		if( Uncontrollable.isUncontrollable( v ) ) {
+			target = new Uncontrollable( v );
+			set.add( target );
+		}
+	});
+	return set;
+}
+
 
 // ***************************************************************************
 
@@ -68,6 +81,11 @@ elements.push( paragon.getJSON() );
 let dependencies = selectDependencies();
 for( let d of dependencies ) {
 	elements.push( d.getJSON() );
+}
+
+let uncontrollables = selectUncontrollables();
+for( let u of uncontrollables ) {
+	elements.push( u.getJSON() );
 }
 console.log( JSON.stringify( elements ) );
 

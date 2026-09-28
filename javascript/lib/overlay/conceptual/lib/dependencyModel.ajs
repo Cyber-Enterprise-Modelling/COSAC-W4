@@ -403,7 +403,7 @@ class DependencyModel {
 				let sensitivity = {};
 				let element = Validator.nameMap.get( k );
 				sensitivity.name = k;
-				sensitivity.stereotype = element.prop( PROP_STEREOTYPE );
+				// sensitivity.stereotype = element.prop( PROP_STEREOTYPE );
 				if( Validator.nameMap.has( k ) ) {
 					sensitivity.refCode = element.prop( PROP_REFCODE );
 				} else { console.error( "Element name not found: " + k ); }
@@ -424,7 +424,7 @@ class DependencyModel {
 				let obj = {};
 				let element = Validator.nameMap.get( k );
 				obj.name = k;
-				obj.stereotype = element.prop( PROP_STEREOTYPE );
+				// obj.stereotype = element.prop( PROP_STEREOTYPE );
 				if( Validator.nameMap.has( k ) ) {
 					obj.refCode = element.prop( PROP_REFCODE );
 				} else { console.error( "Element name not found: " + k ); }
@@ -444,9 +444,17 @@ class DependencyModel {
 		json.refCode = this.#element.prop( PROP_REFCODE );
 		json.stereotype = this.#stereotype;
 
-		json.probability = this.stripQuotes( this.#element.prop("probability") );
-		json.sensitivity = this.parseSensitivity( this.#element.prop("sensitivity") );
-		json.causality = this.parseCausality( this.#element.prop("causality") );
+		if( json.stereotype == ST_UNCONTROLLABLE ) {
+			json.probability = this.stripQuotes( this.#element.prop("pTable") );
+		} else {
+			try
+			{
+				json.probability = this.stripQuotes( this.#element.prop("probability") );
+				json.sensitivity = this.parseSensitivity( this.#element.prop("sensitivity") );
+				json.causality = this.parseCausality( this.#element.prop("causality") );
+			}
+			catch ( ex ) { console.error( "No trial information found for:  " + json.name ); }
+		}
 		return json;
 	}
 
