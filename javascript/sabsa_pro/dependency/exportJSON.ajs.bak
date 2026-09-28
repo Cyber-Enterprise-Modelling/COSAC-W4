@@ -44,11 +44,8 @@ function selectDependencies( ) {
 	$( Context.CurrentView ).find().filter( ARCHI_OUTCOME ).forEach( function( v ) {
 		if( Dependency.isDependency( v ) ) {
 			target = new Dependency( v );
+			set.add( target );
 		}
-		if( QDependency.isQDependency( v ) ) {
-			target = new QDependency( v );
-		}
-		set.add( target );
 	});
 	return set;
 }
