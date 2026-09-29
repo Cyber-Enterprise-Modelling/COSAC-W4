@@ -76,6 +76,7 @@ function selectControls( ) {
 	return set;
 }
 
+const sortChildren = set => [...set].sort( function(i,j) { return (i.getRefCode() < j.getRefCode() () ) ? -1 : 1 } );
 
 // ***************************************************************************
 

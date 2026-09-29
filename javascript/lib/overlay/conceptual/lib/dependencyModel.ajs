@@ -471,11 +471,14 @@ class DependencyModel {
 				inSigs = gate.getInSignals();
 				// console.log( gate.getName(), gate.getInSignals().size  );
 			}
-			json.children = new Array();
+			let children = new Array();
 			inSigs.forEach( ( source, s ) => {
-				json.children.push( source.getTree() );
+				children.push( source.getTree() );
 			});
+			json.children = children.sort( function(i,j) { return (i.refCode < j.refCode ) ? -1 : 1 } );
+
 		});
+
 		return json;
 	}
 }
