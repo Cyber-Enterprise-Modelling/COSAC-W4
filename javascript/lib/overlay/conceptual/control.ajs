@@ -1,0 +1,67 @@
+﻿/*
+ * A Helper class for a Control element used in Dependency Modelling
+ * Cyber Enterprise Modelling 2026
+ */
+
+class Control extends DependencyModel {
+	static controlCatalogue = new TypedMap( String, Control ); // Avoids creating same Control Event more than once!
+
+	// Test whether an element is a valid SABSA Control.
+	// i.e. modelled as Conceptual (Business) service with a 'stereotype' property value from SABSA namespace set to 'Control'.
+	static isControl( e ) {
+		let result = false;
+		if ( ( e.type === ARCHI_BIZ_SERVICE ) && e.prop( PROP_NAMESPACE ) && ( e.prop( PROP_NAMESPACE ) === SABSA ) ) {
+			if ( e.prop( PROP_STEREOTYPE ) && ( e.prop( PROP_STEREOTYPE ) === ST_CONTROL ) ) { result = e.prop( PROP_STEREOTYPE ); } // true
+		}
+		else if( e.type ) { console.log( e.name, '(', e.type, ") cannot be interpreted as a Control." ); }
+		else console.error("Trying to process " + e.name + " as anControl." );
+		return result;
+	};
+
+	constructor( v ) {
+		let e = v.concept;;
+		if( e.type === ARCHI_BIZ_SERVICE ) {
+			if( Control.controlCatalogue.has( e.id ) ) { return Control.controlCatalogue.get( e.id ); }
+			else {
+				super( v, ST_CONTROL );
+				Control.controlCatalogue.set( e.id, this );
+				// this.setOutSignals();
+			}
+		}
+	}
+
+	// Navigates from all Uncontrollable Visual Elements to collect visual Notes
+	getNotes( matchType ) {
+		let notes = new Set();
+		this.getVizElements().forEach( v => {
+			$(v).inRels( ARCHI_DIAG_CONNECTION ).each( function( c ) {
+				if( c.source.type === ARCHI_DIAG_NOTE ) {
+					let note = c.source;
+					if ( note.prop( PROP_STEREOTYPE ) == matchType ) { notes.add( note ); }
+				}
+			});
+		});
+		return notes;
+	}
+
+	/*/ Set the Uncontrollable into a random state based on pTable threshold
+	// Skip the randomisation if this Uncontrollable is being held fixed (Context.currentFocus is defined and matches the current #id. )
+	setRandom() {
+		if( Context.currentFocus && this.getID() == Context.currentFocus.getID() ) { return; }
+		else {
+			let t = this.getSuccessThreshold();
+			let randomScore = Context.getFreshRandom(); // returns a random value 0<= r <=1
+			let state = randomScore > t;
+			super.setStatus( state );
+			Uncontrollable.currentState.set( this.getName(), state );
+
+			( state ) ? console.setTextColor(0, 128, 0) : console.setTextColor(255, 0, 0);
+			console.log( 'Randomising', this.getName(), 'Comparing:', randomScore.toFixed(3), 'against pTable Threshold:', t, state ? ': SUCCEED' : ': FAIL' );
+			console.setDefaultTextColor();
+		}
+	}
+
+	// Forces the Uncontrollable into a temporary state in order to visualise the consequences
+	forceStatus( state ) { super.setStatus( state ); }
+	//*/
+}

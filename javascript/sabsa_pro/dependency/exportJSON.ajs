@@ -19,6 +19,7 @@ load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "pa
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "dependency.ajs");
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "uncontrollable.ajs");
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "qDependency.ajs");
+load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "conceptual" + SEP + "control.ajs");
 
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "bayesianJunction.ajs");
 load( __SCRIPTS_DIR__ + "lib" + SEP + "overlay" + SEP + "relationship" + SEP + "qJunction.ajs");
@@ -53,12 +54,22 @@ function selectDependencies( ) {
 	return set;
 }
 
-
 function selectUncontrollables( ) {
 	let set= new Set(), target = null;
 	$( Context.CurrentView ).find().filter( ARCHI_BIZ_EVENT ).forEach( function( v ) {
 		if( Uncontrollable.isUncontrollable( v ) ) {
 			target = new Uncontrollable( v );
+			set.add( target );
+		}
+	});
+	return set;
+}
+
+function selectControls( ) {
+	let set= new Set(), target = null;
+	$( Context.CurrentView ).find().filter( ARCHI_BIZ_SERVICE ).forEach( function( v ) {
+		if( Control.isControl( v ) ) {
+			target = new Control( v );
 			set.add( target );
 		}
 	});
@@ -90,6 +101,12 @@ let uncontrollables = selectUncontrollables();
 for( let u of uncontrollables ) {
 	elements.push( u.getJSON() );
 }
+
+let controls = selectControls();
+for( let c of controls ) {
+	elements.push( c.getJSON() );
+}
+
 console.log( JSON.stringify( elements ) );
 
 console.log( "\nGenerating Structural Tree for", paragon.getName(), ':' );

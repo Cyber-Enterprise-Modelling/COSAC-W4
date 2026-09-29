@@ -34,17 +34,6 @@ class Uncontrollable extends DependencyModel {
 	// Trace all outbound signals forward to termination in a Paragon.
 	getDependentParagons() { return this.getDependents( ST_PARAGON ); }
 
-	/*// Terminate the tree with an Uncontrollable.
-	getTree() {
-		let json = new Object();
-		json.name = this.#element.name;
-		json.stereotype = this.#stereotype;
-		json.refCode = this.#element.prop( PROP_REFCODE );
-
-		return json;
-	}
-	//*/
-
 	// Navigates from all Uncontrollable Visual Elements to collect visual Notes
 	getNotes( matchType ) {
 		let notes = new Set();

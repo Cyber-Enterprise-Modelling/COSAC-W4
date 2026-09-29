@@ -444,7 +444,7 @@ class DependencyModel {
 		json.refCode = this.#element.prop( PROP_REFCODE );
 		json.stereotype = this.#stereotype;
 
-		if( json.stereotype == ST_UNCONTROLLABLE ) {
+		if( json.stereotype == ST_UNCONTROLLABLE || json.stereotype == ST_CONTROL ) {
 			json.probability = this.stripQuotes( this.#element.prop("pTable") );
 		} else {
 			try
