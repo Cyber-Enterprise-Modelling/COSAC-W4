@@ -8,7 +8,7 @@
 			"name": "Vehicle OK",
 			"stereotype": "Dependency",
 			"refCode": "TripDE.01",
-			"gateType": "bayesian",
+			"gateType": "and",
 			"children": [
 				{
 					"name": "Car Available",

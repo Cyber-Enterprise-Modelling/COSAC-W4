@@ -173,10 +173,10 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Paragon"/>
         <property key="refCode" value="TripPA.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.5226000&quot;,&quot;success&quot;:&quot;0.4774000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.5226000&quot;,&quot;success&quot;:&quot;0.4774000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:2613,&quot;No Epidemic&quot;:&quot;0.01875&quot;,&quot;Industrial Harmony&quot;:&quot;0.05473&quot;,&quot;Traffic Flow OK&quot;:&quot;0.19326&quot;,&quot;Weather OK&quot;:&quot;0.17375&quot;,&quot;Car 1 OK&quot;:&quot;0.01263&quot;,&quot;Car 2 OK&quot;:&quot;0.11366&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.448,&quot;success&quot;:0.484}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.448,&quot;success&quot;:0.474}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.03,&quot;success&quot;:0.496}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.53}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.512}},{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.514}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.5400000&quot;,&quot;success&quot;:&quot;0.4600000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.5400000&quot;,&quot;success&quot;:&quot;0.4600000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:108,&quot;No Epidemic&quot;:&quot;0.01852&quot;,&quot;Industrial Harmony&quot;:&quot;0.05556&quot;,&quot;Traffic Flow OK&quot;:&quot;0.19444&quot;,&quot;Weather OK&quot;:&quot;0.13889&quot;,&quot;Car 1 OK&quot;:&quot;0.02778&quot;,&quot;Car 2 OK&quot;:&quot;0.08333&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.46,&quot;success&quot;:0.5}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.42,&quot;success&quot;:0.52}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.01,&quot;success&quot;:0.45}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.54}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.62}},{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.54}}]"/>
       </element>
       <element xsi:type="archimate:Goal" name="Losses &lt; 150k" id="id-0cbb437fb89c4bf8ab3c3f9cf1893af8">
         <documentation>The state in which the losses sustained in a year remain within a risk appetite of 150k</documentation>
@@ -192,38 +192,38 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.011"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0022000&quot;,&quot;success&quot;:&quot;0.9978000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.0022000&quot;,&quot;success&quot;:&quot;0.9978000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:11,&quot;Car 1 OK&quot;:&quot;1.00000&quot;,&quot;Car 2 OK&quot;:&quot;1.00000&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.916,&quot;success&quot;:1}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.99,&quot;success&quot;:1}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0100000&quot;,&quot;success&quot;:&quot;0.9900000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.0100000&quot;,&quot;success&quot;:&quot;0.9900000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:2,&quot;Car 1 OK&quot;:&quot;1.00000&quot;,&quot;Car 2 OK&quot;:&quot;1.00000&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.89,&quot;success&quot;:1}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:1,&quot;success&quot;:1}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Friends Are OK" id="id-ed13b04e0bf44b828320940ac6dd4f83">
         <documentation>The state of affairs whereby the likelihood of people being OK is not adversely affected by our friends not being OK.</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.032"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1140000&quot;,&quot;success&quot;:&quot;0.8860000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1140000&quot;,&quot;success&quot;:&quot;0.8860000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:570,&quot;No Epidemic&quot;:&quot;0.08246&quot;}"/>
-        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.036,&quot;success&quot;:0.892}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:21,&quot;No Epidemic&quot;:&quot;0.09524&quot;}"/>
+        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.07,&quot;success&quot;:0.95}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Fuel Available" id="id-582bcfcf8c72431d8cc541a9233f1770">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.012"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1236000&quot;,&quot;success&quot;:&quot;0.8764000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1236000&quot;,&quot;success&quot;:&quot;0.8764000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:618,&quot;Industrial Harmony&quot;:&quot;0.22006&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.084,&quot;success&quot;:0.912}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1400000&quot;,&quot;success&quot;:&quot;0.8600000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1400000&quot;,&quot;success&quot;:&quot;0.8600000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:28,&quot;Industrial Harmony&quot;:&quot;0.21429&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="People OK" id="id-5445b0e76c5842d7b1caaeac12e4e3b8">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.03"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2002000&quot;,&quot;success&quot;:&quot;0.7998000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.2002000&quot;,&quot;success&quot;:&quot;0.7998000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:1001,&quot;No Epidemic&quot;:&quot;0.04895&quot;}"/>
-        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.808}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2050000&quot;,&quot;success&quot;:&quot;0.7950000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.2050000&quot;,&quot;success&quot;:&quot;0.7950000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:41,&quot;No Epidemic&quot;:&quot;0.04878&quot;}"/>
+        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.85}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk A does not Materialise" id="id-699aa9e0924d4b47bf9cf1c6608517db">
         <documentation>Risk A has a 30% probability of a 100k loss</documentation>
@@ -253,38 +253,38 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.02"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2872000&quot;,&quot;success&quot;:&quot;0.7128000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.2872000&quot;,&quot;success&quot;:&quot;0.7128000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:1436,&quot;Industrial Harmony&quot;:&quot;0.09680&quot;,&quot;Traffic Flow OK&quot;:&quot;0.35167&quot;,&quot;Weather OK&quot;:&quot;0.31616&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.09,&quot;success&quot;:0.726}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.758}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.774}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3100000&quot;,&quot;success&quot;:&quot;0.6900000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.3100000&quot;,&quot;success&quot;:&quot;0.6900000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:62,&quot;Industrial Harmony&quot;:&quot;0.06452&quot;,&quot;Traffic Flow OK&quot;:&quot;0.33871&quot;,&quot;Weather OK&quot;:&quot;0.24194&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.12,&quot;success&quot;:0.67}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.75}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.79}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Roads Open" id="id-fc4f8d149f54472fab4c445c5e42be80">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.021"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1290000&quot;,&quot;success&quot;:&quot;0.8710000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1290000&quot;,&quot;success&quot;:&quot;0.8710000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:645,&quot;Industrial Harmony&quot;:&quot;0.20930&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.12,&quot;success&quot;:0.908}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1600000&quot;,&quot;success&quot;:&quot;0.8400000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1600000&quot;,&quot;success&quot;:&quot;0.8400000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:32,&quot;Industrial Harmony&quot;:&quot;0.12500&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Vehicle OK" id="id-135aaf0a6a4943309d7a052c7a116619">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1778000&quot;,&quot;success&quot;:&quot;0.8222000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1778000&quot;,&quot;success&quot;:&quot;0.8222000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:889,&quot;Car 1 OK&quot;:&quot;0.02025&quot;,&quot;Car 2 OK&quot;:&quot;0.11361&quot;,&quot;Industrial Harmony&quot;:&quot;0.10574&quot;}"/>
-        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.8,&quot;success&quot;:0.854}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.814,&quot;success&quot;:0.79}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.354,&quot;success&quot;:0.838}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1500000&quot;,&quot;success&quot;:&quot;0.8500000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1500000&quot;,&quot;success&quot;:&quot;0.8500000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:30,&quot;Car 1 OK&quot;:&quot;0.06667&quot;,&quot;Car 2 OK&quot;:&quot;0.06667&quot;,&quot;Industrial Harmony&quot;:&quot;0.20000&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.81,&quot;success&quot;:0.86}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.89,&quot;success&quot;:0.86}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="We Are OK" id="id-41058dd85b834c7ca3b5769a55654dd3">
         <documentation>The state of affairs whereby the likelihood of people being OK is not adversely affected by us not being OK.</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.031"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1064000&quot;,&quot;success&quot;:&quot;0.8936000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1064000&quot;,&quot;success&quot;:&quot;0.8936000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:532,&quot;No Epidemic&quot;:&quot;0.08647&quot;}"/>
-        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.044,&quot;success&quot;:0.9}}]"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1300000&quot;,&quot;success&quot;:&quot;0.8700000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1300000&quot;,&quot;success&quot;:&quot;0.8700000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:26,&quot;No Epidemic&quot;:&quot;0.07692&quot;}"/>
+        <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.03,&quot;success&quot;:0.89}}]"/>
       </element>
     </folder>
     <element xsi:type="archimate:Goal" name="Residual Risk &lt; Appetite" id="id-35522e8f2da142b1802510dc4dfeabbe">
@@ -422,17 +422,6 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
       <property key="stereotype" value="BayesianJunction"/>
       <property key="cpt" value="[{&quot;Industrial Harmony&quot;: 0 ,&quot;fail&quot;: 0.9, &quot;success&quot;: 0.1},{&quot;Industrial Harmony&quot;: 1 ,&quot;fail&quot;: 0.1, &quot;success&quot;: 0.9}] "/>
     </element>
-    <element xsi:type="archimate:Junction" name="Vehicle OK" id="id-b449d3420ba74e75b112b5c3e77a51c4">
-      <documentation>{ &quot;cpt&quot;: [&#xD;
-	{&quot;Car Available&quot;: 0 , &quot;Fuel Available&quot;: 0, &quot;fail&quot;: 0.9, &quot;success&quot;: 0.1},&#xD;
-	{&quot;Car Available&quot;: 0 , &quot;Fuel Available&quot;: 1, &quot;fail&quot;: 0.8, &quot;success&quot;: 0.2},&#xD;
-	{&quot;Car Available&quot;: 1 , &quot;Fuel Available&quot;: 0, &quot;fail&quot;: 0.7, &quot;success&quot;: 0.3},&#xD;
-	{&quot;Car Available&quot;: 1 , &quot;Fuel Available&quot;: 1, &quot;fail&quot;: 0.1, &quot;success&quot;: 0.9}&#xD;
-]}</documentation>
-      <property key="namespace" value="SABSA"/>
-      <property key="stereotype" value="BayesianJunction"/>
-      <property key="cpt" value="[{&quot;Car Available&quot;: 0 , &quot;Fuel Available&quot;: 0, &quot;fail&quot;: 0.9, &quot;success&quot;: 0.1},{&quot;Car Available&quot;: 0 , &quot;Fuel Available&quot;: 1, &quot;fail&quot;: 0.8, &quot;success&quot;: 0.2},{&quot;Car Available&quot;: 1 , &quot;Fuel Available&quot;: 0, &quot;fail&quot;: 0.7, &quot;success&quot;: 0.3},{&quot;Car Available&quot;: 1 , &quot;Fuel Available&quot;: 1, &quot;fail&quot;: 0.1, &quot;success&quot;: 0.9}]"/>
-    </element>
     <element xsi:type="archimate:Junction" name="Risk B does not Materialise" id="id-7790c93d683f4c41878782da50253482" profiles="id-fab6c0edafe8449da10d4eb12e9b0a3b">
       <documentation>[&#xD;
  {&quot;Threat B does not Materialise&quot;: 0 ,&quot;fail&quot;: 0.18, &quot;success&quot;: 0.82},&#xD;
@@ -524,16 +513,17 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
       <property key="stereotype" value="BayesianJunction"/>
       <property key="cpt" value="[{&quot;No Stack Overflow Attack&quot;: 0 ,&quot;fail&quot;: 0.9, &quot;success&quot;: 0.1}, {&quot;No Stack Overflow Attack&quot;: 1 ,&quot;fail&quot;: 0.2, &quot;success&quot;: 0.8}]"/>
     </element>
+    <element xsi:type="archimate:Junction" name="Vehicle OK" id="id-ec28275f78064bc2baae0626a713c09d"/>
   </folder>
   <folder name="Relations" id="id-a46e1a8b05f94fb9a1bd09bccf64eb93" type="relations">
     <element xsi:type="archimate:InfluenceRelationship" id="id-be5ce1a204d447cf922c2f95478f56ea" source="id-5a2a0b48da174f0f8980d5ca5b904a04" target="id-f508b96efce54546ac5287b7cb26fbcf"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-c95b6d182f4541c5a0c2499742317a52" source="id-733c596ef9474abdae405502b9b05890" target="id-f508b96efce54546ac5287b7cb26fbcf"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-1e8a2dde9ce14f47ae96baa9278f68d4" source="id-ed13b04e0bf44b828320940ac6dd4f83" target="id-75873f82dad34798aff1862661401793"/>
-    <element xsi:type="archimate:InfluenceRelationship" id="id-254378d22f8c4a409ba6c10a12afe7fc" source="id-b449d3420ba74e75b112b5c3e77a51c4" target="id-135aaf0a6a4943309d7a052c7a116619"/>
+    <element xsi:type="archimate:InfluenceRelationship" id="id-254378d22f8c4a409ba6c10a12afe7fc" source="id-ec28275f78064bc2baae0626a713c09d" target="id-135aaf0a6a4943309d7a052c7a116619"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-a4aa4a49f50b4177a17bd534fb1b5a90" source="id-49a8d73beee145c0b2e639929d566bda" target="id-926653e0dd91422e83c71881cfb5dcfa"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-c39986ae35e54cabb233c4239325ca5f" source="id-0ae7b2b4fb0742a69cfb7267946cecfa" target="id-582bcfcf8c72431d8cc541a9233f1770"/>
-    <element xsi:type="archimate:InfluenceRelationship" id="id-ecb43543e5b34615847d605943f1e6e4" source="id-582bcfcf8c72431d8cc541a9233f1770" target="id-b449d3420ba74e75b112b5c3e77a51c4"/>
-    <element xsi:type="archimate:InfluenceRelationship" id="id-c9de3042802d41f385ac57f63604cfc7" source="id-e0bf9bef2a404e49893d6fb55e435416" target="id-b449d3420ba74e75b112b5c3e77a51c4"/>
+    <element xsi:type="archimate:InfluenceRelationship" id="id-ecb43543e5b34615847d605943f1e6e4" source="id-582bcfcf8c72431d8cc541a9233f1770" target="id-ec28275f78064bc2baae0626a713c09d"/>
+    <element xsi:type="archimate:InfluenceRelationship" id="id-c9de3042802d41f385ac57f63604cfc7" source="id-e0bf9bef2a404e49893d6fb55e435416" target="id-ec28275f78064bc2baae0626a713c09d"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-e78fef7c49dd47f68a5382a22e19a93b" source="id-2c7738a9c5494ee989a57c79358bddaf" target="id-601d327f7da6481485b63299b25810b9"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-f61215ad9b0245ed8cb06e7f3c972bad" source="id-e13dac8a422d441ca022a6782c595b8d" target="id-2c7738a9c5494ee989a57c79358bddaf"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-aa38fe4bdc414ee8aaaa6abc372fc5a1" source="id-025caccbc369407985411b3a80d27d40" target="id-e13dac8a422d441ca022a6782c595b8d"/>
@@ -599,14 +589,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-917a7a6e2d084ce5a831f545838882aa" source="id-edaaa9d280cf4a8f8812d35b6b0f6a5a" target="id-92fa1f7d62f340cbb1ccd87ea1806196"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="47.7%"/>
+          <property key="percent" value="46.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-b956cc68c1714a0e95ca524d331c1955" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="52" height="10"/>
+          <bounds width="54" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-0728b7e7ddea49a1860ec87f1125def7" source="id-b956cc68c1714a0e95ca524d331c1955" target="id-92fa1f7d62f340cbb1ccd87ea1806196"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="52.3%"/>
+          <property key="percent" value="54.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-f953ba9d4afb4a31bb3140991c359e94" targetConnections="id-0f38fba440af403f9d6f42315c94cd17 id-48f5a2410e9149ca9c3e867137a8dddc id-380bd45f8ddd43ee8613fe25709ed2f6" fillColor="#ccccff" textPosition="1" archimateElement="id-41058dd85b834c7ca3b5769a55654dd3">
@@ -620,14 +610,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-48f5a2410e9149ca9c3e867137a8dddc" source="id-032198f10c00416ebb3e3a019305e219" target="id-f953ba9d4afb4a31bb3140991c359e94"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="89.4%"/>
+          <property key="percent" value="87.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-9beb4e05fdf84e13be92df6d25bd112c" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="10" height="10"/>
+          <bounds width="13" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-380bd45f8ddd43ee8613fe25709ed2f6" source="id-9beb4e05fdf84e13be92df6d25bd112c" target="id-f953ba9d4afb4a31bb3140991c359e94"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="10.6%"/>
+          <property key="percent" value="13.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-9269a3f4e0104c1ba2ab9e1bd3b62c9f" targetConnections="id-972286985e334535b619225e1b7ec2ad id-6bd641fbb2284da08877504c91894f8b" textPosition="1" archimateElement="id-49a8d73beee145c0b2e639929d566bda" type="1">
@@ -668,14 +658,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-771a2c3a158b46608245346dc90b0049" source="id-37cb9dd3c7ec4e29af65a28eb2ba2d98" target="id-63fce4c7132641c19747e6c17b99d521"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="88.6%"/>
+          <property key="percent" value="89.5%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-5c6730540fbd4042ac47fe15727c9d31" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="11" height="10"/>
+          <bounds width="10" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-5cef4c03ff8342ff8e4409c8eedada5a" source="id-5c6730540fbd4042ac47fe15727c9d31" target="id-63fce4c7132641c19747e6c17b99d521"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="11.4%"/>
+          <property key="percent" value="10.5%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-dddd947ddb3c42deb8a4b25fd380fe2a" targetConnections="id-07ab302c3d3b4fbb9036d0f6a0c21f43 id-c4aeb44d836140fd9864da7fcd53ca6b" fillColor="#000000" archimateElement="id-75873f82dad34798aff1862661401793">
@@ -693,14 +683,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-a1689373aa6d4cc9adda65d0ac63fcbb" source="id-612758254c3543ac895ecae977db2c87" target="id-c364450613984a22919f4ae9180dc07e"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="80.0%"/>
+          <property key="percent" value="79.5%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-725aa710b8e44856a48c3b1a4f6d451a" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
           <bounds width="20" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-2f54afd5944847019c226717bc9688d0" source="id-725aa710b8e44856a48c3b1a4f6d451a" target="id-c364450613984a22919f4ae9180dc07e"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="20.0%"/>
+          <property key="percent" value="20.5%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-063421ae4b7f4c75bbc1433cff9b009c" targetConnections="id-0fe3c68c51db46e1a9fecc36a1ec282c id-641e41a9c51546aeada09baaac06e197 id-0dc7a480336743c4bfd581a032a9b4ca" fillColor="#000000" archimateElement="id-2c7738a9c5494ee989a57c79358bddaf">
@@ -718,14 +708,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-bebd78b6f16245fc9dacd19435936d23" source="id-c9df656e3f944f32b160b3ecfc0dd23e" target="id-56fc005264ee4722b2db3b4ca5bedffb"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="71.3%"/>
+          <property key="percent" value="69.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-b79864e1268041adbcf1abb2ff8ccb03" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="28" height="10"/>
+          <bounds width="31" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-0e7d66efa68f4751b98b0051f2158a1e" source="id-b79864e1268041adbcf1abb2ff8ccb03" target="id-56fc005264ee4722b2db3b4ca5bedffb"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="28.7%"/>
+          <property key="percent" value="31.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-ab37bbdeec824c568f22c358324fc183" targetConnections="id-ab404a2bf575432c8ebefa1097553fcd id-ce1bc0437e584958a07958f89ee04b55" textPosition="1" archimateElement="id-a14b7dd0249243c29f16145d54ad1459" type="1">
@@ -780,14 +770,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-742e6b58ebc14f02b537d2b9152d478c" source="id-29f0b97a512d49e995bb869f14c88cb6" target="id-e4f5d98a976342b5b21ba8ee8f8919d3"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="87.1%"/>
+          <property key="percent" value="84.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-10f4d397a2184c49aa62f92dd4f9b92b" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="12" height="10"/>
+          <bounds width="16" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-610e130a4a3b46d2ad7f34c42e05863a" source="id-10f4d397a2184c49aa62f92dd4f9b92b" target="id-e4f5d98a976342b5b21ba8ee8f8919d3"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="12.9%"/>
+          <property key="percent" value="16.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-dfc42dff273a4da8a9cfff07614a89d8" targetConnections="id-60b83e54fdb443d884e9344cb64da53e" fillColor="#c0c0c0" archimateElement="id-0ae7b2b4fb0742a69cfb7267946cecfa">
@@ -803,7 +793,7 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
       <child xsi:type="archimate:DiagramObject" id="id-0c116b02831748d585174b054e509601" targetConnections="id-3143e5a5b82644d4becd3f262d25a92a id-b24b66f823324a749e3149e78ca42111 id-c1c6bd0f2bc54fa8acefa8726c110bcb" fillColor="#ccccff" textPosition="1" archimateElement="id-582bcfcf8c72431d8cc541a9233f1770">
         <bounds x="336" y="192" width="120" height="49"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
-        <sourceConnection xsi:type="archimate:Connection" id="id-6f12b7b9975946668421efe39d7fcdd7" source="id-0c116b02831748d585174b054e509601" target="id-4d220899b9d94b37a8c18d2db519ad09" archimateRelationship="id-ecb43543e5b34615847d605943f1e6e4">
+        <sourceConnection xsi:type="archimate:Connection" id="id-6f12b7b9975946668421efe39d7fcdd7" source="id-0c116b02831748d585174b054e509601" target="id-4e2d36e3243042debea83e76a1c83798" archimateRelationship="id-ecb43543e5b34615847d605943f1e6e4">
           <bendpoint startX="105" startY="-12" endX="-5" endY="60"/>
         </sourceConnection>
         <child xsi:type="archimate:Note" id="id-81d797cdc2994952aafd08fc63f582a8" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
@@ -811,40 +801,36 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-b24b66f823324a749e3149e78ca42111" source="id-81d797cdc2994952aafd08fc63f582a8" target="id-0c116b02831748d585174b054e509601"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="87.6%"/>
+          <property key="percent" value="86.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-b655a16509124332afa6c87f8108959c" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="12" height="10"/>
+          <bounds width="14" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-c1c6bd0f2bc54fa8acefa8726c110bcb" source="id-b655a16509124332afa6c87f8108959c" target="id-0c116b02831748d585174b054e509601"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="12.4%"/>
+          <property key="percent" value="14.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-5730f07a282f477db1b71b5972649243" targetConnections="id-63072153d5c943e38b7a2d6d0cbb0237 id-01af849c623c435b9eb0c484ad2d3a9c id-292c41c2bd4c45869b5c439042fc80b5" fillColor="#ccccff" textPosition="1" archimateElement="id-e0bf9bef2a404e49893d6fb55e435416">
         <bounds x="336" y="132" width="120" height="49"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
-        <sourceConnection xsi:type="archimate:Connection" id="id-eed934e5913547c2be1c2e562d5c6980" textPosition="2" source="id-5730f07a282f477db1b71b5972649243" target="id-4d220899b9d94b37a8c18d2db519ad09" archimateRelationship="id-c9de3042802d41f385ac57f63604cfc7"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-eed934e5913547c2be1c2e562d5c6980" textPosition="2" source="id-5730f07a282f477db1b71b5972649243" target="id-4e2d36e3243042debea83e76a1c83798" archimateRelationship="id-c9de3042802d41f385ac57f63604cfc7"/>
         <child xsi:type="archimate:Note" id="id-185ff2a900ad44b682249b5454241b27" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-01af849c623c435b9eb0c484ad2d3a9c" source="id-185ff2a900ad44b682249b5454241b27" target="id-5730f07a282f477db1b71b5972649243"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="99.8%"/>
+          <property key="percent" value="99.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-757db22700c7429984dc347af42257b1" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
           <bounds width="5" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-292c41c2bd4c45869b5c439042fc80b5" source="id-757db22700c7429984dc347af42257b1" target="id-5730f07a282f477db1b71b5972649243"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="0.2%"/>
+          <property key="percent" value="1.0%"/>
         </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-4d220899b9d94b37a8c18d2db519ad09" targetConnections="id-eed934e5913547c2be1c2e562d5c6980 id-6f12b7b9975946668421efe39d7fcdd7" fillColor="#c0c0c0" archimateElement="id-b449d3420ba74e75b112b5c3e77a51c4">
-        <bounds x="494" y="149" width="15" height="15"/>
-        <sourceConnection xsi:type="archimate:Connection" id="id-9a113b71eb78485fac3abcaeb1bbe7c1" source="id-4d220899b9d94b37a8c18d2db519ad09" target="id-3fc7d164bce64f8ea4139a0f1e41117a" archimateRelationship="id-254378d22f8c4a409ba6c10a12afe7fc"/>
-      </child>
-      <child xsi:type="archimate:DiagramObject" id="id-3fc7d164bce64f8ea4139a0f1e41117a" targetConnections="id-9a113b71eb78485fac3abcaeb1bbe7c1 id-144fa4a5350a46fea0119390eb3633e9 id-9aad38d337e641f7aecdf5deba3bb350" fillColor="#ccccff" textPosition="1" archimateElement="id-135aaf0a6a4943309d7a052c7a116619">
+      <child xsi:type="archimate:DiagramObject" id="id-3fc7d164bce64f8ea4139a0f1e41117a" targetConnections="id-144fa4a5350a46fea0119390eb3633e9 id-9aad38d337e641f7aecdf5deba3bb350 id-9a113b71eb78485fac3abcaeb1bbe7c1" fillColor="#ccccff" textPosition="1" archimateElement="id-135aaf0a6a4943309d7a052c7a116619">
         <bounds x="553" y="140" width="120" height="55"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-0dc7a480336743c4bfd581a032a9b4ca" textPosition="2" source="id-3fc7d164bce64f8ea4139a0f1e41117a" target="id-063421ae4b7f4c75bbc1433cff9b009c" archimateRelationship="id-80fe0973cd894b039f012008d3fe9391"/>
@@ -853,14 +839,14 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-144fa4a5350a46fea0119390eb3633e9" source="id-0a9c0ce660bc4dbaaef1820c981fa4cc" target="id-3fc7d164bce64f8ea4139a0f1e41117a"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="82.2%"/>
+          <property key="percent" value="85.0%"/>
         </child>
         <child xsi:type="archimate:Note" id="id-cd8d0831f7d848c5b23fb345e67baea7" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
-          <bounds width="17" height="10"/>
+          <bounds width="15" height="10"/>
           <feature name="deriveElementLineColor" value="false"/>
           <sourceConnection id="id-9aad38d337e641f7aecdf5deba3bb350" source="id-cd8d0831f7d848c5b23fb345e67baea7" target="id-3fc7d164bce64f8ea4139a0f1e41117a"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="17.8%"/>
+          <property key="percent" value="15.0%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-0e8baca0b83c459b94be8b7c7c57ac19" targetConnections="id-a945c7c25206491d8e08bdb5a4e5eac2 id-c738829d90aa48c2a9ec67aa2532625a" textPosition="1" archimateElement="id-5a2a0b48da174f0f8980d5ca5b904a04" type="1">
@@ -925,6 +911,11 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
         <feature name="labelExpression" value="$view{name}"/>
         <property key="creator" value="http://www.cyberenterprisemodelling.com"/>
         <property key="stereotype" value="Logo"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-4e2d36e3243042debea83e76a1c83798" targetConnections="id-eed934e5913547c2be1c2e562d5c6980 id-6f12b7b9975946668421efe39d7fcdd7" fillColor="#000000" archimateElement="id-ec28275f78064bc2baae0626a713c09d">
+        <bounds x="494" y="149" width="15" height="15"/>
+        <feature name="labelExpression" value="AND"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-9a113b71eb78485fac3abcaeb1bbe7c1" source="id-4e2d36e3243042debea83e76a1c83798" target="id-3fc7d164bce64f8ea4139a0f1e41117a" archimateRelationship="id-254378d22f8c4a409ba6c10a12afe7fc"/>
       </child>
       <property key="demoURL" value="http://127.0.0.1:8080/thea-workspace/project/dependencyTree/"/>
     </element>
