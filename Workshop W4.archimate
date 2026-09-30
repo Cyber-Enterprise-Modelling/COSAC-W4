@@ -183,8 +183,11 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Paragon"/>
         <property key="refCode" value="QuantPA.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1100000&quot;,&quot;success&quot;:&quot;0.8900000&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1030000&quot;,&quot;success&quot;:&quot;0.8970000&quot;}"/>
         <property key="threshold" value="150"/>
+        <property key="sensitivity" value="[{&quot;Threat A does not Materialise&quot;:{&quot;fail&quot;:0.762,&quot;success&quot;:0.958}},{&quot;Threat B does not Materialise&quot;:{&quot;fail&quot;:0.74,&quot;success&quot;:0.916}},{&quot;Threat C does not Materialise&quot;:{&quot;fail&quot;:0.796,&quot;success&quot;:0.96}}]"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1030000&quot;,&quot;success&quot;:&quot;0.8970000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:103,&quot;Threat C does not Materialise&quot;:&quot;0.80583&quot;,&quot;Threat B does not Materialise&quot;:&quot;0.40777&quot;,&quot;Threat A does not Materialise&quot;:&quot;0.80583&quot;}"/>
       </element>
     </folder>
     <folder name="Dependencies" id="id-1e6bf72eb4c344e89aa8ebdf76d57906">
@@ -230,24 +233,33 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3130000&quot;,&quot;success&quot;:&quot;0.6870000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:80, &quot;mode&quot;:100, &quot;high&quot;:120}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3230000&quot;,&quot;success&quot;:&quot;0.6770000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:80, &quot;mode&quot;:100, &quot;high&quot;:120}"/>
+        <property key="sensitivity" value="[{&quot;Threat A does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:1}}]"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.3230000&quot;,&quot;success&quot;:&quot;0.6770000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:323,&quot;Threat A does not Materialise&quot;:&quot;1.00000&quot;}"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk B does not Materialise" id="id-efd263c918274505be0d2f7e90f67c6c">
         <documentation>Risk B has a 20% probability of a 200k loss</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.02"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0480000&quot;,&quot;success&quot;:&quot;0.9520000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:160, &quot;mode&quot;:200, &quot;high&quot;:240}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0380000&quot;,&quot;success&quot;:&quot;0.9620000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:160, &quot;mode&quot;:200, &quot;high&quot;:240}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.0380000&quot;,&quot;success&quot;:&quot;0.9620000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:38,&quot;Threat B does not Materialise&quot;:&quot;0.86842&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Threat B does not Materialise&quot;:{&quot;fail&quot;:0.818,&quot;success&quot;:0.992}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk C does not Materialise" id="id-106efeab256845b6997c44951e8d97a1">
         <documentation>Risk C has a 40% probability of a 50k loss</documentation>
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="QDependency"/>
         <property key="refCode" value="QuantDE.03"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.4060000&quot;,&quot;success&quot;:&quot;0.5940000&quot;}"/>
-        <property key="impact" value="{&quot;distribution&quot;:&quot;spot&quot;, &quot;low&quot;:40, &quot;mode&quot;:50, &quot;high&quot;:60}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3960000&quot;,&quot;success&quot;:&quot;0.6040000&quot;}"/>
+        <property key="impact" value="{&quot;distribution&quot;:&quot;flat&quot;, &quot;low&quot;:40, &quot;mode&quot;:50, &quot;high&quot;:60}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.3960000&quot;,&quot;success&quot;:&quot;0.6040000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:396,&quot;Threat C does not Materialise&quot;:&quot;1.00000&quot;}"/>
+        <property key="sensitivity" value="[{&quot;Threat C does not Materialise&quot;:{&quot;fail&quot;:0,&quot;success&quot;:1}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Roads OK" id="id-e13dac8a422d441ca022a6782c595b8d">
         <property key="namespace" value="SABSA"/>
@@ -546,7 +558,7 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
     <element xsi:type="archimate:InfluenceRelationship" id="id-d0ab79a823f54aa29a91e12578128fa3" source="id-8833f005739d4073ad0055d83e1facc4" target="id-106efeab256845b6997c44951e8d97a1"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-3b9e2e158ca642edad7b6335d57df7f7" source="id-3bb36008655a45c981cb2a1ce0a13a42" target="id-699aa9e0924d4b47bf9cf1c6608517db"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-f41d23fe3e214087bc0936c947d365d0" source="id-8898aec832e5485496f6c5a42ea2ec7e" target="id-7790c93d683f4c41878782da50253482"/>
-    <element xsi:type="archimate:InfluenceRelationship" id="id-74978451c06a417fbcb5b5fe47bfcd28" source="id-f83138a13f244d1fa04e16a8ef83bf97" target="id-efd263c918274505be0d2f7e90f67c6c"/>
+    <element xsi:type="archimate:InfluenceRelationship" id="id-74978451c06a417fbcb5b5fe47bfcd28" source="id-f83138a13f244d1fa04e16a8ef83bf97" target="id-7790c93d683f4c41878782da50253482"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-73e29b4582e7448f90b0cc9957570d23" source="id-9461393b5c5c4a13b32294ce2fc0a1b4" target="id-78569c2de9084a5896fdc89292d8c76e"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-b922d7ecd551495d8294be2bbed751a6" source="id-445a7419605040ca99431bac66896ad1" target="id-b2e44df33b1e47f2915d7096abe80722"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-4c36f15c1c3d4d6fb57329dd3dd03159" source="id-038c3e75ac3643ab864792e897e8604c" target="id-78569c2de9084a5896fdc89292d8c76e"/>
@@ -574,6 +586,7 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
     <element xsi:type="archimate:InfluenceRelationship" id="id-eeec0d03fdf4411b931badaa360316b4" source="id-901eedab254941c09f5abb8393b7a0f3" target="id-ab1b906764754f58930ac5bd06f0bc90"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-645f138c574e49229d5be428d6dd2134" source="id-2d910e532a5844f6b4a8c0dc45867b14" target="id-77afd9c38c864790acf91193b5bcfab9"/>
     <element xsi:type="archimate:InfluenceRelationship" id="id-75f5ff71d02a45e0ad3c15db23d48721" source="id-2dbcf61683054be3ae3af845af461bd4" target="id-fc785fb4f7c74ec8a789cd06d1f6aec9"/>
+    <element xsi:type="archimate:InfluenceRelationship" id="id-d478abe105c24a10a671fcee01b60a45" source="id-7790c93d683f4c41878782da50253482" target="id-efd263c918274505be0d2f7e90f67c6c"/>
   </folder>
   <folder name="Views" id="id-dcd9efa701e843d8ac88d3f60db89520" type="diagrams">
     <element xsi:type="archimate:ArchimateDiagramModel" name="1. Trip Model" id="id-729a446674544751b564bcd0b4a89a41">
@@ -945,7 +958,7 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
           <property key="percent" value="28.1%"/>
         </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-3d1219bce6ae429c89921f78e34d98ac" targetConnections="id-c16f5cca8f284d5fb7e9d62434ed085d id-0b534be9317041e998bea3aa64afc268 id-e1379d02d31547fd96d93840a84909e8" fillColor="#ccccff" textPosition="1" archimateElement="id-efd263c918274505be0d2f7e90f67c6c">
+      <child xsi:type="archimate:DiagramObject" id="id-3d1219bce6ae429c89921f78e34d98ac" targetConnections="id-c16f5cca8f284d5fb7e9d62434ed085d id-0b534be9317041e998bea3aa64afc268" fillColor="#ccccff" textPosition="1" archimateElement="id-efd263c918274505be0d2f7e90f67c6c">
         <bounds x="359" y="207" width="120" height="73"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-0ca9f2bd81934f84bd98197294715b27" source="id-3d1219bce6ae429c89921f78e34d98ac" target="id-4e4859eacf9c49eab33b6c29d8154f9f" archimateRelationship="id-e5ae274a27c843409b60125f466453ee"/>
@@ -1005,7 +1018,6 @@ If a hacker infects one of these Internet of Things (IoT) devices with malware (
       <child xsi:type="archimate:DiagramObject" id="id-5920bb7805dc424e908a4efcbb63d66f" targetConnections="id-37fdf086d5c24ca38d770c5435b750c5 id-21906930560e4b5da97b157855273703" textPosition="1" archimateElement="id-f83138a13f244d1fa04e16a8ef83bf97" type="1">
         <bounds x="84" y="214" width="193" height="59"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xA;${name}"/>
-        <sourceConnection xsi:type="archimate:Connection" id="id-e1379d02d31547fd96d93840a84909e8" source="id-5920bb7805dc424e908a4efcbb63d66f" target="id-3d1219bce6ae429c89921f78e34d98ac" archimateRelationship="id-74978451c06a417fbcb5b5fe47bfcd28"/>
         <child xsi:type="archimate:Note" id="id-44fc5eafca354e97adee736086e9c326" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
           <sourceConnection id="id-21906930560e4b5da97b157855273703" source="id-44fc5eafca354e97adee736086e9c326" target="id-5920bb7805dc424e908a4efcbb63d66f"/>
@@ -1057,63 +1069,83 @@ Threat C has a 40% probability of a 500k impact</documentation>
       <property key="unmitigatedDependency" value="http://127.0.0.1:8080/demos/Q-Demo/dependencyTree%20-%20without%20control/"/>
     </element>
     <element xsi:type="archimate:ArchimateDiagramModel" name="3. Controls" id="id-137132370ba34fa5955ee240435bd32c">
-      <child xsi:type="archimate:DiagramObject" id="id-48da32f13e0442ddb092a5d4919f470d" targetConnections="id-d493cf51ac1d42fab44536f4cd8880cb" fillColor="#ccccff" textPosition="1" archimateElement="id-0cbb437fb89c4bf8ab3c3f9cf1893af8">
+      <child xsi:type="archimate:DiagramObject" id="id-48da32f13e0442ddb092a5d4919f470d" targetConnections="id-d493cf51ac1d42fab44536f4cd8880cb id-0db8ce85698a488a885436effeb7ac09 id-99c7273a1d3444a1abba61bde3e8637d" fillColor="#ccccff" textPosition="1" archimateElement="id-0cbb437fb89c4bf8ab3c3f9cf1893af8">
         <bounds x="648" y="135" width="120" height="55"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
+        <child xsi:type="archimate:Note" id="id-a8293a143e3c44438bec929726123458" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
+          <bounds width="100" height="10"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-0db8ce85698a488a885436effeb7ac09" source="id-a8293a143e3c44438bec929726123458" target="id-48da32f13e0442ddb092a5d4919f470d"/>
+          <property key="stereotype" value="Success"/>
+          <property key="percent" value="89.7%"/>
+        </child>
+        <child xsi:type="archimate:Note" id="id-7b81a9db2e084572be74eb05b788ea4e" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
+          <bounds width="10" height="10"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-99c7273a1d3444a1abba61bde3e8637d" source="id-7b81a9db2e084572be74eb05b788ea4e" target="id-48da32f13e0442ddb092a5d4919f470d"/>
+          <property key="stereotype" value="Fail"/>
+          <property key="percent" value="10.3%"/>
+        </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-931709c4adba449fad585c998118b224" targetConnections="id-d32d0f84db31451a8f0c6e7a23bf11ce id-96f21d75e392440183cb7eb487a9a640 id-f5e12d1c8cb64c68bb9eebd3b4cc07f1" fillColor="#ccccff" textPosition="1" archimateElement="id-699aa9e0924d4b47bf9cf1c6608517db">
+      <child xsi:type="archimate:DiagramObject" id="id-931709c4adba449fad585c998118b224" targetConnections="id-f5e12d1c8cb64c68bb9eebd3b4cc07f1 id-c798ab2ca07a43a4a37d50f120a2a936 id-aa301c1dad544ee9bda54f71185b5ba8" fillColor="#ccccff" textPosition="1" archimateElement="id-699aa9e0924d4b47bf9cf1c6608517db">
         <bounds x="383" y="42" width="120" height="73"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-10364bb9688243d5a9eafc4e81bd83c0" source="id-931709c4adba449fad585c998118b224" target="id-787a5572e67a441d9a862e0a4fbc3675" archimateRelationship="id-48915de7f7514dc28e2418099aaa8bf5">
           <bendpoint startX="96" endX="-19" endY="-84"/>
         </sourceConnection>
-        <child xsi:type="archimate:Note" id="id-2465a592f0624fd89acff838bc775898" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
+        <child xsi:type="archimate:Note" id="id-888caaf7dbe84a799e53ddb87630da94" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
-          <sourceConnection id="id-d32d0f84db31451a8f0c6e7a23bf11ce" source="id-2465a592f0624fd89acff838bc775898" target="id-931709c4adba449fad585c998118b224"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-c798ab2ca07a43a4a37d50f120a2a936" source="id-888caaf7dbe84a799e53ddb87630da94" target="id-931709c4adba449fad585c998118b224"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="68.7%"/>
+          <property key="percent" value="67.7%"/>
         </child>
-        <child xsi:type="archimate:Note" id="id-1e77997654264d368a84ae774fbb1cd5" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#e4052d" textPosition="1">
-          <bounds width="31" height="10"/>
-          <sourceConnection id="id-96f21d75e392440183cb7eb487a9a640" source="id-1e77997654264d368a84ae774fbb1cd5" target="id-931709c4adba449fad585c998118b224"/>
+        <child xsi:type="archimate:Note" id="id-599ef2bb87204260b7bb6de9a512865a" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
+          <bounds width="32" height="10"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-aa301c1dad544ee9bda54f71185b5ba8" source="id-599ef2bb87204260b7bb6de9a512865a" target="id-931709c4adba449fad585c998118b224"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="31.3%"/>
+          <property key="percent" value="32.3%"/>
         </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-a90dcafcb45742848599a87a387885ca" targetConnections="id-1cd1cb9731c345a1a01ab315c597fddf id-88b0c15e51e244d2818db5bc81e91c09 id-15a60f2cb1754e8d8be0a0a8ed33b326" fillColor="#ccccff" textPosition="1" archimateElement="id-efd263c918274505be0d2f7e90f67c6c">
+      <child xsi:type="archimate:DiagramObject" id="id-a90dcafcb45742848599a87a387885ca" targetConnections="id-a69dd9c4fc11433ba94db6c078a260ff id-5c636c10ed204a388d6e62cc97acb7c0 id-33680b7d879b4e41927ebcfa595f77d5" fillColor="#ccccff" textPosition="1" archimateElement="id-efd263c918274505be0d2f7e90f67c6c">
         <bounds x="383" y="126" width="120" height="73"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-b12cb47ada46404caac7f499d79681fe" source="id-a90dcafcb45742848599a87a387885ca" target="id-787a5572e67a441d9a862e0a4fbc3675" archimateRelationship="id-e5ae274a27c843409b60125f466453ee"/>
-        <child xsi:type="archimate:Note" id="id-8a745ba155d04cba8331aa3f2c53e12f" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
+        <child xsi:type="archimate:Note" id="id-9dd5e50d9d92452c9d33ae4d757803c8" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
-          <sourceConnection id="id-88b0c15e51e244d2818db5bc81e91c09" source="id-8a745ba155d04cba8331aa3f2c53e12f" target="id-a90dcafcb45742848599a87a387885ca"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-5c636c10ed204a388d6e62cc97acb7c0" source="id-9dd5e50d9d92452c9d33ae4d757803c8" target="id-a90dcafcb45742848599a87a387885ca"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="95.2%"/>
+          <property key="percent" value="96.2%"/>
         </child>
-        <child xsi:type="archimate:Note" id="id-8f9fa1ec8e704f5f86d24e2568c84ded" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#e4052d" textPosition="1">
+        <child xsi:type="archimate:Note" id="id-29e657846a1c488b9592e03f9a7ba897" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
           <bounds width="5" height="10"/>
-          <sourceConnection id="id-1cd1cb9731c345a1a01ab315c597fddf" source="id-8f9fa1ec8e704f5f86d24e2568c84ded" target="id-a90dcafcb45742848599a87a387885ca"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-33680b7d879b4e41927ebcfa595f77d5" source="id-29e657846a1c488b9592e03f9a7ba897" target="id-a90dcafcb45742848599a87a387885ca"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="4.8%"/>
+          <property key="percent" value="3.8%"/>
         </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-2ab55fb88b9345428141ae694c084c5b" targetConnections="id-97b0d405f1a7429e9d7c9c99cf868c7f id-2e781d18ab57432d9563f1d055dee937 id-9aad0ae93eee49a090764bd009bd3517" fillColor="#ccccff" textPosition="1" archimateElement="id-106efeab256845b6997c44951e8d97a1">
+      <child xsi:type="archimate:DiagramObject" id="id-2ab55fb88b9345428141ae694c084c5b" targetConnections="id-9aad0ae93eee49a090764bd009bd3517 id-a5750ad1673b402199e6989e4af40894 id-a3afe9d69e064e63950c96a8e8c32b17" fillColor="#ccccff" textPosition="1" archimateElement="id-106efeab256845b6997c44951e8d97a1">
         <bounds x="383" y="242" width="120" height="73"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-fef99ca086bf4f9d91f2e3f18387ea3c" source="id-2ab55fb88b9345428141ae694c084c5b" target="id-787a5572e67a441d9a862e0a4fbc3675" archimateRelationship="id-6a70d83db17b419781dbf8011214b62d">
           <bendpoint startX="96" endX="-19" endY="84"/>
         </sourceConnection>
-        <child xsi:type="archimate:Note" id="id-603f76407ba1484b9c0f12b75f9b6d20" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
+        <child xsi:type="archimate:Note" id="id-93fdfee6779b427fbb8fe99d471a7b72" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
-          <sourceConnection id="id-2e781d18ab57432d9563f1d055dee937" source="id-603f76407ba1484b9c0f12b75f9b6d20" target="id-2ab55fb88b9345428141ae694c084c5b"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-a5750ad1673b402199e6989e4af40894" source="id-93fdfee6779b427fbb8fe99d471a7b72" target="id-2ab55fb88b9345428141ae694c084c5b"/>
           <property key="stereotype" value="Success"/>
-          <property key="percent" value="59.4%"/>
+          <property key="percent" value="60.4%"/>
         </child>
-        <child xsi:type="archimate:Note" id="id-ada549ae447a4e789e778d48a4d813ed" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#e4052d" textPosition="1">
-          <bounds width="40" height="10"/>
-          <sourceConnection id="id-97b0d405f1a7429e9d7c9c99cf868c7f" source="id-ada549ae447a4e789e778d48a4d813ed" target="id-2ab55fb88b9345428141ae694c084c5b"/>
+        <child xsi:type="archimate:Note" id="id-02fb3bd924174a458f380cc4568f7354" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="1" fillColor="#ff0000" textPosition="1">
+          <bounds width="39" height="10"/>
+          <feature name="deriveElementLineColor" value="false"/>
+          <sourceConnection id="id-a3afe9d69e064e63950c96a8e8c32b17" source="id-02fb3bd924174a458f380cc4568f7354" target="id-2ab55fb88b9345428141ae694c084c5b"/>
           <property key="stereotype" value="Fail"/>
-          <property key="percent" value="40.6%"/>
+          <property key="percent" value="39.6%"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-07f8286bdec946f1b8e31adb5984cc0f" targetConnections="id-c5bc264c2f0d45209b13fcdeaff0418b id-51e31d566e2b4b208520f64ea82315ca" textPosition="1" archimateElement="id-3bb36008655a45c981cb2a1ce0a13a42" type="1">
@@ -1136,7 +1168,7 @@ Threat C has a 40% probability of a 500k impact</documentation>
       <child xsi:type="archimate:DiagramObject" id="id-b94a2d75a1d3450abc800a63f4786da3" targetConnections="id-d9655acdfdbd445e818ad62a555a86b0 id-47e910bcadcf4d33a4d8e209e3b3af75" textPosition="1" archimateElement="id-f83138a13f244d1fa04e16a8ef83bf97" type="1">
         <bounds x="61" y="133" width="193" height="59"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xA;${name}"/>
-        <sourceConnection xsi:type="archimate:Connection" id="id-15a60f2cb1754e8d8be0a0a8ed33b326" source="id-b94a2d75a1d3450abc800a63f4786da3" target="id-a90dcafcb45742848599a87a387885ca" archimateRelationship="id-74978451c06a417fbcb5b5fe47bfcd28"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-15a60f2cb1754e8d8be0a0a8ed33b326" source="id-b94a2d75a1d3450abc800a63f4786da3" target="id-a8317676192f45faaf88cb26b9bf2504" archimateRelationship="id-74978451c06a417fbcb5b5fe47bfcd28"/>
         <child xsi:type="archimate:Note" id="id-05edf08ce6404a3a9f672b78b3035c6d" font="1|Segoe UI|8.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Segoe UI" textAlignment="4" fillColor="#80ff80" textPosition="1">
           <bounds width="100" height="10"/>
           <sourceConnection id="id-47e910bcadcf4d33a4d8e209e3b3af75" source="id-05edf08ce6404a3a9f672b78b3035c6d" target="id-b94a2d75a1d3450abc800a63f4786da3"/>
@@ -1167,9 +1199,10 @@ Threat C has a 40% probability of a 500k impact</documentation>
           <property key="percent" value="40.0%"/>
         </child>
       </child>
-      <child xsi:type="archimate:DiagramObject" id="id-a8317676192f45faaf88cb26b9bf2504" targetConnections="id-9110c25cf43842b78356686f1ebd3c97" fillColor="#c0c0c0" archimateElement="id-7790c93d683f4c41878782da50253482">
-        <bounds x="300" y="213" width="15" height="15"/>
+      <child xsi:type="archimate:DiagramObject" id="id-a8317676192f45faaf88cb26b9bf2504" targetConnections="id-9110c25cf43842b78356686f1ebd3c97 id-15a60f2cb1754e8d8be0a0a8ed33b326" fillColor="#c0c0c0" archimateElement="id-7790c93d683f4c41878782da50253482">
+        <bounds x="312" y="155" width="15" height="15"/>
         <feature name="labelExpression" value="&lt;&lt;${property:stereotype}>>&#xD;&#xA;${name}"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-a69dd9c4fc11433ba94db6c078a260ff" source="id-a8317676192f45faaf88cb26b9bf2504" target="id-a90dcafcb45742848599a87a387885ca" archimateRelationship="id-d478abe105c24a10a671fcee01b60a45"/>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-a11c310fa4df4687ab5f2393d9231bb4" targetConnections="id-bbce574c41594f69a2d0f28672682c3a id-43cbc237d8824a499a78329e3a0c8ed4" fillColor="#ccccff" textPosition="1" imagePath="images/_j1HZMJ56EfCE4ep12HfKbw.png" imagePosition="0" archimateElement="id-8898aec832e5485496f6c5a42ea2ec7e" type="1">
         <bounds x="96" y="198" width="158" height="45"/>

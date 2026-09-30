@@ -88,7 +88,7 @@ let modelValidator = new Validator();
 
 // Select the Paragon as the root of the export:
 let paragon = selectParagon( );
-console.log( "\nGenerating Probability Table for", paragon.getName(), ':' );
+console.log( "\nGenerating Simulation for", paragon.getName(), ':' );
 
 let elements = new Array();
 elements.push( paragon.getJSON() );

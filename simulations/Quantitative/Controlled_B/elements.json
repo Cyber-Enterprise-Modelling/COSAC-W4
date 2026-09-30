@@ -4,32 +4,32 @@
 		"refCode": "QuantPA.01",
 		"stereotype": "Paragon",
 		"probability": {
-			"fail": 0.11,
-			"success": 0.89
+			"fail": 0.103,
+			"success": 0.897
 		},
 		"sensitivity": [
 			{
 				"name": "Threat A does not Materialise",
 				"refCode": "QuantUNC.01",
 				"score": {
-					"fail": 0.798,
-					"success": 0.966
+					"fail": 0.762,
+					"success": 0.958
 				}
 			},
 			{
 				"name": "Threat B does not Materialise",
 				"refCode": "QuantUNC.02",
 				"score": {
-					"fail": 0.758,
-					"success": 0.932
+					"fail": 0.74,
+					"success": 0.916
 				}
 			},
 			{
 				"name": "Threat C does not Materialise",
 				"refCode": "QuantUNC.03",
 				"score": {
-					"fail": 0.838,
-					"success": 0.946
+					"fail": 0.796,
+					"success": 0.96
 				}
 			}
 		],
@@ -38,7 +38,7 @@
 				"name": "Threat C does not Materialise",
 				"refCode": "QuantUNC.03",
 				"score": {
-					"fail": 0.71818,
+					"fail": 0.80583,
 					"success": 0
 				}
 			},
@@ -46,7 +46,7 @@
 				"name": "Threat B does not Materialise",
 				"refCode": "QuantUNC.02",
 				"score": {
-					"fail": 0.46364,
+					"fail": 0.40777,
 					"success": 0
 				}
 			},
@@ -54,7 +54,7 @@
 				"name": "Threat A does not Materialise",
 				"refCode": "QuantUNC.01",
 				"score": {
-					"fail": 0.7,
+					"fail": 0.80583,
 					"success": 0
 				}
 			}
@@ -65,8 +65,8 @@
 		"refCode": "QuantDE.01",
 		"stereotype": "QDependency",
 		"probability": {
-			"fail": 0.313,
-			"success": 0.687
+			"fail": 0.323,
+			"success": 0.677
 		},
 		"sensitivity": [
 			{
@@ -94,16 +94,16 @@
 		"refCode": "QuantDE.02",
 		"stereotype": "QDependency",
 		"probability": {
-			"fail": 0.048,
-			"success": 0.952
+			"fail": 0.038,
+			"success": 0.962
 		},
 		"sensitivity": [
 			{
 				"name": "Threat B does not Materialise",
 				"refCode": "QuantUNC.02",
 				"score": {
-					"fail": 0.79,
-					"success": 0.984
+					"fail": 0.818,
+					"success": 0.992
 				}
 			}
 		],
@@ -112,7 +112,7 @@
 				"name": "Threat B does not Materialise",
 				"refCode": "QuantUNC.02",
 				"score": {
-					"fail": 0.83333,
+					"fail": 0.86842,
 					"success": 0
 				}
 			}
@@ -123,8 +123,8 @@
 		"refCode": "QuantDE.03",
 		"stereotype": "QDependency",
 		"probability": {
-			"fail": 0.406,
-			"success": 0.594
+			"fail": 0.396,
+			"success": 0.604
 		},
 		"sensitivity": [
 			{
@@ -177,6 +177,10 @@
 	{
 		"name": "CounterMeasure",
 		"refCode": "QuantCTRL.01.",
-		"stereotype": "Control"
+		"stereotype": "Control",
+		"probability": {
+			"fail": 0.18,
+			"success": 0.82
+		}
 	}
 ]
