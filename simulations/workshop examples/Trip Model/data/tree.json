@@ -1,0 +1,112 @@
+{
+	"name": "Trip Successful",
+	"stereotype": "Paragon",
+	"refCode": "TripPA.01",
+	"gateType": "and",
+	"children": [
+		{
+			"name": "Vehicle OK",
+			"stereotype": "Dependency",
+			"refCode": "TripDE.01",
+			"gateType": "and",
+			"children": [
+				{
+					"name": "Car Available",
+					"stereotype": "Dependency",
+					"refCode": "TripDE.011",
+					"gateType": "or",
+					"children": [
+						{
+							"name": "Car 1 OK",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.01"
+						},
+						{
+							"name": "Car 2 OK",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.02"
+						}
+					]
+				},
+				{
+					"name": "Fuel Available",
+					"stereotype": "Dependency",
+					"refCode": "TripDE.012",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "Industrial Harmony",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.03"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Roads OK",
+			"stereotype": "Dependency",
+			"refCode": "TripDE.02",
+			"gateType": "and",
+			"children": [
+				{
+					"name": "Roads Open",
+					"stereotype": "Dependency",
+					"refCode": "TripDE.021",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "Industrial Harmony",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.03"
+						}
+					]
+				},
+				{
+					"name": "Traffic Flow OK",
+					"stereotype": "Uncontrollable",
+					"refCode": "TripUNC.04"
+				},
+				{
+					"name": "Weather OK",
+					"stereotype": "Uncontrollable",
+					"refCode": "TripUNC.05"
+				}
+			]
+		},
+		{
+			"name": "People OK",
+			"stereotype": "Dependency",
+			"refCode": "TripDE.03",
+			"gateType": "and",
+			"children": [
+				{
+					"name": "We Are OK",
+					"stereotype": "Dependency",
+					"refCode": "TripDE.031",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "No Epidemic",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.06"
+						}
+					]
+				},
+				{
+					"name": "Friends Are OK",
+					"stereotype": "Dependency",
+					"refCode": "TripDE.032",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "No Epidemic",
+							"stereotype": "Uncontrollable",
+							"refCode": "TripUNC.06"
+						}
+					]
+				}
+			]
+		}
+	]
+}

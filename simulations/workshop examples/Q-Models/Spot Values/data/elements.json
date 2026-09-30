@@ -1,0 +1,177 @@
+[
+	{
+		"name": "Losses < 150k",
+		"refCode": "QuantPA.01",
+		"stereotype": "Paragon",
+		"probability": {
+			"fail": 0.282,
+			"success": 0.718
+		},
+		"sensitivity": [
+			{
+				"name": "Threat A does not Materialise",
+				"refCode": "QuantUNC.01",
+				"score": {
+					"fail": 0.45,
+					"success": 0.792
+				}
+			},
+			{
+				"name": "Threat B does not Materialise",
+				"refCode": "QuantUNC.02",
+				"score": {
+					"fail": 0,
+					"success": 0.862
+				}
+			},
+			{
+				"name": "Threat C does not Materialise",
+				"refCode": "QuantUNC.03",
+				"score": {
+					"fail": 0.552,
+					"success": 0.808
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Threat C does not Materialise",
+				"refCode": "QuantUNC.03",
+				"score": {
+					"fail": 0.5922,
+					"success": 0
+				}
+			},
+			{
+				"name": "Threat B does not Materialise",
+				"refCode": "QuantUNC.02",
+				"score": {
+					"fail": 0.70213,
+					"success": 0
+				}
+			},
+			{
+				"name": "Threat A does not Materialise",
+				"refCode": "QuantUNC.01",
+				"score": {
+					"fail": 0.48936,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Risk A does not Materialise",
+		"refCode": "QuantDE.01",
+		"stereotype": "QDependency",
+		"probability": {
+			"fail": 0.281,
+			"success": 0.719
+		},
+		"sensitivity": [
+			{
+				"name": "Threat A does not Materialise",
+				"refCode": "QuantUNC.01",
+				"score": {
+					"fail": 0,
+					"success": 1
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Threat A does not Materialise",
+				"refCode": "QuantUNC.01",
+				"score": {
+					"fail": 1,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Risk B does not Materialise",
+		"refCode": "QuantDE.02",
+		"stereotype": "QDependency",
+		"probability": {
+			"fail": 0.198,
+			"success": 0.802
+		},
+		"sensitivity": [
+			{
+				"name": "Threat B does not Materialise",
+				"refCode": "QuantUNC.02",
+				"score": {
+					"fail": 0,
+					"success": 1
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Threat B does not Materialise",
+				"refCode": "QuantUNC.02",
+				"score": {
+					"fail": 1,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Risk C does not Materialise",
+		"refCode": "QuantDE.03",
+		"stereotype": "QDependency",
+		"probability": {
+			"fail": 0.402,
+			"success": 0.598
+		},
+		"sensitivity": [
+			{
+				"name": "Threat C does not Materialise",
+				"refCode": "QuantUNC.03",
+				"score": {
+					"fail": 0,
+					"success": 1
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Threat C does not Materialise",
+				"refCode": "QuantUNC.03",
+				"score": {
+					"fail": 1,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Threat A does not Materialise",
+		"refCode": "QuantUNC.01",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.3,
+			"success": 0.7
+		}
+	},
+	{
+		"name": "Threat B does not Materialise",
+		"refCode": "QuantUNC.02",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.2,
+			"success": 0.8
+		}
+	},
+	{
+		"name": "Threat C does not Materialise",
+		"refCode": "QuantUNC.03",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.4,
+			"success": 0.6
+		}
+	}
+]

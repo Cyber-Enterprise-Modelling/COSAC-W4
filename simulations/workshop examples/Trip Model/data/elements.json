@@ -1,0 +1,460 @@
+[
+	{
+		"name": "Trip Successful",
+		"refCode": "TripPA.01",
+		"stereotype": "Paragon",
+		"probability": {
+			"fail": 0.479,
+			"success": 0.521
+		},
+		"sensitivity": [
+			{
+				"name": "Car 1 OK",
+				"refCode": "TripUNC.01",
+				"score": {
+					"fail": 0.474,
+					"success": 0.486
+				}
+			},
+			{
+				"name": "Car 2 OK",
+				"refCode": "TripUNC.02",
+				"score": {
+					"fail": 0.51,
+					"success": 0.518
+				}
+			},
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.006,
+					"success": 0.516
+				}
+			},
+			{
+				"name": "Traffic Flow OK",
+				"refCode": "TripUNC.04",
+				"score": {
+					"fail": 0,
+					"success": 0.608
+				}
+			},
+			{
+				"name": "Weather OK",
+				"refCode": "TripUNC.05",
+				"score": {
+					"fail": 0,
+					"success": 0.588
+				}
+			},
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0,
+					"success": 0.542
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.0167,
+					"success": 0
+				}
+			},
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.06681,
+					"success": 0
+				}
+			},
+			{
+				"name": "Traffic Flow OK",
+				"refCode": "TripUNC.04",
+				"score": {
+					"fail": 0.21294,
+					"success": 0
+				}
+			},
+			{
+				"name": "Weather OK",
+				"refCode": "TripUNC.05",
+				"score": {
+					"fail": 0.20877,
+					"success": 0
+				}
+			},
+			{
+				"name": "Car 1 OK",
+				"refCode": "TripUNC.01",
+				"score": {
+					"fail": 0.01044,
+					"success": 0
+				}
+			},
+			{
+				"name": "Car 2 OK",
+				"refCode": "TripUNC.02",
+				"score": {
+					"fail": 0.13152,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "We Are OK",
+		"refCode": "TripDE.031",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.097,
+			"success": 0.903
+		},
+		"sensitivity": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.054,
+					"success": 0.91
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.08247,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Friends Are OK",
+		"refCode": "TripDE.032",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.106,
+			"success": 0.894
+		},
+		"sensitivity": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.05,
+					"success": 0.892
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.07547,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "People OK",
+		"refCode": "TripDE.03",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.183,
+			"success": 0.817
+		},
+		"sensitivity": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.002,
+					"success": 0.808
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "No Epidemic",
+				"refCode": "TripUNC.06",
+				"score": {
+					"fail": 0.04372,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Roads OK",
+		"refCode": "TripDE.02",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.3,
+			"success": 0.7
+		},
+		"sensitivity": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.084,
+					"success": 0.718
+				}
+			},
+			{
+				"name": "Traffic Flow OK",
+				"refCode": "TripUNC.04",
+				"score": {
+					"fail": 0,
+					"success": 0.83
+				}
+			},
+			{
+				"name": "Weather OK",
+				"refCode": "TripUNC.05",
+				"score": {
+					"fail": 0,
+					"success": 0.8
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.10333,
+					"success": 0
+				}
+			},
+			{
+				"name": "Traffic Flow OK",
+				"refCode": "TripUNC.04",
+				"score": {
+					"fail": 0.34,
+					"success": 0
+				}
+			},
+			{
+				"name": "Weather OK",
+				"refCode": "TripUNC.05",
+				"score": {
+					"fail": 0.33333,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Roads Open",
+		"refCode": "TripDE.021",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.126,
+			"success": 0.874
+		},
+		"sensitivity": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.104,
+					"success": 0.902
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.23016,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Fuel Available",
+		"refCode": "TripDE.012",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.126,
+			"success": 0.874
+		},
+		"sensitivity": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.09,
+					"success": 0.858
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.24603,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "Car Available",
+		"refCode": "TripDE.011",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0,
+			"success": 1
+		},
+		"sensitivity": [
+			{
+				"name": "Car 1 OK",
+				"refCode": "TripUNC.01",
+				"score": {
+					"fail": 0.916,
+					"success": 1
+				}
+			},
+			{
+				"name": "Car 2 OK",
+				"refCode": "TripUNC.02",
+				"score": {
+					"fail": 0.982,
+					"success": 1
+				}
+			}
+		],
+		"causality": []
+	},
+	{
+		"name": "Vehicle OK",
+		"refCode": "TripDE.01",
+		"stereotype": "Dependency",
+		"probability": {
+			"fail": 0.126,
+			"success": 0.874
+		},
+		"sensitivity": [
+			{
+				"name": "Car 1 OK",
+				"refCode": "TripUNC.01",
+				"score": {
+					"fail": 0.8,
+					"success": 0.888
+				}
+			},
+			{
+				"name": "Car 2 OK",
+				"refCode": "TripUNC.02",
+				"score": {
+					"fail": 0.86,
+					"success": 0.892
+				}
+			},
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.09,
+					"success": 0.858
+				}
+			}
+		],
+		"causality": [
+			{
+				"name": "Car 1 OK",
+				"refCode": "TripUNC.01",
+				"score": {
+					"fail": 0.01587,
+					"success": 0
+				}
+			},
+			{
+				"name": "Car 2 OK",
+				"refCode": "TripUNC.02",
+				"score": {
+					"fail": 0.15873,
+					"success": 0
+				}
+			},
+			{
+				"name": "Industrial Harmony",
+				"refCode": "TripUNC.03",
+				"score": {
+					"fail": 0.24603,
+					"success": 0
+				}
+			}
+		]
+	},
+	{
+		"name": "No Epidemic",
+		"refCode": "TripUNC.06",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.01,
+			"success": 0.99
+		}
+	},
+	{
+		"name": "Traffic Flow OK",
+		"refCode": "TripUNC.04",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.1,
+			"success": 0.9
+		}
+	},
+	{
+		"name": "Weather OK",
+		"refCode": "TripUNC.05",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.1,
+			"success": 0.9
+		}
+	},
+	{
+		"name": "Car 1 OK",
+		"refCode": "TripUNC.01",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.01,
+			"success": 0.99
+		}
+	},
+	{
+		"name": "Car 2 OK",
+		"refCode": "TripUNC.02",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.1,
+			"success": 0.9
+		}
+	},
+	{
+		"name": "Industrial Harmony",
+		"refCode": "TripUNC.03",
+		"stereotype": "Uncontrollable",
+		"probability": {
+			"fail": 0.03,
+			"success": 0.97
+		}
+	}
+]
