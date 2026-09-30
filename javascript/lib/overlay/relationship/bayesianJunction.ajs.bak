@@ -45,7 +45,7 @@ class ConditionalProbabilityTable {
 
 	// Return the Success Threshold that corresponds to the set of input signals
 	getPassThreshold( inputs ) {
-		// console.log( 'Evaluating: CPT Input:', JSON.stringify( inputs ) );  // SJB
+		console.log( 'Evaluating: CPT Input:', JSON.stringify( inputs ) );  // SJB
 		return this.#cpt.get( this.calcIndex( inputs ) );
 	}
 }

@@ -110,8 +110,10 @@ for( let c of controls ) {
 
 console.log( JSON.stringify( elements ) );
 
+/*//
 console.log( "\nGenerating Structural Tree for", paragon.getName(), ':' );
 let tree = paragon.getTree();
 console.log( JSON.stringify( tree ) );
+/*/
 
-console.log("Done");
+console.log("\nDone");

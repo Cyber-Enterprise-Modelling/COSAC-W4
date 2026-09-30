@@ -4,72 +4,72 @@
 		"refCode": "idPA.01",
 		"stereotype": "Paragon",
 		"probability": {
-			"fail": 0.8275,
-			"success": 0.1725
+			"fail": 0.6009,
+			"success": 0.3991
 		},
 		"sensitivity": [
 			{
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.146,
-					"success": 0.194
+					"fail": 0.414,
+					"success": 0.402
 				}
 			},
 			{
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.174,
-					"success": 0.186
+					"fail": 0.394,
+					"success": 0.402
 				}
 			},
 			{
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.168,
-					"success": 0.166
+					"fail": 0.398,
+					"success": 0.418
 				}
 			},
 			{
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.168,
-					"success": 0.168
+					"fail": 0.408,
+					"success": 0.386
 				}
 			},
 			{
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.16,
-					"success": 0.136
+					"fail": 0.408,
+					"success": 0.368
 				}
 			},
 			{
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.212,
-					"success": 0.084
+					"fail": 0.314,
+					"success": 0.736
 				}
 			},
 			{
 				"name": "Home Router Effectiveness",
 				"refCode": "idUNC.07",
 				"score": {
-					"fail": 0.01,
-					"success": 0.16
+					"fail": 0.03,
+					"success": 0.41
 				}
 			},
 			{
 				"name": "No Malformed Network Time Signal",
 				"refCode": "idUNC.08",
 				"score": {
-					"fail": 0.166,
-					"success": 0.17
+					"fail": 0.404,
+					"success": 0.424
 				}
 			}
 		],
@@ -78,7 +78,7 @@
 				"name": "Home Router Effectiveness",
 				"refCode": "idUNC.07",
 				"score": {
-					"fail": 0.01511,
+					"fail": 0.01598,
 					"success": 0
 				}
 			},
@@ -86,7 +86,7 @@
 				"name": "No Malformed Network Time Signal",
 				"refCode": "idUNC.08",
 				"score": {
-					"fail": 0.03927,
+					"fail": 0.03878,
 					"success": 0
 				}
 			},
@@ -94,7 +94,7 @@
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.7287,
+					"fail": 0.89632,
 					"success": 0
 				}
 			},
@@ -102,7 +102,7 @@
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.1148,
+					"fail": 0.113,
 					"success": 0
 				}
 			},
@@ -110,7 +110,7 @@
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.04773,
+					"fail": 0.04976,
 					"success": 0
 				}
 			},
@@ -118,7 +118,7 @@
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.49305,
+					"fail": 0.49892,
 					"success": 0
 				}
 			},
@@ -126,7 +126,7 @@
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.72326,
+					"fail": 0.70561,
 					"success": 0
 				}
 			},
@@ -134,7 +134,7 @@
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.10272,
+					"fail": 0.10118,
 					"success": 0
 				}
 			}
@@ -142,18 +142,18 @@
 	},
 	{
 		"name": "Home Router Not Compromised",
-		"refCode": "idCON.03.01",
+		"refCode": "idDE.0111",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.0735,
-			"success": 0.9265
+			"fail": 0.0681,
+			"success": 0.9319
 		},
 		"sensitivity": [
 			{
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.288,
+					"fail": 0.264,
 					"success": 1
 				}
 			},
@@ -161,7 +161,7 @@
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.916,
+					"fail": 0.906,
 					"success": 1
 				}
 			}
@@ -187,18 +187,18 @@
 	},
 	{
 		"name": "No Compromised IoT Devices",
-		"refCode": "idCON.03.02",
+		"refCode": "idDE.0112",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.003,
-			"success": 0.997
+			"fail": 0.0039,
+			"success": 0.9961
 		},
 		"sensitivity": [
 			{
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.98,
+					"fail": 0.982,
 					"success": 1
 				}
 			},
@@ -214,7 +214,7 @@
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.994,
+					"fail": 0.998,
 					"success": 1
 				}
 			}
@@ -248,42 +248,42 @@
 	},
 	{
 		"name": "No Man-in-the-Middle Established",
-		"refCode": "idCON.02",
+		"refCode": "idDE.011",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.06,
-			"success": 0.94
+			"fail": 0.0502,
+			"success": 0.9498
 		},
 		"sensitivity": [
 			{
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.57,
-					"success": 0.986
+					"fail": 0.548,
+					"success": 0.984
 				}
 			},
 			{
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.936,
-					"success": 0.994
+					"fail": 0.928,
+					"success": 0.988
 				}
 			},
 			{
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.948,
-					"success": 0.952
+					"fail": 0.94,
+					"success": 0.956
 				}
 			},
 			{
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.934,
+					"fail": 0.936,
 					"success": 0.958
 				}
 			},
@@ -291,8 +291,8 @@
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.936,
-					"success": 0.952
+					"fail": 0.944,
+					"success": 0.928
 				}
 			}
 		],
@@ -301,7 +301,7 @@
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.09167,
+					"fail": 0.15139,
 					"success": 0
 				}
 			},
@@ -309,7 +309,7 @@
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.06667,
+					"fail": 0.05378,
 					"success": 0
 				}
 			},
@@ -317,7 +317,7 @@
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.525,
+					"fail": 0.50797,
 					"success": 0
 				}
 			},
@@ -325,7 +325,7 @@
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.95,
+					"fail": 0.94024,
 					"success": 0
 				}
 			},
@@ -333,7 +333,7 @@
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.8,
+					"fail": 0.7988,
 					"success": 0
 				}
 			}
@@ -341,51 +341,51 @@
 	},
 	{
 		"name": "MAG250 Confidentiality",
-		"refCode": "idCON.01",
+		"refCode": "idDE.01",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.0325,
-			"success": 0.9675
+			"fail": 0.0252,
+			"success": 0.9748
 		},
 		"sensitivity": [
 			{
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.908,
-					"success": 0.98
+					"fail": 0.916,
+					"success": 0.978
 				}
 			},
 			{
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.968,
-					"success": 0.978
+					"fail": 0.958,
+					"success": 0.976
 				}
 			},
 			{
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.962,
-					"success": 0.97
+					"fail": 0.972,
+					"success": 0.974
 				}
 			},
 			{
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.972,
-					"success": 0.974
+					"fail": 0.96,
+					"success": 0.972
 				}
 			},
 			{
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.962,
-					"success": 0.966
+					"fail": 0.972,
+					"success": 0.964
 				}
 			}
 		],
@@ -394,7 +394,7 @@
 				"name": "No Home IoT Devices",
 				"refCode": "idUNC.03",
 				"score": {
-					"fail": 0.04615,
+					"fail": 0.12698,
 					"success": 0
 				}
 			},
@@ -402,7 +402,7 @@
 				"name": "No Attack against Home IoT Device",
 				"refCode": "idUNC.04",
 				"score": {
-					"fail": 0.01538,
+					"fail": 0.04365,
 					"success": 0
 				}
 			},
@@ -410,7 +410,7 @@
 				"name": "Vulnerability Management OK (IoT)",
 				"refCode": "idUNC.05",
 				"score": {
-					"fail": 0.44615,
+					"fail": 0.50794,
 					"success": 0
 				}
 			},
@@ -418,7 +418,7 @@
 				"name": "Vulnerability Management OK (Router)",
 				"refCode": "idUNC.02",
 				"score": {
-					"fail": 0.81538,
+					"fail": 0.75,
 					"success": 0
 				}
 			},
@@ -426,7 +426,7 @@
 				"name": "No Attacks against Home Router",
 				"refCode": "idUNC.01",
 				"score": {
-					"fail": 0.38462,
+					"fail": 0.33333,
 					"success": 0
 				}
 			}
@@ -434,19 +434,19 @@
 	},
 	{
 		"name": "No Denial of Service",
-		"refCode": "idAVL.02",
+		"refCode": "idDE.031",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.013,
-			"success": 0.987
+			"fail": 0.0102,
+			"success": 0.9898
 		},
 		"sensitivity": [
 			{
 				"name": "Home Router Effectiveness",
 				"refCode": "idUNC.07",
 				"score": {
-					"fail": 0.054,
-					"success": 1
+					"fail": 0.056,
+					"success": 0.998
 				}
 			},
 			{
@@ -454,7 +454,7 @@
 				"refCode": "idUNC.08",
 				"score": {
 					"fail": 0.992,
-					"success": 0.99
+					"success": 0.996
 				}
 			}
 		],
@@ -463,7 +463,7 @@
 				"name": "Home Router Effectiveness",
 				"refCode": "idUNC.07",
 				"score": {
-					"fail": 0.88462,
+					"fail": 0.93137,
 					"success": 0
 				}
 			},
@@ -471,7 +471,7 @@
 				"name": "No Malformed Network Time Signal",
 				"refCode": "idUNC.08",
 				"score": {
-					"fail": 0.03846,
+					"fail": 0.03922,
 					"success": 0
 				}
 			}
@@ -479,11 +479,11 @@
 	},
 	{
 		"name": "MAG250 Availability",
-		"refCode": "idAVL.01",
+		"refCode": "idDE.03",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.0335,
-			"success": 0.9665
+			"fail": 0.0314,
+			"success": 0.9686
 		},
 		"sensitivity": [
 			{
@@ -491,14 +491,14 @@
 				"refCode": "idUNC.07",
 				"score": {
 					"fail": 0.058,
-					"success": 0.988
+					"success": 0.984
 				}
 			},
 			{
 				"name": "No Malformed Network Time Signal",
 				"refCode": "idUNC.08",
 				"score": {
-					"fail": 0.974,
+					"fail": 0.972,
 					"success": 0.974
 				}
 			}
@@ -508,7 +508,7 @@
 				"name": "Home Router Effectiveness",
 				"refCode": "idUNC.07",
 				"score": {
-					"fail": 0.34328,
+					"fail": 0.29936,
 					"success": 0
 				}
 			},
@@ -516,7 +516,7 @@
 				"name": "No Malformed Network Time Signal",
 				"refCode": "idUNC.08",
 				"score": {
-					"fail": 0.01493,
+					"fail": 0.03822,
 					"success": 0
 				}
 			}
@@ -524,19 +524,19 @@
 	},
 	{
 		"name": "MAG250 Integrity",
-		"refCode": "idINT.01",
+		"refCode": "idDE.02",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.8175,
-			"success": 0.1825
+			"fail": 0.576,
+			"success": 0.424
 		},
 		"sensitivity": [
 			{
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.222,
-					"success": 0.09
+					"fail": 0.336,
+					"success": 0.788
 				}
 			}
 		],
@@ -545,7 +545,7 @@
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.72538,
+					"fail": 0.91354,
 					"success": 0
 				}
 			}
@@ -553,19 +553,19 @@
 	},
 	{
 		"name": "Not Rooted",
-		"refCode": "idINT.02",
+		"refCode": "idDE.021",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.8515,
-			"success": 0.1485
+			"fail": 0.5875,
+			"success": 0.4125
 		},
 		"sensitivity": [
 			{
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.19,
-					"success": 0.048
+					"fail": 0.298,
+					"success": 0.824
 				}
 			}
 		],
@@ -574,7 +574,7 @@
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.72284,
+					"fail": 0.92698,
 					"success": 0
 				}
 			}
@@ -582,19 +582,19 @@
 	},
 	{
 		"name": "No Arbitrary Code Execution",
-		"refCode": "idINT.03",
+		"refCode": "idDE.0211",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.736,
-			"success": 0.264
+			"fail": 0.7293,
+			"success": 0.2707
 		},
 		"sensitivity": [
 			{
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.118,
-					"success": 0.798
+					"fail": 0.114,
+					"success": 0.804
 				}
 			}
 		],
@@ -603,7 +603,7 @@
 				"name": "No Stack Overflow Attack",
 				"refCode": "idUNC.06",
 				"score": {
-					"fail": 0.93546,
+					"fail": 0.93281,
 					"success": 0
 				}
 			}
