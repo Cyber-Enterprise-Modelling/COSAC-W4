@@ -9,7 +9,7 @@
 			"stereotype": "QDependency",
 			"refCode": "QuantDE.03",
 			"children": [
-				{
+				{ 
 					"name": "Threat C does not Materialise",
 					"stereotype": "Uncontrollable",
 					"refCode": "QuantUNC.03"
@@ -26,7 +26,11 @@
 					"name": "Threat B does not Materialise",
 					"stereotype": "Uncontrollable",
 					"refCode": "QuantUNC.02"
-				}
+				},
+				{
+                    "name":"Countermeasure",
+                    "refCode": "QuantCTRL.01."
+                }
 			]
 		},
 		{
