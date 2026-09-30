@@ -4,8 +4,8 @@
 		"refCode": "TripPA.01",
 		"stereotype": "Paragon",
 		"probability": {
-			"fail": 0.54,
-			"success": 0.46
+			"fail": 0.479,
+			"success": 0.521
 		},
 		"sensitivity": [
 			{
@@ -62,7 +62,7 @@
 				"name": "No Epidemic",
 				"refCode": "TripUNC.06",
 				"score": {
-					"fail": 0.01852,
+					"fail": 0.02296,
 					"success": 0
 				}
 			},
@@ -70,7 +70,7 @@
 				"name": "Industrial Harmony",
 				"refCode": "TripUNC.03",
 				"score": {
-					"fail": 0.05556,
+					"fail": 0.06681,
 					"success": 0
 				}
 			},
@@ -78,7 +78,7 @@
 				"name": "Traffic Flow OK",
 				"refCode": "TripUNC.04",
 				"score": {
-					"fail": 0.19444,
+					"fail": 0.21294,
 					"success": 0
 				}
 			},
@@ -86,7 +86,7 @@
 				"name": "Weather OK",
 				"refCode": "TripUNC.05",
 				"score": {
-					"fail": 0.13889,
+					"fail": 0.24635,
 					"success": 0
 				}
 			},
@@ -94,7 +94,7 @@
 				"name": "Car 1 OK",
 				"refCode": "TripUNC.01",
 				"score": {
-					"fail": 0.02778,
+					"fail": 0.01253,
 					"success": 0
 				}
 			},
@@ -102,7 +102,7 @@
 				"name": "Car 2 OK",
 				"refCode": "TripUNC.02",
 				"score": {
-					"fail": 0.08333,
+					"fail": 0.09603,
 					"success": 0
 				}
 			}
@@ -113,8 +113,8 @@
 		"refCode": "TripDE.031",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.13,
-			"success": 0.87
+			"fail": 0.102,
+			"success": 0.898
 		},
 		"sensitivity": [
 			{
@@ -131,7 +131,7 @@
 				"name": "No Epidemic",
 				"refCode": "TripUNC.06",
 				"score": {
-					"fail": 0.07692,
+					"fail": 0.10784,
 					"success": 0
 				}
 			}
@@ -142,8 +142,8 @@
 		"refCode": "TripDE.032",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.105,
-			"success": 0.895
+			"fail": 0.096,
+			"success": 0.904
 		},
 		"sensitivity": [
 			{
@@ -160,7 +160,7 @@
 				"name": "No Epidemic",
 				"refCode": "TripUNC.06",
 				"score": {
-					"fail": 0.09524,
+					"fail": 0.10417,
 					"success": 0
 				}
 			}
@@ -171,8 +171,8 @@
 		"refCode": "TripDE.03",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.205,
-			"success": 0.795
+			"fail": 0.181,
+			"success": 0.819
 		},
 		"sensitivity": [
 			{
@@ -189,7 +189,7 @@
 				"name": "No Epidemic",
 				"refCode": "TripUNC.06",
 				"score": {
-					"fail": 0.04878,
+					"fail": 0.06077,
 					"success": 0
 				}
 			}
@@ -200,8 +200,8 @@
 		"refCode": "TripDE.02",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.31,
-			"success": 0.69
+			"fail": 0.289,
+			"success": 0.711
 		},
 		"sensitivity": [
 			{
@@ -234,7 +234,7 @@
 				"name": "Industrial Harmony",
 				"refCode": "TripUNC.03",
 				"score": {
-					"fail": 0.06452,
+					"fail": 0.10381,
 					"success": 0
 				}
 			},
@@ -242,7 +242,7 @@
 				"name": "Traffic Flow OK",
 				"refCode": "TripUNC.04",
 				"score": {
-					"fail": 0.33871,
+					"fail": 0.35294,
 					"success": 0
 				}
 			},
@@ -250,7 +250,7 @@
 				"name": "Weather OK",
 				"refCode": "TripUNC.05",
 				"score": {
-					"fail": 0.24194,
+					"fail": 0.4083,
 					"success": 0
 				}
 			}
@@ -261,8 +261,8 @@
 		"refCode": "TripDE.021",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.16,
-			"success": 0.84
+			"fail": 0.105,
+			"success": 0.895
 		},
 		"sensitivity": [
 			{
@@ -279,7 +279,7 @@
 				"name": "Industrial Harmony",
 				"refCode": "TripUNC.03",
 				"score": {
-					"fail": 0.125,
+					"fail": 0.27619,
 					"success": 0
 				}
 			}
@@ -290,8 +290,8 @@
 		"refCode": "TripDE.012",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.14,
-			"success": 0.86
+			"fail": 0.117,
+			"success": 0.883
 		},
 		"sensitivity": [
 			{
@@ -308,7 +308,7 @@
 				"name": "Industrial Harmony",
 				"refCode": "TripUNC.03",
 				"score": {
-					"fail": 0.21429,
+					"fail": 0.23932,
 					"success": 0
 				}
 			}
@@ -319,8 +319,8 @@
 		"refCode": "TripDE.011",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.01,
-			"success": 0.99
+			"fail": 0.001,
+			"success": 0.999
 		},
 		"sensitivity": [
 			{
@@ -364,8 +364,8 @@
 		"refCode": "TripDE.01",
 		"stereotype": "Dependency",
 		"probability": {
-			"fail": 0.15,
-			"success": 0.85
+			"fail": 0.118,
+			"success": 0.882
 		},
 		"sensitivity": [
 			{
@@ -398,7 +398,7 @@
 				"name": "Car 1 OK",
 				"refCode": "TripUNC.01",
 				"score": {
-					"fail": 0.06667,
+					"fail": 0.01695,
 					"success": 0
 				}
 			},
@@ -406,7 +406,7 @@
 				"name": "Car 2 OK",
 				"refCode": "TripUNC.02",
 				"score": {
-					"fail": 0.06667,
+					"fail": 0.11864,
 					"success": 0
 				}
 			},
@@ -414,7 +414,7 @@
 				"name": "Industrial Harmony",
 				"refCode": "TripUNC.03",
 				"score": {
-					"fail": 0.2,
+					"fail": 0.23729,
 					"success": 0
 				}
 			}

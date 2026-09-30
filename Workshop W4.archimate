@@ -173,9 +173,9 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Paragon"/>
         <property key="refCode" value="TripPA.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.5400000&quot;,&quot;success&quot;:&quot;0.4600000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.5400000&quot;,&quot;success&quot;:&quot;0.4600000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:108,&quot;No Epidemic&quot;:&quot;0.01852&quot;,&quot;Industrial Harmony&quot;:&quot;0.05556&quot;,&quot;Traffic Flow OK&quot;:&quot;0.19444&quot;,&quot;Weather OK&quot;:&quot;0.13889&quot;,&quot;Car 1 OK&quot;:&quot;0.02778&quot;,&quot;Car 2 OK&quot;:&quot;0.08333&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.4790000&quot;,&quot;success&quot;:&quot;0.5210000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.4790000&quot;,&quot;success&quot;:&quot;0.5210000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:479,&quot;No Epidemic&quot;:&quot;0.02296&quot;,&quot;Industrial Harmony&quot;:&quot;0.06681&quot;,&quot;Traffic Flow OK&quot;:&quot;0.21294&quot;,&quot;Weather OK&quot;:&quot;0.24635&quot;,&quot;Car 1 OK&quot;:&quot;0.01253&quot;,&quot;Car 2 OK&quot;:&quot;0.09603&quot;}"/>
         <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.46,&quot;success&quot;:0.5}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.42,&quot;success&quot;:0.52}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.01,&quot;success&quot;:0.45}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.54}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.62}},{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.54}}]"/>
       </element>
       <element xsi:type="archimate:Goal" name="Losses &lt; 150k" id="id-0cbb437fb89c4bf8ab3c3f9cf1893af8">
@@ -192,9 +192,9 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.011"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0100000&quot;,&quot;success&quot;:&quot;0.9900000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.0100000&quot;,&quot;success&quot;:&quot;0.9900000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:2,&quot;Car 1 OK&quot;:&quot;1.00000&quot;,&quot;Car 2 OK&quot;:&quot;1.00000&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0010000&quot;,&quot;success&quot;:&quot;0.9990000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.0010000&quot;,&quot;success&quot;:&quot;0.9990000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:1,&quot;Car 1 OK&quot;:&quot;1.00000&quot;,&quot;Car 2 OK&quot;:&quot;1.00000&quot;}"/>
         <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.89,&quot;success&quot;:1}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:1,&quot;success&quot;:1}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Friends Are OK" id="id-ed13b04e0bf44b828320940ac6dd4f83">
@@ -202,27 +202,27 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.032"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:21,&quot;No Epidemic&quot;:&quot;0.09524&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.0960000&quot;,&quot;success&quot;:&quot;0.9040000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.0960000&quot;,&quot;success&quot;:&quot;0.9040000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:96,&quot;No Epidemic&quot;:&quot;0.10417&quot;}"/>
         <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.07,&quot;success&quot;:0.95}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Fuel Available" id="id-582bcfcf8c72431d8cc541a9233f1770">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.012"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1400000&quot;,&quot;success&quot;:&quot;0.8600000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1400000&quot;,&quot;success&quot;:&quot;0.8600000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:28,&quot;Industrial Harmony&quot;:&quot;0.21429&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1170000&quot;,&quot;success&quot;:&quot;0.8830000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1170000&quot;,&quot;success&quot;:&quot;0.8830000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:117,&quot;Industrial Harmony&quot;:&quot;0.23932&quot;}"/>
         <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="People OK" id="id-5445b0e76c5842d7b1caaeac12e4e3b8">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.03"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2050000&quot;,&quot;success&quot;:&quot;0.7950000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.2050000&quot;,&quot;success&quot;:&quot;0.7950000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:41,&quot;No Epidemic&quot;:&quot;0.04878&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1810000&quot;,&quot;success&quot;:&quot;0.8190000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1810000&quot;,&quot;success&quot;:&quot;0.8190000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:181,&quot;No Epidemic&quot;:&quot;0.06077&quot;}"/>
         <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.85}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Risk A does not Materialise" id="id-699aa9e0924d4b47bf9cf1c6608517db">
@@ -253,27 +253,27 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.02"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.3100000&quot;,&quot;success&quot;:&quot;0.6900000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.3100000&quot;,&quot;success&quot;:&quot;0.6900000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:62,&quot;Industrial Harmony&quot;:&quot;0.06452&quot;,&quot;Traffic Flow OK&quot;:&quot;0.33871&quot;,&quot;Weather OK&quot;:&quot;0.24194&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.2890000&quot;,&quot;success&quot;:&quot;0.7110000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.2890000&quot;,&quot;success&quot;:&quot;0.7110000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:289,&quot;Industrial Harmony&quot;:&quot;0.10381&quot;,&quot;Traffic Flow OK&quot;:&quot;0.35294&quot;,&quot;Weather OK&quot;:&quot;0.40830&quot;}"/>
         <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.12,&quot;success&quot;:0.67}},{&quot;Traffic Flow OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.75}},{&quot;Weather OK&quot;:{&quot;fail&quot;:0,&quot;success&quot;:0.79}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Roads Open" id="id-fc4f8d149f54472fab4c445c5e42be80">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.021"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1600000&quot;,&quot;success&quot;:&quot;0.8400000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1600000&quot;,&quot;success&quot;:&quot;0.8400000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:32,&quot;Industrial Harmony&quot;:&quot;0.12500&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1050000&quot;,&quot;success&quot;:&quot;0.8950000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:105,&quot;Industrial Harmony&quot;:&quot;0.27619&quot;}"/>
         <property key="sensitivity" value="[{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="Vehicle OK" id="id-135aaf0a6a4943309d7a052c7a116619">
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.01"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1500000&quot;,&quot;success&quot;:&quot;0.8500000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1500000&quot;,&quot;success&quot;:&quot;0.8500000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:30,&quot;Car 1 OK&quot;:&quot;0.06667&quot;,&quot;Car 2 OK&quot;:&quot;0.06667&quot;,&quot;Industrial Harmony&quot;:&quot;0.20000&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1180000&quot;,&quot;success&quot;:&quot;0.8820000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1180000&quot;,&quot;success&quot;:&quot;0.8820000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:118,&quot;Car 1 OK&quot;:&quot;0.01695&quot;,&quot;Car 2 OK&quot;:&quot;0.11864&quot;,&quot;Industrial Harmony&quot;:&quot;0.23729&quot;}"/>
         <property key="sensitivity" value="[{&quot;Car 1 OK&quot;:{&quot;fail&quot;:0.81,&quot;success&quot;:0.86}},{&quot;Car 2 OK&quot;:{&quot;fail&quot;:0.89,&quot;success&quot;:0.86}},{&quot;Industrial Harmony&quot;:{&quot;fail&quot;:0.14,&quot;success&quot;:0.89}}]"/>
       </element>
       <element xsi:type="archimate:Outcome" name="We Are OK" id="id-41058dd85b834c7ca3b5769a55654dd3">
@@ -281,9 +281,9 @@ It is important to note that these are not fundamental limitations, just conveni
         <property key="namespace" value="SABSA"/>
         <property key="stereotype" value="Dependency"/>
         <property key="refCode" value="TripDE.031"/>
-        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1300000&quot;,&quot;success&quot;:&quot;0.8700000&quot;}"/>
-        <property key="probability" value="{&quot;fail&quot;:&quot;0.1300000&quot;,&quot;success&quot;:&quot;0.8700000&quot;}"/>
-        <property key="causality" value="{&quot;failTally&quot;:26,&quot;No Epidemic&quot;:&quot;0.07692&quot;}"/>
+        <property key="pTable" value="{&quot;fail&quot;:&quot;0.1020000&quot;,&quot;success&quot;:&quot;0.8980000&quot;}"/>
+        <property key="probability" value="{&quot;fail&quot;:&quot;0.1020000&quot;,&quot;success&quot;:&quot;0.8980000&quot;}"/>
+        <property key="causality" value="{&quot;failTally&quot;:102,&quot;No Epidemic&quot;:&quot;0.10784&quot;}"/>
         <property key="sensitivity" value="[{&quot;No Epidemic&quot;:{&quot;fail&quot;:0.03,&quot;success&quot;:0.89}}]"/>
       </element>
     </folder>
