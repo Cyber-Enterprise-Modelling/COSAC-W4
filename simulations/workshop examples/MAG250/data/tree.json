@@ -1,0 +1,120 @@
+{
+	"name": "MAG250 is Trustworthy",
+	"stereotype": "Paragon",
+	"refCode": "idPA.01",
+	"gateType": "and",
+	"children": [
+		{
+			"name": "MAG250 Availability",
+			"stereotype": "Dependency",
+			"refCode": "idAVL.01",
+			"gateType": "bayesian",
+			"children": [
+				{
+					"name": "No Denial of Service",
+					"stereotype": "Dependency",
+					"refCode": "idAVL.02",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "Home Router Effectiveness",
+							"stereotype": "Uncontrollable",
+							"refCode": "idUNC.07"
+						},
+						{
+							"name": "No Malformed Network Time Signal",
+							"stereotype": "Uncontrollable",
+							"refCode": "idUNC.08"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "MAG250 Confidentiality",
+			"stereotype": "Dependency",
+			"refCode": "idCON.01",
+			"gateType": "bayesian",
+			"children": [
+				{
+					"name": "No Man-in-the-Middle Established",
+					"stereotype": "Dependency",
+					"refCode": "idCON.02",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "Home Router Not Compromised",
+							"stereotype": "Dependency",
+							"refCode": "idCON.03.01",
+							"gateType": "or",
+							"children": [
+								{
+									"name": "No Attacks against Home Router",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.01"
+								},
+								{
+									"name": "Vulnerability Management OK (Router)",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.02"
+								}
+							]
+						},
+						{
+							"name": "No Compromised IoT Devices",
+							"stereotype": "Dependency",
+							"refCode": "idCON.03.02",
+							"gateType": "or",
+							"children": [
+								{
+									"name": "No Home IoT Devices",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.03"
+								},
+								{
+									"name": "No Attack against Home IoT Device",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.04"
+								},
+								{
+									"name": "Vulnerability Management OK (IoT)",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.05"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "MAG250 Integrity",
+			"stereotype": "Dependency",
+			"refCode": "idINT.01",
+			"gateType": "bayesian",
+			"children": [
+				{
+					"name": "Not Rooted",
+					"stereotype": "Dependency",
+					"refCode": "idINT.02",
+					"gateType": "bayesian",
+					"children": [
+						{
+							"name": "No Arbitrary Code Execution",
+							"stereotype": "Dependency",
+							"refCode": "idINT.03",
+							"gateType": "bayesian",
+							"children": [
+								{
+									"name": "No Stack Overflow Attack",
+									"stereotype": "Uncontrollable",
+									"refCode": "idUNC.06"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
