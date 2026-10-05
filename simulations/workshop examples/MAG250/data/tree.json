@@ -7,13 +7,13 @@
 		{
 			"name": "MAG250 Availability",
 			"stereotype": "Dependency",
-			"refCode": "idAVL.01",
+			"refCode": "idDE.03",
 			"gateType": "bayesian",
 			"children": [
 				{
 					"name": "No Denial of Service",
 					"stereotype": "Dependency",
-					"refCode": "idAVL.02",
+					"refCode": "idDE.031",
 					"gateType": "bayesian",
 					"children": [
 						{
@@ -33,19 +33,19 @@
 		{
 			"name": "MAG250 Confidentiality",
 			"stereotype": "Dependency",
-			"refCode": "idCON.01",
+			"refCode": "idDE.01",
 			"gateType": "bayesian",
 			"children": [
 				{
 					"name": "No Man-in-the-Middle Established",
 					"stereotype": "Dependency",
-					"refCode": "idCON.02",
+					"refCode": "idDE.011",
 					"gateType": "bayesian",
 					"children": [
 						{
 							"name": "Home Router Not Compromised",
 							"stereotype": "Dependency",
-							"refCode": "idCON.03.01",
+							"refCode": "idDE.0111",
 							"gateType": "or",
 							"children": [
 								{
@@ -63,7 +63,7 @@
 						{
 							"name": "No Compromised IoT Devices",
 							"stereotype": "Dependency",
-							"refCode": "idCON.03.02",
+							"refCode": "idDE.0112",
 							"gateType": "or",
 							"children": [
 								{
@@ -90,19 +90,19 @@
 		{
 			"name": "MAG250 Integrity",
 			"stereotype": "Dependency",
-			"refCode": "idINT.01",
+			"refCode": "idDE.02",
 			"gateType": "bayesian",
 			"children": [
 				{
 					"name": "Not Rooted",
 					"stereotype": "Dependency",
-					"refCode": "idINT.02",
+					"refCode": "idDE.021",
 					"gateType": "bayesian",
 					"children": [
 						{
 							"name": "No Arbitrary Code Execution",
 							"stereotype": "Dependency",
-							"refCode": "idINT.03",
+							"refCode": "idDE.0211",
 							"gateType": "bayesian",
 							"children": [
 								{
